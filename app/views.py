@@ -9,7 +9,8 @@ main_bp = Blueprint('main', __name__)
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    mostrar_contenido = True
+    return render_template('index.html',mostrar_contenido=mostrar_contenido)
 
 #Lista de usuarios
 @main_bp.route('/user/list' , methods=['GET'])
@@ -115,7 +116,8 @@ def add_client():
 @main_bp.route('/product/list' , methods=['GET'])
 def list_products():
     products = Producto.query.all()
-    return render_template('producto/list_products.html', products=products)
+    mostrar_contenido = False
+    return render_template('producto/list_products.html', products=products,mostrar_contenido=mostrar_contenido)
 
 
 @main_bp.route('/producto/add', methods=['GET', 'POST'])
