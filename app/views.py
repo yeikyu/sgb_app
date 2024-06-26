@@ -129,8 +129,8 @@ def add_product():
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('main.list_products'))
-
-    return render_template('producto/add_product.html')
+    mostrar_contenido = False
+    return render_template('producto/add_product.html',mostrar_contenido=mostrar_contenido)
 
 @main_bp.route('/cate_producto/list' , methods=['GET'])
 def list_categoria_products():

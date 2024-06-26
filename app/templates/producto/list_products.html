@@ -1,5 +1,7 @@
 {% extends 'index.html' %} {% block content %}
 <!-- Barra de navegación -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
 <div>
   <div class="h1 fw-light text-primary">Nuevo producto</div>
 </div>
@@ -9,14 +11,14 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <a
-            class="nav-link"
+            class="nav-link btn btn-success text-light fw-bold "
             aria-current="page"
             href="{{ url_for('main.add_product') }}"
             >&#129485;Nuevo producto</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">&#128196;Reporte</a>
+          <a class="nav-link btn btn-dark fw-bold text-light" href="#">&#128196;Reporte</a>
         </li>
       </ul>
     </div>
@@ -41,7 +43,7 @@
         <th>
           <input
             type="text"
-            class="filter-input"
+            class="filter-input tamano-1"
             id="filterid"
             placeholder="Filtrar id"
           />
@@ -49,7 +51,7 @@
         <th>
           <input
             type="text"
-            class="filter-input"
+            class="filter-input tamano-4"
             id="filterNombre"
             placeholder="Filtrar Nombre"
           />
@@ -57,7 +59,7 @@
         <th>
           <input
             type="text"
-            class="filter-input"
+            class="filter-input tamano-3"
             id="filterApellido"
             placeholder="Filtrar Categoria"
           />
@@ -65,15 +67,15 @@
         <th>
           <input
             type="text"
-            class="filter-input"
+            class="filter-input tamano-5"
             id="filterIdentificacion"
-            placeholder=" "
+            placeholder="Añade una descripcion"
           />
         </th>
         <th>
           <input
             type="text"
-            class="filter-input"
+            class="filter-input tamano-1"
             id="filterIdentificacion"
             placeholder="Filtrar Precio"
           />
@@ -81,7 +83,7 @@
         <th>
           <input
             type="text"
-            class="filter-input"
+            class="filter-input tamano-2"
             id="filterEstado"
             placeholder="Filtrar Estado"
           />
