@@ -1,0 +1,96 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {#    <link rel="stylesheet" href="../static/dist/css/bootstrap.min.css">#}
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}">
+
+    <title>{% block title %}{% endblock %} :: Proyecto</title>
+</head>
+<body>
+
+<nav>
+    <div class="container my-5">
+        <h1 class="display-1 text-center text-primary fw-bold">
+            ¡Bienvenido a nuestro proyecto de Arquitectura VMC!
+        </h1>
+        <p class="lead text-center text-secondary">
+            Organiza tus viajes fuera de la ciudad...
+        </p>
+    </div>
+    {#    <ul class="list-group">#}
+    {#        {% if g.user %}#}
+    {#            <li class="list-group-item"><span>{{ g.user['username'] }}</span>#}
+    {#            <li class="list-group-item"><a href="{{ url_for('auth.logout') }}">Log Out</a>#}
+    {#                {% else %}#}
+    {#            <li class="list-group-item"><a href="{{ url_for('auth.register') }}">Register</a>#}
+    {#            <li class="list-group-item"><a href="{{ url_for('auth.login') }}">Log In</a>#}
+    {#        {% endif %}#}
+    {#    </ul>#}
+</nav>
+<section class="content">
+    <header>
+<!--Menu principal-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">&#127970; Inicio</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ url_for('main.list_clients') }}">&#128100; Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.list_user') }}">&#128101; Lista de usuarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.list_categoria_products') }}">&#128210; Categoria
+                                Producto </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.list_products') }}">&#128188; Producto </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">&#128221;
+                                Lista desplegable
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Sin asignar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+    </header>
+
+    {% block header %}   {% endblock %}
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}  {% endblock %}
+</section>
+
+
+{#<script src="../static/dist/js/bootstrap.min.js"></script>#}
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- app/templates/add_product.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Crear Categoria Producto</h1>
+    <form action="{{ url_for('main.add_user') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+        <button type="submit">Guardar Categoria Producto</button>
+    </form>
+    <a href="{{ url_for('main.list_categoria_products') }}">Back to Categoria Producto List</a>
+
+{% endblock %}

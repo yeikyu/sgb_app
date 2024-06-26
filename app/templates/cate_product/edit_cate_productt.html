@@ -1,0 +1,14 @@
+<!-- app/templates/edit_product.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Modificar Categoria Producto</h1>
+    <form action="{{ url_for('main.edit_user', id=user.id) }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}" required>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="{{ user.email }}" required>
+        <button type="submit">Modificar Categoria Producto</button>
+    </form>
+    <a href="{{ url_for('main.list_user') }}">Back to Categoria Producto List</a>
+{% endblock %}

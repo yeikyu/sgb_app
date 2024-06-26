@@ -1,0 +1,146 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {#    <link rel="stylesheet" href="../static/dist/css/bootstrap.min.css">#}
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}">
+
+    <title>{% block title %}{% endblock %} :: Proyecto</title>
+    <div class="bg-primary p-5">
+        <p>
+            <a href="{{ url_for('main.index') }}" class="text-white">
+            <h2>SGB</h2>
+            </a>
+        </p>
+    </div>
+
+    </div>
+</head>
+<body>
+<nav>
+    <!--{#    <ul class="list-group">#}
+    {#        {% if g.user %}#}
+    {#            <li class="list-group-item"><span>{{ g.user['username'] }}</span>#}
+    {#            <li class="list-group-item"><a href="{{ url_for('auth.logout') }}">Log Out</a>#}
+    {#                {% else %}#}
+    {#            <li class="list-group-item"><a href="{{ url_for('auth.register') }}">Register</a>#}
+    {#            <li class="list-group-item"><a href="{{ url_for('auth.login') }}">Log In</a>#}
+    {#        {% endif %}#}
+    {#    </ul>#}-->
+</nav>
+<section class="content">
+    <header>
+        <!--Nuevo Menu principal-->
+        <div class="container-fluid">
+            <div class="row flex-nowrap">
+                <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dar">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 border">
+                        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                            <li>
+                                <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128100; Clientes</span> </a>
+                                <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                                    <li class="w-100">
+                                        <a href="{{ url_for('main.list_clients') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Lista de clientes</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128101; Usuarios</span> </a>
+                                <ul class="collapse show nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                                    <li class="w-100">
+                                        <a href="{{ url_for('main.list_user') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Lista de usuarios</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128188; Producto</span> </a>
+                                <ul class="collapse show nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
+                                    <li class="w-100">
+                                        <a href="{{ url_for('main.list_products') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Lista de producto</span></a>
+                                    </li>
+                                    <li class="w-100">
+                                        <a href="{{ url_for('main.list_categoria_products') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Categoria de producto</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col py-3">
+                    <div class="container my-5">
+                        <h1 class="display-1 text-center text-primary fw-bold">SGB</h1>
+                        <p class="lead text-center text-secondary">
+                            Sistema de gestion de Boletos de transporte ...
+                        </p>
+                    </div>
+                    {% block content %}  {% endblock %}
+                </div>
+            </div>
+        </div>
+
+<!--Menu principal
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">&#127970; Inicio</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ url_for('main.list_clients') }}">&#128100; Clientes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.list_user') }}">&#128101; Lista de usuarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.list_categoria_products') }}">&#128210; Categoria
+                                Producto </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('main.list_products') }}">&#128188; Producto </a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">&#128221;
+                                Lista desplegable
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Sin asignar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>-->
+
+    </header>
+
+    {% block header %}   {% endblock %}
+    {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+    {% endfor %}
+    
+</section>
+
+
+{#<script src="../static/dist/js/bootstrap.min.js"></script>#}
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+</body>
+</html>

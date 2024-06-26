@@ -1,0 +1,88 @@
+<!-- app/templates/edit_product.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+<!--<h1 class="display-1 text-center text-primary fw-bold">
+    Modificar Usuario</h1>
+<div class="container">
+    <div class="card">
+        <form action="{{ url_for('main.edit_user', id=user.id) }}" method="post">
+            <div class="row g-4 align-items-center">
+                <div class="col-auto">
+                    <label class="col-form-label" for="username">Usuario:</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" type="text" id="username" name="username" value="{{ user.username }}"
+                        required>
+                </div>
+                <div class="col-auto">
+                    <label class="form-label" for="email">Email:</label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control" type="text" id="email" name="email" value="{{ user.email }}" required>
+                </div>
+            </div>
+        </form>
+        <div class="text-center">
+            <button class="btn btn-primary" type="submit">Modificar Usuario</button>
+        </div>
+    </div>
+</div>
+<a style="text-decoration: none;" href="{{ url_for('main.list_user') }}">&#128072 Regresa al listado de usuarios</a>-->
+
+<!--Inicio de formulario-->
+<div class="container px-5 my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card border-0 rounded-3 shadow-lg">
+          <div class="card-body p-4">
+            <div class="text-center">
+              <div class="h1 fw-light">Modificar Usuario</div>
+              <p class="mb-4 text-muted">Modifica tu usuario o tu email.</p>
+            </div>
+  
+            <form action="{{ url_for('main.edit_user', id=user.id) }}" method="post">
+  
+              <!-- usuario Input -->
+              <div class="form-floating mb-3">
+                <input class="form-control" type="text" id="username" name="username" value="{{ user.username }}"required>
+                <label for="username">Usuario:</label>
+                <div class="invalid-feedback" data-sb-feedback="name:required">El nombre es requerido.</div>
+              </div>
+  
+              <!-- Email Input -->
+              <div class="form-floating mb-3">
+                <input class="form-control" type="text" id="email" name="email" value="{{ user.email }}" required>
+                <label for="email">Email:</label>
+                <div class="invalid-feedback" data-sb-feedback="emailAddress:required">El email es requerido.</div>
+                <div class="invalid-feedback" data-sb-feedback="emailAddress:email">El Email no es valido.</div>
+              </div>
+  
+              <!-- Submit success message -->
+              <div class="d-none" id="submitSuccessMessage">
+                <div class="text-center mb-3">
+                  <div class="fw-bolder">Form submission successful!</div>
+                  <p>To activate this form, sign up at</p>
+                  <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                </div>
+              </div>
+  
+              <!-- Submit error message -->
+              <div class="d-none" id="submitErrorMessage">
+                <div class="text-center text-danger mb-3">Error sending message!</div>
+              </div>
+  
+              <!-- Boton de modificar usuario -->
+              <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Modificar Usuario</button>
+              </div>
+            </form>
+            <!-- Fin formulario -->
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a style="text-decoration: none;" href="{{ url_for('main.list_user') }}">&#128072 Regresa al listado de usuarios</a>
+{% endblock %}
