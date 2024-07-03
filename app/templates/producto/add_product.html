@@ -4,11 +4,22 @@
 {% block content %}
     <h1>Crear Producto</h1>
     <form action="{{ url_for('main.add_product') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
-        <button type="submit">Guardar Producto</button>
+
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="descripcion">Descripción:</label><br>
+        <textarea id="descripcion" name="descripcion" rows="4" cols="50"></textarea><br><br>
+
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" name="precio" step="0.01" required><br><br>
+
+        <label for="categoria_id">Categoria:</label>
+        <select id="categoria_id" name="categoria_id" required>
+            <option value="1">Paquete</option>
+            <option value="0">viaje</option>
+        </select><br><br>
+        <button class="btn btn-success" type="submit">Guardar Producto</button>
     </form>
     <a href="{{ url_for('main.list_products') }}">Back to Product List</a>
 

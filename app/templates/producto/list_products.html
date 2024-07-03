@@ -102,11 +102,8 @@
         <td>{{product.precio}}</td>
         <td>{{product.estado}}</td>
         <td>
-          <a
-            class="btn btn-primary"
-            href="{{ url_for('main.edit_product', id=product.id) }}"
-            >Editar</a
-          >
+          <a class="btn btn-primary" href="{{ url_for('main.edit_product', id=product.id) }}">Editar</a>
+
         </td>
         <td>
           <form

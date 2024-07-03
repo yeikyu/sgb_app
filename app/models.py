@@ -39,7 +39,7 @@ class CategoriaProducto(db.Model):
     estado = db.Column(db.Integer)
     fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    fecha_modificacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    fecha_modificacion = db.Column(db.DateTime, default=datetime.utcnow)
     usuario_creacion = db.Column(db.String(15))
     usuario_modificacion = db.Column(db.String(15))
     # Definir más campos según sea necesario
@@ -48,16 +48,17 @@ class CategoriaProducto(db.Model):
 
 
 class Producto(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    categoria_id = db.Column(db.Integer, db.ForeignKey('categoria_producto.id'), nullable=False)
-    categoria = db.relationship('CategoriaProducto', backref=db.backref('categorias', lazy=True))
+    id = db.Column(db.Integer, primary_key=True , autoincrement=True)
+    categoria_id = db.Column(db.Integer,  nullable=False)
+   # categoria_id = db.Column(db.Integer, db.ForeignKey('categoria_producto.id'), nullable=False)
+   # categoria = db.relationship('CategoriaProducto', backref=db.backref('categorias', lazy=True))
     nombre = db.Column(db.String(100))
     descripcion = db.Column(db.Text)
     precio = db.Column(db.Float)
     estado = db.Column(db.Integer)
-    fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    fecha_creacion = db.Column(db.DateTime(timezone=True))
     # fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    #fecha_modificacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    fecha_modificacion = db.Column(db.DateTime, nullable=True)
     #usuario_creacion = db.Column(db.String(15))
     #usuario_modificacion = db.Column(db.String(15))
     # Definir más campos según sea necesario
@@ -66,32 +67,33 @@ class Producto(db.Model):
 
 
 class Venta(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True ,autoincrement=True)
     codigo = db.Column(db.String(100))
-    cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'), nullable=False)
-    cliente = db.relationship('Cliente', backref=db.backref('ventas', lazy=True))
+    cliente_id = db.Column(db.Integer, nullable=False)
+    #cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'), nullable=False)
+    #cliente = db.relationship('Cliente', backref=db.backref('ventas', lazy=True))
     fecha_venta = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     estado = db.Column(db.Integer)
     fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    fecha_modificacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    fecha_modificacion = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
     usuario_creacion = db.Column(db.String(15))
     usuario_modificacion = db.Column(db.String(15))
 
     # Definir más campos según sea necesario
 
 
-class VentaDetalle(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    venta_id = db.Column(db.Integer, db.ForeignKey('venta.id'), nullable=False)
-    venta = db.relationship('Venta', backref=db.backref('items', lazy=True))
-    producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
-    producto = db.relationship('Producto', backref=db.backref('venta_items', lazy=True))
-    cantidad = db.Column(db.Integer, nullable=False)
-    estado = db.Column(db.Integer)
-    fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
+#class VentaDetalle(db.Model):
+ #   id = db.Column(db.Integer, primary_key=True)
+  #  venta_id = db.Column(db.Integer, db.ForeignKey('venta.id'), nullable=False)
+   # venta = db.relationship('Venta', backref=db.backref('items', lazy=True))
+   # producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
+   # producto = db.relationship('Producto', backref=db.backref('venta_items', lazy=True))
+   # cantidad = db.Column(db.Integer, nullable=False)
+   # estado = db.Column(db.Integer)
+   # fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    fecha_modificacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    usuario_creacion = db.Column(db.String(15))
-    usuario_modificacion = db.Column(db.String(15))
+    #fecha_modificacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    #usuario_creacion = db.Column(db.String(15))
+    #usuario_modificacion = db.Column(db.String(15))
     # Otros campos como precio unitario, descuento, etc.
