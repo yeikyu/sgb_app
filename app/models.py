@@ -99,8 +99,15 @@ class Venta(db.Model):
     # Otros campos como precio unitario, descuento, etc.
     
     
-# class Conductor(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     nombre = db.Column(db.String(80), nullable=False)
-#     licencia = db.Column(db.String(20), unique=True, nullable=False)
-#     buses = db.relationship('Bus', backref='conductor', lazy=True)
+class Conductor(db.Model):
+    __tablename__ = 'conductores'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(80), nullable=False)
+    licencia = db.Column(db.String(20), nullable=False)
+    fecha_nacimiento = db.Column(db.Date, nullable=False)
+    direccion = db.Column(db.String(200), nullable=True)
+    telefono = db.Column(db.String(15), nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    fecha_contratacion = db.Column(db.Date, nullable=False)
+    estado_empleo = db.Column(db.String(20), nullable=False)  # Por ejemplo: 'activo', 'suspendido', 'retirado'
+   # viajes = db.relationship('Viaje', backref='conductor', lazy=True)

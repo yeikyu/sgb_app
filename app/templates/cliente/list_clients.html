@@ -32,8 +32,6 @@
         <th scope="col">Apellido</th>
         <th scope="col">Identificacion</th>
         <th scope="col">Estado</th>
-        <td scope="col">Modificar</td>
-        <td scope="col">Eliminar</td>
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -97,7 +95,7 @@
         <td>
           <form action="{{ url_for('main.delete_client', id=cliente.id) }}"
             method="post">
-            <button class="btn btn-primary" type="submit">Eliminar</button>
+            <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>
         </td>
       </tr>

@@ -35,8 +35,7 @@
         <th scope="col">Descripcion</th>
         <th scope="col">Precio</th>
         <th scope="col">Estado</th>
-        <td scope="col">Modificar</td>
-        <td scope="col">Eliminar</td>
+
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -109,7 +108,7 @@
           <form
             action="{{ url_for('main.delete_product', id=product.id) }}"
             method="post">
-            <button class="btn btn-primary" type="submit">Eliminar</button>
+            <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>
         </td>
       </tr>

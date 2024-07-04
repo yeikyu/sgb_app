@@ -3,53 +3,31 @@
 
 {% block content %}
     <h1>Modificar Categoria Producto</h1>
-    {% comment %} <form id="editForm" action="{{ url_for('main.edit_cate_product', id=products.id) }}" method="post">
-    
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" value="{{ products.nombre }}" class="form-control" required>
-            </div>
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" class="form-control" rows="6" required>{{ products.descripcion }}</textarea>
-                <button class="btn btn-success"  type="submit">Modificar Categoria Producto</button>
-                <a class="btn btn-dark"  href="{{ url_for('main.list_cate_products') }}">Back to Categoria Producto List</a>
-            
-            </div>
-    </form>
-      {% endcomment %}
-
 
     <form id="editForm" action="{{ url_for('main.edit_cate_product', id=products.id) }}" method="post"> 
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <div class="row mb-4">
           <div class="col">
             <div data-mdb-input-init class="form-outline">
+                <label class="form-label" for="nombre">Nombre</label>
               <input type="text" class="form-control" id="nombre" name="nombre" value="{{ products.nombre }}" class="form-control" required  />
-              <label class="form-label" for="nombre">Nombre</label>
+             
             </div>
           </div>
           <div class="col">
             <div data-mdb-input-init class="form-outline">
+                <label class="form-label" for="form6Example2">Descripción:</label>
                 <textarea id="descripcion" name="descripcion" class="form-control" rows="6" required>{{ products.descripcion }}</textarea>
-              <label class="form-label" for="form6Example2">Descripción:</label>
+              
             </div>
           </div>
         </div>
-      
-        <!-- Checkbox -->
-        <div class="form-check d-flex justify-content-center mb-4">
-          <input
-            class="form-check-input me-2"
-            type="checkbox"
-            value=""
-            id="form6Example8"
-            checked
-          />
-          <label class="form-check-label" for="form6Example8"> Create an account? </label>
-        </div>
-      
+     
         <!-- Submit button -->
         <button class="btn btn-success"  type="submit">Modificar Categoria Producto</button>
         <a class="btn btn-dark"  href="{{ url_for('main.list_cate_products') }}">Back to Categoria Producto List</a>
       </form>
  {% endblock %} 
+
+
+ 

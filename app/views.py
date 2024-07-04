@@ -206,9 +206,7 @@ def edit_cate_product(id):
     if request.method == 'POST':
         # Aquí deberías manejar la actualización del producto
         products.nombre = request.form['nombre']
-        products.categoria = int(request.form['categoria_id'])
         products.descripcion = request.form['descripcion']
-        products.precio = request.form['precio']
         db.session.commit()
         return redirect(url_for('main.list_cate_products'))
     mostrar_contenido = False
