@@ -97,3 +97,10 @@ class Venta(db.Model):
     #usuario_creacion = db.Column(db.String(15))
     #usuario_modificacion = db.Column(db.String(15))
     # Otros campos como precio unitario, descuento, etc.
+    
+    
+# class Conductor(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     nombre = db.Column(db.String(80), nullable=False)
+#     licencia = db.Column(db.String(20), unique=True, nullable=False)
+#     buses = db.relationship('Bus', backref='conductor', lazy=True)
