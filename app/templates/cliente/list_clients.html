@@ -32,6 +32,7 @@
         <th scope="col">Apellido</th>
         <th scope="col">Identificacion</th>
         <th scope="col">Estado</th>
+        <th scope="col">Email</th>
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -82,18 +83,19 @@
     <tbody>
       {% for cliente in clientes %}
       <tr>
-        <td>{{ cliente.id }}</td>
-        <td>{{ cliente.nombre }}</td>
-        <td>{{ cliente.apellido }}</td>
-        <td>{{ cliente.dni }}</td>
-        <td>{{ cliente.estado }}</td>
+        <td>{{ cliente.id_cliente }}</td>
+        <td>{{ cliente.nombre_cliente }}</td>
+        <td>{{ cliente.apellido_cliente }}</td>
+        <td>{{ cliente.cedula }}</td>
+        <td>{{ cliente.estado_cliente }}</td>
+        <td>{{ cliente.email }}</td>
         <td>
           <a
             class="btn btn-primary"
-            href="{{ url_for('main.edit_client', id=cliente.id) }}">Editar</a>
+            href="{{ url_for('main.edit_client', id=cliente.id_cliente) }}">Editar</a>
         </td>
         <td>
-          <form action="{{ url_for('main.delete_client', id=cliente.id) }}"
+          <form action="{{ url_for('main.delete_client', id=cliente.id_cliente) }}"
             method="post">
             <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>

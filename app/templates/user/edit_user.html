@@ -43,27 +43,21 @@
   
             <form action="{{ url_for('main.edit_user', id=user.id) }}" method="post">
   
-              <!-- usuario Input -->
-              <div class="form-floating mb-3">
-                <input class="form-control" type="text" id="username" name="username" value="{{ user.username }}"required>
-                <label for="username">Usuario:</label>
-                <div class="invalid-feedback" data-sb-feedback="name:required">El nombre es requerido.</div>
-              </div>
-  
-              <!-- Email Input -->
-              <div class="form-floating mb-3">
-                <input class="form-control" type="text" id="email" name="email" value="{{ user.email }}" required>
-                <label for="email">Email:</label>
-                <div class="invalid-feedback" data-sb-feedback="emailAddress:required">El email es requerido.</div>
-                <div class="invalid-feedback" data-sb-feedback="emailAddress:email">El Email no es valido.</div>
-              </div>
+              <label for="user">Username:</label>
+              <input type="text" id="user" value="{{ user.user }}" name="user" required>
+              <label for="nombre">Nombre:</label>
+              <input type="text"  value= "{{ user.nombre }}"  id="nombre" name="nombre" required>
+              <label for="apellido">Apellido:</label>
+              <input type="text"  value="{{ user.apellido }}" id="apellido" name="apellido" required>
+              <label for="pass">Contraseña:</label>
+              <input type="text"  value="{{ user.contraseña }}"  id="pass" name="pass" required>   
   
               <!-- Submit success message -->
               <div class="d-none" id="submitSuccessMessage">
                 <div class="text-center mb-3">
                   <div class="fw-bolder">Form submission successful!</div>
                   <p>To activate this form, sign up at</p>
-                  <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                  <a href="https://startbootstrap.com/solution/contact-forms"></a>
                 </div>
               </div>
   

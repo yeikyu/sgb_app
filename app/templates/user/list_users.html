@@ -27,8 +27,10 @@
     <thead class="table-light">
       <tr>
         <th scope="col">Usuario</th>
-        <th scope="col">Email</th>
-
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Fecha Creacion</th>
       </tr>
       <tr>
         <th>
@@ -44,7 +46,7 @@
             type="text"
             class="filter-input"
             id="filteremail"
-            placeholder="Filtrar Email"
+            placeholder="Filtrar apellido"
           />
         </th>
         <th></th>
@@ -54,8 +56,11 @@
     <tbody>
       {% for user in users %}
       <tr>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
+        <td>{{ user.user }}</td>
+        <td>{{ user.nombre }}</td>
+        <td>{{ user.apellido }}</td>
+        <td>{{ user.estado }}</td>
+        <td>{{ user.fechacreacion }}</td>
         <td>
           <a
             class="btn btn-primary"
