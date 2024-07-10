@@ -112,7 +112,6 @@ class Conductor(db.Model):
      email = db.Column(db.String(120), unique=True, nullable=False)
      fecha_contratacion = db.Column(db.Date, nullable=False)
      estado_empleo = db.Column(db.String(20), nullable=False)  # Por ejemplo: 'activo', 'suspendido', 'retirado'
-     viajes = db.relationship('Viaje', backref='conductor', lazy=True)
      cooperativa = db.relationship('Cooperativa', backref=db.backref('conductores', lazy=True))
      
 class Cooperativa(db.Model):

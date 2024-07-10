@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
 <div>
-  <div class="h1 fw-light text-primary">Lista de Categorias</div>
+  <div class="h1 fw-light text-primary">Lista de Buses</div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -13,7 +13,7 @@
           <a
             class="nav-link btn btn-success text-light fw-bold "
             aria-current="page"
-            href="{{ url_for('main.add_cate_product') }}"
+            href="{{ url_for('main.add_unidad') }}"
             >&#129485;Nueva Unidad</a
           >
         </li>
@@ -30,9 +30,13 @@
     <thead class="table-light">
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Descripcion</th>
-
+        <th scope="col">Nombre cooperativa</th>
+        <th scope="col">Nombre conductor</th>
+        <th scope="col">modelo</th>
+        <th scope="col">año</th>
+        <th scope="col">placa</th>
+        <th scope="col"># disco</th>
+        <th scope="col"># asientos</th>
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -49,7 +53,7 @@
             type="text"
             class="filter-input tamano-4"
             id="filterNombre"
-            placeholder="Filtrar Nombre"
+            placeholder="Filtrar Nombre conductor"
           />
         </th>
        
@@ -61,9 +65,13 @@
     <tbody>
       {% for unidad in unidades %}
       <tr>
-        <td>{{unidad.id_unidad}}</td>
-        <td>{{unidad.nombre}}</td>
-        <td>{{unidad.descripcion}}</td>
+        <td>{{unidad.id_cooperativa}}</td>
+        <td>{{unidad.id_conductor}}</td>
+        <td>{{unidad.modelo}}</td>
+        <td>{{unidad.ano}}</td>
+        <td>{{unidad.placa}}</td>
+        <td>{{unidad.nro_disco}}</td>
+        <td>{{unidad.nrodeasientos}}</td>
         <td>
           <a class="btn btn-primary" href="{{ url_for('main.edit_unidad', id=unidad.id_unidad) }}">Editar</a>
 

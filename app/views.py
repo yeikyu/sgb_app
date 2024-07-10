@@ -1,8 +1,9 @@
 # app/views.py
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, flash, render_template, request, redirect, url_for
 from datetime import datetime
 from .models import Cooperativa
 from .models import Unidad
+from .models import Conductor
 from .models import Usuario
 from .models import Ciudad
 from .models import Cliente
@@ -146,6 +147,7 @@ def add_client():
         client = Cliente(nombre_cliente=nombre_cliente, apellido_cliente=apellido_cliente, cedula=cedula, estado_cliente=estado_cliente,email=email,fecha_nacimiento=fecha_nacimientostr,telefono=telefono,direccion=direccion,cod_postal=cod_postal,fecha_registro=fecha_registro,ciudad=ciudad)
         db.session.add(client)
         db.session.commit()
+        flash("cliente creado exitosamente")
         return redirect(url_for('main.list_clients'))
     return render_template('cliente/add_client.html')
 
@@ -281,6 +283,80 @@ def delete_cooperativa(id):
         cooperativas.estado = 0  # Cambiar el estado a '0'
         db.session.commit()
     return redirect(url_for('main.list_cooperativa'))
+
+
+
+@main_bp.route('/conductores', methods=['GET'])
+def listar_conductores():
+    conductores = conductores.query.all()
+    return render_template('listar_conductores.html', conductores=conductores)
+
+
+@main_bp.route('/conductores/nuevo', methods=['GET', 'POST'])
+def nuevo_conductor():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre')
+        apellido = request.form.get('apellido')
+        id_cooperativa = request.form.get('id_cooperativa')
+        licencia = request.form.get('licencia')
+        fecha_nacimiento = request.form.get('fecha_nacimiento')
+        direccion = request.form.get('direccion')
+        telefono = request.form.get('telefono')
+        email = request.form.get('email')
+        fecha_contratacion = request.form.get('fecha_contratacion')
+        estado_empleo = request.form.get('estado_empleo')
+
+        nuevo_conductor = Conductor(
+            nombre=nombre,
+            apellido=apellido,
+            id_cooperativa=id_cooperativa,
+            licencia=licencia,
+            fecha_nacimiento=fecha_nacimiento,
+            direccion=direccion,
+            telefono=telefono,
+            email=email,
+            fecha_contratacion=fecha_contratacion,
+            estado_empleo=estado_empleo
+        )
+        db.session.add(nuevo_conductor)
+        db.session.commit()
+        flash('Conductor creado exitosamente.')
+        return redirect(url_for('listar_conductores'))
+    return render_template('nuevo_conductor.html')
+
+@main_bp.route('/conductores/editar/<int:id>', methods=['GET', 'POST'])
+def editar_conductor(id):
+    conductor = Conductor.query.get_or_404(id)
+    if request.method == 'POST':
+        conductor.nombre = request.form.get('nombre')
+        conductor.apellido = request.form.get('apellido')
+        conductor.id_cooperativa = request.form.get('id_cooperativa')
+        conductor.licencia = request.form.get('licencia')
+        conductor.fecha_nacimiento = request.form.get('fecha_nacimiento')
+        conductor.direccion = request.form.get('direccion')
+        conductor.telefono = request.form.get('telefono')
+        conductor.email = request.form.get('email')
+        conductor.fecha_contratacion = request.form.get('fecha_contratacion')
+        conductor.estado_empleo = request.form.get('estado_empleo')
+
+        db.session.commit()
+        flash('Conductor actualizado exitosamente.')
+        return redirect(url_for('listar_conductores'))
+    return render_template('editar_conductor.html', conductor=conductor)
+
+
+
+@main_bp.route('/conductores/eliminar/<int:id>', methods=['POST'])
+def eliminar_conductor(id):
+    conductor = Conductor.query.get_or_404(id)
+    db.session.delete(conductor)
+    db.session.commit()
+    flash('Conductor eliminado exitosamente.')
+    return redirect(url_for('listar_conductores'))
+
+
+
+
 
 
 

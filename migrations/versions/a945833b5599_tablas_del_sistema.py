@@ -1,8 +1,8 @@
-"""20 tablas sqlalchemy
+"""tablas del sistema
 
-Revision ID: 899ee38ef7fe
+Revision ID: a945833b5599
 Revises: 
-Create Date: 2024-07-07 10:56:24.224546
+Create Date: 2024-07-10 14:21:32.892050
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '899ee38ef7fe'
+revision = 'a945833b5599'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -52,6 +52,19 @@ def upgrade():
     sa.Column('fechaeliminacion', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id_cooperativa')
     )
+    op.create_table('usuarios',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('user', sa.String(length=12), nullable=True),
+    sa.Column('nombre', sa.String(length=100), nullable=True),
+    sa.Column('apellido', sa.String(length=100), nullable=True),
+    sa.Column('contraseña', sa.String(length=10), nullable=True),
+    sa.Column('usuariocreacion', sa.String(length=100), nullable=True),
+    sa.Column('usuarioelimina', sa.String(length=100), nullable=True),
+    sa.Column('estado', sa.Integer(), nullable=True),
+    sa.Column('fechacreacion', sa.DateTime(), nullable=True),
+    sa.Column('fechaeliminacion', sa.DateTime(), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('clientes',
     sa.Column('id_cliente', sa.Integer(), nullable=False),
     sa.Column('nombre_cliente', sa.String(length=255), nullable=False),
@@ -62,13 +75,29 @@ def upgrade():
     sa.Column('direccion', sa.String(length=255), nullable=False),
     sa.Column('telefono', sa.String(length=255), nullable=False),
     sa.Column('ciudad', sa.Integer(), nullable=False),
-    sa.Column('estado_cliente', sa.String(length=80), nullable=False),
+    sa.Column('estado_cliente', sa.Integer(), nullable=False),
     sa.Column('estado', sa.Integer(), nullable=True),
     sa.Column('cod_postal', sa.String(length=255), nullable=False),
     sa.Column('fecha_registro', sa.Date(), nullable=False),
     sa.Column('fecha_eliminacion', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['ciudad'], ['ciudades.id_ciudad'], ),
     sa.PrimaryKeyConstraint('id_cliente')
+    )
+    op.create_table('conductores',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('nombre', sa.String(length=100), nullable=False),
+    sa.Column('apellido', sa.String(length=100), nullable=False),
+    sa.Column('id_cooperativa', sa.Integer(), nullable=True),
+    sa.Column('licencia', sa.String(length=20), nullable=False),
+    sa.Column('fecha_nacimiento', sa.Date(), nullable=False),
+    sa.Column('direccion', sa.String(length=200), nullable=True),
+    sa.Column('telefono', sa.String(length=15), nullable=True),
+    sa.Column('email', sa.String(length=120), nullable=False),
+    sa.Column('fecha_contratacion', sa.Date(), nullable=False),
+    sa.Column('estado_empleo', sa.String(length=20), nullable=False),
+    sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
     )
     op.create_table('destinos',
     sa.Column('id_destino', sa.Integer(), nullable=False),
@@ -81,23 +110,6 @@ def upgrade():
     sa.Column('fecha_eliminacion', sa.Date(), nullable=True),
     sa.ForeignKeyConstraint(['ciudad'], ['ciudades.id_ciudad'], ),
     sa.PrimaryKeyConstraint('id_destino')
-    )
-    op.create_table('unidades',
-    sa.Column('id_unidad', sa.Integer(), nullable=False),
-    sa.Column('id_conductor', sa.Integer(), nullable=True),
-    sa.Column('id_cooperativa', sa.Integer(), nullable=True),
-    sa.Column('placa', sa.String(length=10), nullable=True),
-    sa.Column('modelo', sa.String(length=30), nullable=True),
-    sa.Column('ano', sa.Integer(), nullable=True),
-    sa.Column('nro_disco', sa.Integer(), nullable=True),
-    sa.Column('nrodeasientos', sa.Integer(), nullable=True),
-    sa.Column('estado', sa.Integer(), nullable=True),
-    sa.Column('usuariocreacion', sa.String(length=100), nullable=True),
-    sa.Column('usuarioelimina', sa.String(length=100), nullable=True),
-    sa.Column('fechacreacion', sa.DateTime(), nullable=True),
-    sa.Column('fechaeliminacion', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
-    sa.PrimaryKeyConstraint('id_unidad')
     )
     op.create_table('cab_factura',
     sa.Column('id_factura', sa.Integer(), nullable=False),
@@ -115,6 +127,36 @@ def upgrade():
     sa.ForeignKeyConstraint(['id_cliente'], ['clientes.id_cliente'], ),
     sa.PrimaryKeyConstraint('id_factura')
     )
+    op.create_table('unidades',
+    sa.Column('id_unidad', sa.Integer(), nullable=False),
+    sa.Column('id_conductor', sa.Integer(), nullable=True),
+    sa.Column('id_cooperativa', sa.Integer(), nullable=True),
+    sa.Column('placa', sa.String(length=10), nullable=True),
+    sa.Column('modelo', sa.String(length=30), nullable=True),
+    sa.Column('ano', sa.Integer(), nullable=True),
+    sa.Column('nro_disco', sa.Integer(), nullable=True),
+    sa.Column('nrodeasientos', sa.Integer(), nullable=True),
+    sa.Column('estado', sa.Integer(), nullable=True),
+    sa.Column('usuariocreacion', sa.String(length=100), nullable=True),
+    sa.Column('usuarioelimina', sa.String(length=100), nullable=True),
+    sa.Column('fechacreacion', sa.DateTime(), nullable=True),
+    sa.Column('fechaeliminacion', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['id_conductor'], ['conductores.id'], ),
+    sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
+    sa.PrimaryKeyConstraint('id_unidad')
+    )
+    op.create_table('detalle_factura',
+    sa.Column('id_detalle', sa.Integer(), nullable=False),
+    sa.Column('id_factura', sa.Integer(), nullable=True),
+    sa.Column('cod_producto', sa.String(length=20), nullable=True),
+    sa.Column('nombre_producto', sa.String(length=350), nullable=True),
+    sa.Column('numero_factura', sa.String(length=50), nullable=True),
+    sa.Column('fecha_fact', sa.Date(), nullable=True),
+    sa.Column('cantidad', sa.Integer(), nullable=True),
+    sa.Column('estado', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['id_factura'], ['cab_factura.id_factura'], ),
+    sa.PrimaryKeyConstraint('id_detalle')
+    )
     op.create_table('rutas',
     sa.Column('id_ruta', sa.Integer(), nullable=False),
     sa.Column('id_unidad', sa.Integer(), nullable=False),
@@ -129,21 +171,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
     sa.ForeignKeyConstraint(['id_unidad'], ['unidades.id_unidad'], ),
     sa.PrimaryKeyConstraint('id_ruta')
-    )
-    op.create_table('usuarios',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user', sa.String(length=12), nullable=True),
-    sa.Column('nombre', sa.String(length=100), nullable=True),
-    sa.Column('apellido', sa.String(length=100), nullable=True),
-    sa.Column('contraseña', sa.String(length=10), nullable=True),
-    sa.Column('usuariocreacion', sa.String(length=100), nullable=True),
-    sa.Column('usuarioelimina', sa.String(length=100), nullable=True),
-    sa.Column('estado', sa.Integer(), nullable=True),
-    sa.Column('id_unidad', sa.Integer(), nullable=True),
-    sa.Column('fechacreacion', sa.DateTime(), nullable=True),
-    sa.Column('fechaeliminacion', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['id_unidad'], ['unidades.id_unidad'], ),
-    sa.PrimaryKeyConstraint('id')
     )
     op.create_table('calificaciones',
     sa.Column('id_calificacion', sa.Integer(), nullable=False),
@@ -166,18 +193,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['id_cliente'], ['clientes.id_cliente'], ),
     sa.ForeignKeyConstraint(['id_viaje'], ['rutas.id_ruta'], ),
     sa.PrimaryKeyConstraint('id_comentario')
-    )
-    op.create_table('detalle_factura',
-    sa.Column('id_detalle', sa.Integer(), nullable=False),
-    sa.Column('id_factura', sa.Integer(), nullable=True),
-    sa.Column('cod_producto', sa.String(length=20), nullable=True),
-    sa.Column('nombre_producto', sa.String(length=350), nullable=True),
-    sa.Column('numero_factura', sa.String(length=50), nullable=True),
-    sa.Column('fecha_fact', sa.Date(), nullable=True),
-    sa.Column('cantidad', sa.Integer(), nullable=True),
-    sa.Column('estado', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['id_factura'], ['cab_factura.id_factura'], ),
-    sa.PrimaryKeyConstraint('id_detalle')
     )
     op.create_table('horarios',
     sa.Column('id_horario', sa.Integer(), nullable=False),
@@ -230,15 +245,16 @@ def downgrade():
     op.drop_table('boletos')
     op.drop_table('itinerarios')
     op.drop_table('horarios')
-    op.drop_table('detalle_factura')
     op.drop_table('comentarios')
     op.drop_table('calificaciones')
-    op.drop_table('usuarios')
     op.drop_table('rutas')
-    op.drop_table('cab_factura')
+    op.drop_table('detalle_factura')
     op.drop_table('unidades')
+    op.drop_table('cab_factura')
     op.drop_table('destinos')
+    op.drop_table('conductores')
     op.drop_table('clientes')
+    op.drop_table('usuarios')
     op.drop_table('cooperativas')
     op.drop_table('ciudades')
     op.drop_table('categorias')
