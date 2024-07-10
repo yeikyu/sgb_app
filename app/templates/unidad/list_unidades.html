@@ -14,7 +14,7 @@
             class="nav-link btn btn-success text-light fw-bold "
             aria-current="page"
             href="{{ url_for('main.add_cate_product') }}"
-            >&#129485;Nueva Categoria</a
+            >&#129485;Nueva Unidad</a
           >
         </li>
         <li class="nav-item">
@@ -59,18 +59,18 @@
       </tr>
     </thead>
     <tbody>
-      {% for categoria in categorias %}
+      {% for unidad in unidades %}
       <tr>
-        <td>{{categoria.id}}</td>
-        <td>{{categoria.nombre}}</td>
-        <td>{{categoria.descripcion}}</td>
+        <td>{{unidad.id_unidad}}</td>
+        <td>{{unidad.nombre}}</td>
+        <td>{{unidad.descripcion}}</td>
         <td>
-          <a class="btn btn-primary" href="{{ url_for('main.edit_cate_product', id=categoria.id) }}">Editar</a>
+          <a class="btn btn-primary" href="{{ url_for('main.edit_unidad', id=unidad.id_unidad) }}">Editar</a>
 
         </td>
         <td>
           <form
-            action="{{ url_for('main.delete_categoria_product', id=categoria.id) }}"
+            action="{{ url_for('main.delete_unidad', id=unidad.id_unidad) }}"
             method="post">
             <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>

@@ -159,14 +159,16 @@ def list_unidades():
 
 
 @main_bp.route('/unidad/<int:id>/edit', methods=['GET', 'POST'])
-def edit_(id):
+def edit_unidad(id):
     unit = Unidad.query.get_or_404(id)
     if request.method == 'POST':
         # Aquí deberías manejar la actualización de la unidad
-        unit.nombre = request.form['nombre']
-        unit.categoria = int(request.form['categoria_id'])
-        unit.descripcion = request.form['descripcion']
-        unit.precio = request.form['precio']
+        unit.id_conductor = request.form['id_conductor']
+        unit.placa = request.form['placa']
+        unit.modelo = request.form['modelo']
+        unit.ano = request.form['ano']
+        unit.nro_disco = request.form['nro_disco']
+        unit.nrodeasientos = request.form['nrodeasientos']
         db.session.commit()
         return redirect(url_for('main.list_unidades'))
     mostrar_contenido = False
@@ -177,23 +179,32 @@ def edit_(id):
 
 # Ruta para agregar una unidad
 @main_bp.route('/unidad/add', methods=['GET', 'POST'])
-def add_product():
+def add_unidad():
     if request.method == 'POST':
-        # Obtener datos del formulario
-        nueva_unidad = None  # Inicializa la variable antes de usarla
-        categoria_id = int(request.form['categoria_id'])
-        nombre = request.form['nombre']
-        descripcion = request.form['descripcion']
-        precio = request.form['precio']
+          # Extraer los datos del formulario
+        id_conductor = request.form['id_conductor']
+        id_cooperativa = request.form['id_cooperativa']
+        placa = request.form['placa']
+        modelo = request.form['modelo']
+        ano = request.form['ano']
+        nro_disco = request.form['nro_disco']
+        nrodeasientos = request.form['nrodeasientos']
         estado = 1
+        usuariocreacion = "root"
         fechacreacion = datetime.now()
-            # Puedes ajustar la fecha de creación según tus necesidades
+
+        # Crear una nueva instancia del modelo Unidad
         nueva_unidad = Unidad(
-            categoria_id=categoria_id,
-            nombre=nombre,
-            descripcion=descripcion,
-            precio=precio,
-            estado=estado,fecha_creacion=fechacreacion
+            id_conductor=id_conductor,
+            id_cooperativa=id_cooperativa,
+            placa=placa,
+            modelo=modelo,
+            ano=ano,
+            nro_disco=nro_disco,
+            nrodeasientos=nrodeasientos,
+            estado=estado,
+            usuariocreacion=usuariocreacion,
+            fechacreacion=fechacreacion
         )
 
         # Guardar la nueva unidad en la base de datos
@@ -207,7 +218,7 @@ def add_product():
  
  #Eliminar unidad de la tabla
 @main_bp.route('/unidad/<int:id>/delete', methods=['POST'])
-def delete_product(id):
+def delete_unidad(id):
      unidades = Unidad.query.get_or_404(id) 
      db.session.delete(unidades)
      db.session.commit()
@@ -270,3 +281,257 @@ def delete_cooperativa(id):
         cooperativas.estado = 0  # Cambiar el estado a '0'
         db.session.commit()
     return redirect(url_for('main.list_cooperativa'))
+
+
+
+# # CRUD para Destino
+# @main_bp.route('/destinos', methods=['GET'])
+# def mostrar_destinos():
+#     destinos = Destino.query.all()
+#     return render_template('destinos.html', destinos=destinos)
+
+# @app.route('/destinos/crear', methods=['GET', 'POST'])
+# def crear_destino():
+#     if request.method == 'POST':
+#         data = request.form
+#         nuevo_destino = Destino(
+#             ubicacion=data['ubicacion'],
+#             ciudad=data['ciudad'],
+#             descripcion=data['descripcion'],
+#             estado=data['estado'],
+#             fecha_creacion=datetime.strptime(data['fecha_creacion'], '%Y-%m-%d'),
+#             fecha_modificacion=datetime.strptime(data['fecha_modificacion'], '%Y-%m-%d')
+#         )
+#         db.session.add(nuevo_destino)
+#         db.session.commit()
+#         return redirect(url_for('mostrar_destinos'))
+#     return render_template('crear_destino.html')
+
+# @app.route('/destinos/<int:id_destino>', methods=['GET'])
+# def obtener_destino(id_destino):
+#     destino = Destino.query.get_or_404(id_destino)
+#     return render_template('detalle_destino.html', destino=destino)
+
+# @app.route('/destinos/<int:id_destino>/editar', methods=['GET', 'POST'])
+# def editar_destino(id_destino):
+#     destino = Destino.query.get_or_404(id_destino)
+#     if request.method == 'POST':
+#         data = request.form
+#         destino.ubicacion = data['ubicacion']
+#         destino.ciudad = data['ciudad']
+#         destino.descripcion = data['descripcion']
+#         destino.estado = data['estado']
+#         destino.fecha_modificacion = datetime.utcnow()
+#         if 'fecha_eliminacion' in data:
+#             destino.fecha_eliminacion = datetime.strptime(data['fecha_eliminacion'], '%Y-%m-%d')
+#         db.session.commit()
+#         return redirect(url_for('mostrar_destinos'))
+#     return render_template('editar_destino.html', destino=destino)
+
+# @app.route('/destinos/<int:id_destino>/eliminar', methods=['POST'])
+# def eliminar_destino(id_destino):
+#     destino = Destino.query.get_or_404(id_destino)
+#     db.session.delete(destino)
+#     db.session.commit()
+#     return redirect(url_for('mostrar_destinos'))
+
+# # CRUD para Ruta
+# @app.route('/rutas', methods=['GET'])
+# def mostrar_rutas():
+#     rutas = Ruta.query.all()
+#     return render_template('rutas.html', rutas=rutas)
+
+# @app.route('/rutas/crear', methods=['GET', 'POST'])
+# def crear_ruta():
+#     if request.method == 'POST':
+#         data = request.form
+#         nueva_ruta = Ruta(
+#             id_unidad=data['id_unidad'],
+#             id_cooperativa=data['id_cooperativa'],
+#             estado=data['estado'],
+#             lugar_origen=data['lugar_origen'],
+#             lugar_destino=data['lugar_destino'],
+#             fecha_creacion=datetime.utcnow(),
+#             hora_salida=data['hora_salida'],
+#             hora_llegada=data['hora_llegada']
+#         )
+#         db.session.add(nueva_ruta)
+#         db.session.commit()
+#         return redirect(url_for('mostrar_rutas'))
+#     return render_template('crear_ruta.html')
+
+# @app.route('/rutas/<int:id_ruta>', methods=['GET'])
+# def obtener_ruta(id_ruta):
+#     ruta = Ruta.query.get_or_404(id_ruta)
+#     return render_template('detalle_ruta.html', ruta=ruta)
+
+# @app.route('/rutas/<int:id_ruta>/editar', methods=['GET', 'POST'])
+# def editar_ruta(id_ruta):
+#     ruta = Ruta.query.get_or_404(id_ruta)
+#     if request.method == 'POST':
+#         data = request.form
+#         ruta.id_unidad = data['id_unidad']
+#         ruta.id_cooperativa = data['id_cooperativa']
+#         ruta.estado = data['estado']
+#         ruta.lugar_origen = data['lugar_origen']
+#         ruta.lugar_destino = data['lugar_destino']
+#         ruta.hora_salida = data['hora_salida']
+#         ruta.hora_llegada = data['hora_llegada']
+#         if 'fecha_eliminacion' in data:
+#             ruta.fecha_eliminacion = datetime.strptime(data['fecha_eliminacion'], '%Y-%m-%d')
+#         db.session.commit()
+#         return redirect(url_for('mostrar_rutas'))
+#     return render_template('editar_ruta.html', ruta=ruta)
+
+# @app.route('/rutas/<int:id_ruta>/eliminar', methods=['POST'])
+# def eliminar_ruta(id_ruta):
+#     ruta = Ruta.query.get_or_404(id_ruta)
+#     db.session.delete(ruta)
+#     db.session.commit()
+#     return redirect(url_for('mostrar_rutas'))
+
+# # CRUD para Horario
+# @app.route('/horarios', methods=['GET'])
+# def mostrar_horarios():
+#     horarios = Horario.query.all()
+#     return render_template('horarios.html', horarios=horarios)
+
+# @app.route('/horarios/crear', methods=['GET', 'POST'])
+# def crear_horario():
+#     if request.method == 'POST':
+#         data = request.form
+#         nuevo_horario = Horario(
+#             id_ruta=data['id_ruta'],
+#             id_autobus=data['id_autobus'],
+#             hora_salida=data['hora_salida'],
+#             hora_llegada=data['hora_llegada'],
+#             estado=data['estado']
+#         )
+#         db.session.add(nuevo_horario)
+#         db.session.commit()
+#         return redirect(url_for('mostrar_horarios'))
+#     return render_template('crear_horario.html')
+
+# @app.route('/horarios/<int:id_horario>', methods=['GET'])
+# def obtener_horario(id_horario):
+#     horario = Horario.query.get_or_404(id_horario)
+#     return render_template('detalle_horario.html', horario=horario)
+
+# @app.route('/horarios/<int:id_horario>/editar', methods=['GET', 'POST'])
+# def editar_horario(id_horario):
+#     horario = Horario.query.get_or_404(id_horario)
+#     if request.method == 'POST':
+#         data = request.form
+#         horario.id_ruta = data['id_ruta']
+#         horario.id_autobus = data['id_autobus']
+#         horario.hora_salida = data['hora_salida']
+#         horario.hora_llegada = data['hora_llegada']
+#         horario.estado = data['estado']
+#         db.session.commit()
+#         return redirect(url_for('mostrar_horarios'))
+#     return render_template('editar_horario.html', horario=horario)
+
+# @app.route('/horarios/<int:id_horario>/eliminar', methods=['POST'])
+# def eliminar_horario(id_horario):
+#     horario = Horario.query.get_or_404(id_horario)
+#     db.session.delete(horario)
+#     db.session.commit()
+#     return redirect(url_for('mostrar_horarios'))
+
+# # CRUD para Boleto
+# @app.route('/boletos', methods=['GET'])
+# def mostrar_boletos():
+#     boletos = Boleto.query.all()
+#     return render_template('boletos.html', boletos=boletos)
+
+# @app.route('/boletos/crear', methods=['GET', 'POST'])
+# def crear_boleto():
+#     if request.method == 'POST':
+#         data = request.form
+#         nuevo_boleto = Boleto(
+#             id_cliente=data['id_cliente'],
+#             id_horario=data['id_horario'],
+#             asiento=data['asiento'],
+#             fecha_compra=datetime.utcnow(),
+#             precio=data['precio'],
+#             estado=data['estado']
+#         )
+#         db.session.add(nuevo_boleto)
+#         db.session.commit()
+#         return redirect(url_for('mostrar_boletos'))
+#     return render_template('crear_boleto.html')
+
+# @app.route('/boletos/<int:id_boleto>', methods=['GET'])
+# def obtener_boleto(id_boleto):
+#     boleto = Boleto.query.get_or_404(id_boleto)
+#     return render_template('detalle_boleto.html', boleto=boleto)
+
+# @app.route('/boletos/<int:id_boleto>/editar', methods=['GET', 'POST'])
+# def editar_boleto(id_boleto):
+#     boleto = Boleto.query.get_or_404(id_boleto)
+#     if request.method == 'POST':
+#         data = request.form
+#         boleto.id_cliente = data['id_cliente']
+#         boleto.id_horario = data['id_horario']
+#         boleto.asiento = data['asiento']
+#         boleto.precio = data['precio']
+#         boleto.estado = data['estado']
+#         db.session.commit()
+#         return redirect(url_for('mostrar_boletos'))
+#     return render_template('editar_boleto.html', boleto=boleto)
+
+# @app.route('/boletos/<int:id_boleto>/eliminar', methods=['POST'])
+# def eliminar_boleto(id_boleto):
+#     boleto = Boleto.query.get_or_404(id_boleto)
+#     db.session.delete(boleto)
+#     db.session.commit()
+#     return redirect(url_for('mostrar_boletos'))
+
+# # CRUD para Pago
+# @app.route('/pagos', methods=['GET'])
+# def mostrar_pagos():
+#     pagos = Pago.query.all()
+#     return render_template('pagos.html', pagos=pagos)
+
+# @app.route('/pagos/crear', methods=['GET', 'POST'])
+# def crear_pago():
+#     if request.method == 'POST':
+#         data = request.form
+#         nuevo_pago = Pago(
+#             id_reserva=data['id_reserva'],
+#             metodo_pago=data['metodo_pago'],
+#             monto=data['monto'],
+#             fechahora_pago=datetime.utcnow(),
+#             estado_pago=data['estado_pago'],
+#             estado=data['estado']
+#         )
+#         db.session.add(nuevo_pago)
+#         db.session.commit()
+#         return redirect(url_for('mostrar_pagos'))
+#     return render_template('crear_pago.html')
+
+# @app.route('/pagos/<int:id_pago>', methods=['GET'])
+# def obtener_pago(id_pago):
+#     pago = Pago.query.get_or_404(id_pago)
+#     return render_template('detalle_pago.html', pago=pago)
+
+# @app.route('/pagos/<int:id_pago>/editar', methods=['GET', 'POST'])
+# def editar_pago(id_pago):
+#     pago = Pago.query.get_or_404(id_pago)
+#     if request.method == 'POST':
+#         data = request.form
+#         pago.id_reserva = data['id_reserva']
+#         pago.metodo_pago = data['metodo_pago']
+#         pago.monto = data['monto']
+#         pago.estado_pago = data['estado_pago']
+#         pago.estado = data['estado']
+#         db.session.commit()
+#         return redirect(url_for('mostrar_pagos'))
+#     return render_template('editar_pago.html', pago=pago)
+
+# @app.route('/pagos/<int:id_pago>/eliminar', methods=['POST'])
+# def eliminar_pago(id_pago):
+#     pago = Pago.query.get_or_404(id_pago)
+#     db.session.delete(pago)
+#     db.session.commit()
+#     return redirect(url_for('mostrar_pagos'))

@@ -5,19 +5,50 @@
 
 
     <div class="container mt-5">
-        <h1>Crear Categoría de Producto</h1>
-        <form action="{{ url_for('main.add_cate_product') }}" method="post">
+        <h1>Registrar una unidad de bus</h1>
+        <form action="{{ url_for('main.add_unidad') }}" method="post">
+   
             <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" class="form-control" required>
+                <label for="id_cooperativa">Empresa:</label>
+                <select id="id_cooperativa" name="id_cooperativa" class="form-control" required>
+                    {% for cooperativa in cooperativas %}
+                    <option value="{{ cooperativa.id_cooperativa }}">{{ cooperativa.razonsocial }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="id_conductor">Conductor:</label>
+                <select id="id_conductor" name="id_conductor" class="form-control" required>
+                    {% for conductor in conductores %}
+                    <option value="{{ conductor.id }}">{{ conductor.nombre }}  {{ conductor.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+      
+            <div class="form-group">
+                <label for="placa">Placa:</label>
+                <input type="text" id="placa" name="placa" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" name="descripcion" class="form-control" rows="4" required></textarea>
+                <label for="modelo">Modelo:</label>
+                <input type="text" id="modelo" name="modelo" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="ano">Año:</label>
+                <input type="number" id="ano" name="ano" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="nro_disco">Número de Disco:</label>
+                <input type="number" id="nro_disco" name="nro_disco" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="nrodeasientos">Número de Asientos:</label>
+                <input type="number" id="nrodeasientos" name="nrodeasientos" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-success">Guardar</button>
         </form>
-        <a href="{{ url_for('main.list_cate_products') }}" class="btn btn-secondary mt-3">Volver a la Lista de Categorías</a>
+        <a href="{{ url_for('main.list_unidades') }}" class="btn btn-secondary mt-3">Volver a la Lista de unidades</a>
     </div>
     <script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
 
