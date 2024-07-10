@@ -4,10 +4,14 @@
 {% block content %}
     <h1>Crear Usuario</h1>
     <form action="{{ url_for('main.add_user') }}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
+        <label for="user">Username:</label>
+        <input type="text" id="user" name="user" required>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required>
+        <label for="pass">Contraseña:</label>
+        <input type="text" id="pass" name="pass" required>      
         <button type="submit">Guardar Usuario</button>
     </form>
     <a href="{{ url_for('main.list_user') }}">Back to User List</a>

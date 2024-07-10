@@ -12,25 +12,55 @@
                         <div class="h1 fw-light">Editar Cliente</div>
                         <p class="mb-4 text-muted">Modificar el cliente.</p>
                     </div>
-                    <form action="{{ url_for('main.edit_client', id=clientes.id) }}"  method="post">
+                    <form action="{{ url_for('main.edit_client', id=clientes.id_cliente) }}"  method="post">
 
-                        <!-- nombre Input -->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" type="text" id="nombre" name="nombre" value="{{ clientes.nombre }}" required>
-                            <label for="nombre">Nombre:</label>
-                        </div>
-
-                        <!-- Apellidos Input -->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" type="text" id="apellido" name="apellido" value="{{ clientes.apellido }}" required>
-                            <label for="apellido">Apellido:</label>
-                        </div>
-                        
-                        <!--Identificacion Input-->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" type="text" id="dni" name="dni" value="{{ clientes.dni }}" required>
-                            <label for="dni">Identificacion:</label>
-                        </div>
+                      <!-- Nombre Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="nombre" name="nombre" value="{{ clientes.nombre_cliente }}" required>
+        <label for="nombre">Nombre:</label>
+    </div>
+    
+    <!-- Apellidos Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="apellido" name="apellido" value="{{ clientes.apellido_cliente }}" required>
+        <label for="apellido">Apellido:</label>
+    </div>
+    
+    <!-- Cédula Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="cedula" name="cedula" value="{{ clientes.cedula }}" required>
+        <label for="cedula">Cédula:</label>
+    </div>
+    
+    <!-- Email Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="email" id="email" name="email" value="{{ clientes.email }}" required>
+        <label for="email">Email:</label>
+    </div>
+    
+    <!-- Fecha de Nacimiento Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ clientes.fecha_nacimiento.strftime('%Y-%m-%d') }}" required>
+        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+    </div>
+    
+    <!-- Dirección Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="direccion" name="direccion" value="{{ clientes.direccion }}" required>
+        <label for="direccion">Dirección:</label>
+    </div>
+    
+    <!-- Teléfono Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="telefono" name="telefono" value="{{ clientes.telefono }}" required>
+        <label for="telefono">Teléfono:</label>
+    </div>
+    
+    <!-- Código Postal Input -->
+    <div class="form-floating mb-3">
+        <input class="form-control" type="text" id="cod_postal" name="cod_postal" value="{{ clientes.cod_postal }}" required>
+        <label for="cod_postal">Código Postal:</label>
+    </div>
                         <!-- Submit success message -->
                         <div class="d-none" id="submitSuccessMessage">
                             <div class="text-center mb-3">

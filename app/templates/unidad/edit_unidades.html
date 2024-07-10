@@ -1,0 +1,62 @@
+<!-- app/templates/edit_product.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Modificar Unidad </h1>
+
+    <form id="editForm" action="{{ url_for('main.edit_unidad', id=unidad.id_unidad) }}" method="post"> 
+        <!-- 2 column grid layout with text inputs for the first and last names -->
+        <div class="row mb-4">
+          <label for="id_conductor">Conductor:</label>
+          <select id="id_conductor" name="id_conductor" class="form-control" required>
+              {% for conductor in conductores %}
+              <option value="{{ conductor.id }}">{{ conductor.nombre }}  {{ conductor.apellido }}</option>
+              {% endfor %}
+          </select>
+      </div>
+
+        <div class="row mb-4">
+          <div class="col">
+              <div data-mdb-input-init class="form-outline">
+                  <label class="form-label" for="placa">Placa:</label>
+                  <input type="text" class="form-control" id="placa" name="placa" value="{{ unidad.placa }}" required />
+              </div>
+          </div>
+          <div class="col">
+              <div data-mdb-input-init class="form-outline">
+                  <label class="form-label" for="modelo">Modelo:</label>
+                  <input type="text" class="form-control" id="modelo" name="modelo" value="{{ unidad.modelo }}" required />
+              </div>
+          </div>
+      </div>
+      <div class="row mb-4">
+          <div class="col">
+              <div data-mdb-input-init class="form-outline">
+                  <label class="form-label" for="ano">Año:</label>
+                  <input type="number" class="form-control" id="ano" name="ano" value="{{ unidad.ano }}" required />
+              </div>
+          </div>
+          <div class="col">
+              <div data-mdb-input-init class="form-outline">
+                  <label class="form-label" for="nro_disco">Número de Disco:</label>
+                  <input type="number" class="form-control" id="nro_disco" name="nro_disco" value="{{ unidad.nro_disco }}" required />
+              </div>
+          </div>
+      </div>
+      <div class="row mb-4">
+          <div class="col">
+              <div data-mdb-input-init class="form-outline">
+                  <label class="form-label" for="nrodeasientos">Número de Asientos:</label>
+                  <input type="number" class="form-control" id="nrodeasientos" name="nrodeasientos" value="{{ unidad.nrodeasientos }}" required />
+              </div>
+          </div>
+      </div>
+     
+        <!-- Submit button -->
+        <button class="btn btn-success"  type="submit">Modificar</button>
+        <a class="btn btn-dark"  href="{{ url_for('main.list_cate_products') }}">Regresar a lista Buses </a>
+      </form>
+ {% endblock %} 
+
+
+ 

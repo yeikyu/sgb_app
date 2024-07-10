@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
 <div>
-  <div class="h1 fw-light text-primary">Nuevo producto</div>
+  <div class="h1 fw-light text-primary">Nueva Empresa</div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -13,8 +13,8 @@
           <a
             class="nav-link btn btn-success text-light fw-bold "
             aria-current="page"
-            href="{{ url_for('main.add_product') }}"
-            >&#129485;Nuevo producto</a
+            href="{{ url_for('main.add_cooperativa') }}"
+            >&#129485;Nueva Cooperativa</a
           >
         </li>
         <li class="nav-item">
@@ -30,13 +30,11 @@
     <thead class="table-light">
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Categoria</th>
-        <th scope="col">Descripcion</th>
-        <th scope="col">Precio</th>
-        <th scope="col">Estado</th>
-        <td scope="col">Modificar</td>
-        <td scope="col">Eliminar</td>
+        <th scope="col">Nombre Empresa</th>
+        <th scope="col">RUC</th>
+        <th scope="col">Correo</th>
+
+
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -61,7 +59,7 @@
             type="text"
             class="filter-input tamano-3"
             id="filterApellido"
-            placeholder="Filtrar Categoria"
+            placeholder="Filtrar RUC"
           />
         </th>
         <th>
@@ -69,47 +67,32 @@
             type="text"
             class="filter-input tamano-5"
             id="filterIdentificacion"
-            placeholder="Añade una descripcion"
+            placeholder="Añade una Correo"
           />
         </th>
-        <th>
-          <input
-            type="text"
-            class="filter-input tamano-1"
-            id="filterIdentificacion"
-            placeholder="Filtrar Precio"
-          />
-        </th>
-        <th>
-          <input
-            type="text"
-            class="filter-input tamano-2"
-            id="filterEstado"
-            placeholder="Filtrar Estado"
-          />
-        </th>
+       
         <th></th>
         <th></th>
       </tr>
     </thead>
     <tbody>
-      {% for product in products %}
+      {% for cooperativa in cooperativas %}
       <tr>
-        <td>{{product.id}}</td>
-        <td>{{product.nombre}}</td>
-        <td>{{product.categoria}}</td>
-        <td>{{product.descripcion}}</td>
-        <td>{{product.precio}}</td>
-        <td>{{product.estado}}</td>
+        <td>{{cooperativa.id_cooperativa}}</td>
+        <td>{{cooperativa.razonsocial}}</td>
+        <td>{{cooperativa.Ruc}}</td>
+        <td>{{cooperativa.email}}</td>
+        <td>{{cooperativa.telefono}}</td>
+        <td>{{cooperativa.direccion}}</td>
         <td>
-          <a class="btn btn-primary" href="{{ url_for('main.edit_product', id=product.id) }}">Editar</a>
+          <a class="btn btn-primary" href="{{ url_for('main.edit_cooperativa', id=cooperativa.id_cooperativa) }}">Editar</a>
 
         </td>
         <td>
           <form
-            action="{{ url_for('main.delete_product', id=product.id) }}"
+            action="{{ url_for('main.delete_cooperativa',  id=cooperativa.id_cooperativa) }}"
             method="post">
-            <button class="btn btn-primary" type="submit">Eliminar</button>
+            <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>
         </td>
       </tr>

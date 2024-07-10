@@ -1,0 +1,27 @@
+<!-- app/templates/add_product.html -->
+{% extends 'index.html' %}
+
+{% block content %}
+    <h1>Registrar Cooperativa</h1>
+    <form action="{{ url_for('main.add_cooperativa') }}" method="post">
+
+        <label for="razonsocial">Razón Social:</label>
+        <input type="text" id="razonsocial" name="razonsocial" required><br><br>
+
+        <label for="Ruc">RUC:</label>
+        <input type="text" id="Ruc" name="Ruc" required><br><br>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required><br><br>
+
+        <label for="direccion">Dirección:</label>
+        <input type="text" id="direccion" name="direccion" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <button class="btn btn-success" type="submit">Guardar</button>
+    </form>
+    <a    class="btn btn-dark"  href="{{ url_for('main.list_cooperativa') }}">Regresar a Lista empresas</a>
+
+{% endblock %}
