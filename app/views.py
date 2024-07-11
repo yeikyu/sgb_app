@@ -162,11 +162,7 @@ def edit_client(id):
 @main_bp.route('/client/list' , methods=['GET'])
 def list_clients():
     clientes =  Cliente.query.filter(Cliente.estado_cliente != 0).all()
-    for cliente in clientes:
-        if cliente.estado_cliente == 1:
-            cliente.estado_cliente = 'ACTIVO'
-        else:
-            cliente.estado_cliente = 'INACTIVO'
+
     return render_template('cliente/list_clients.html', clientes=clientes)
 
 
