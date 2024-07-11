@@ -64,6 +64,14 @@
         <input class="form-control" type="text" id="telefono" name="telefono" required>
         <label for="telefono">Teléfono:</label>
     </div>
+    <div class="form-floating mb-3">
+      <label for="ciudad">ciudad:</label>
+      <select id="ciudad" name="ciudad" class="form-control" required>
+        {% for ciudad in ciudades %}
+          <option value="{{ ciudad.id_ciudad }}">{{ ciudad.nombre }}</option>
+          {% endfor %}
+      </select>
+  </div>
     
     <div class="form-floating mb-3">
         <input class="form-control" type="text" id="cod_postal" name="cod_postal" required>

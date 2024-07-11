@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<h1>Editar Ciudad</h1>
+<form action="{{ url_for('main.editar_ciudad', id=ciudad.id_ciudad) }}" method="post">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" value="{{ ciudad.nombre }}" required><br><br>
+ 
+    <button type="submit">Actualizar</button>
+</form>
+<a href="{{ url_for('main.list_ciudades') }}">Cancelar</a>
+    {% endblock %}

@@ -1,8 +1,8 @@
-"""tablas del sistema
+"""todas mis tablas recuperadas
 
-Revision ID: a945833b5599
+Revision ID: 33724f7ef611
 Revises: 
-Create Date: 2024-07-10 14:21:32.892050
+Create Date: 2024-07-10 20:10:13.248556
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a945833b5599'
+revision = '33724f7ef611'
 down_revision = None
 branch_labels = None
 depends_on = None

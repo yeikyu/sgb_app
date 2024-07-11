@@ -1,0 +1,85 @@
+
+{% extends 'index.html' %} {% block content %}
+<!-- Barra de navegación -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+<div>
+  <div class="h1 fw-light text-primary">Nueva Empresa</div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link btn btn-success text-light fw-bold "
+            aria-current="page"
+            href="{{ url_for('main.crear_ciudad') }}"
+            >&#129485;Nueva Ciudad</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-dark fw-bold text-light" href="#">&#128196;Reporte</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--Cabecera de tabla de creacion de ciudades-->
+<div class="container mt-5">
+  <table class="table table-striped table-hover">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Estado</th>
+      
+      </tr>
+      <!--Filtro para campos-->
+      <tr>
+        <th>
+          <input
+            type="text"
+            class="filter-input tamano-1"
+            id="filterid"
+            placeholder="Filtrar id"
+          />
+        </th>
+        <th>
+          <input
+            type="text"
+            class="filter-input tamano-4"
+            id="filterNombre"
+            placeholder="Filtrar Nombre"
+          />
+        </th>
+
+       
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for ciudad in ciudades %}
+      <tr>
+        <td>{{ciudad.id_ciudad}}</td>
+        <td>{{ ciudad.nombre }}</td>
+        <td> {{ ciudad.estado }}</td>
+
+        <td>
+          <a class="btn btn-primary" href="{{ url_for('main.editar_ciudad', id=ciudad.id_ciudad) }}">Editar</a>
+
+        </td>
+        <td>
+          <form
+            action="{{ url_for('main.eliminar_ciudad', id=ciudad.id_ciudad) }}"
+            method="post">
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

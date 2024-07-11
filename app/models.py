@@ -180,20 +180,20 @@ class Cliente(db.Model):
     fecha_nacimiento = db.Column(db.Date, nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
     telefono = db.Column(db.String(255), nullable=False)
-    ciudad = db.Column(db.Integer, db.ForeignKey('ciudades.id_ciudad'), nullable=False)
+    ciudad = db.Column(db.Integer, db.ForeignKey('ciudad.id_ciudad'), nullable=False)
     estado_cliente = db.Column(db.Integer, nullable=False)
     estado = db.Column(db.Integer)
     cod_postal = db.Column(db.String(255), nullable=False)
     fecha_registro = db.Column(db.Date, nullable=False)
     fecha_eliminacion = db.Column(db.Date)
-    ciudad_rel = db.relationship('Ciudad', backref=db.backref('clientes', lazy=True))
+    ciudad_rel = db.relationship('Ciudad', backref=db.backref('cliente', lazy=True))
 
 
 class Destino(db.Model):
     __tablename__ = 'destinos'
     id_destino = db.Column(db.Integer, primary_key=True)
     ubicacion = db.Column(db.String(255), nullable=False)
-    ciudad = db.Column(db.Integer, db.ForeignKey('ciudades.id_ciudad'), nullable=False)
+    ciudad = db.Column(db.Integer, db.ForeignKey('ciudad.id_ciudad'), nullable=False)
     descripcion = db.Column(db.String(255), nullable=False)
     estado = db.Column(db.Integer, nullable=False)
     fecha_creacion = db.Column(db.Date, nullable=False)
