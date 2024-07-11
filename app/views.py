@@ -30,6 +30,50 @@ def index():
     mostrar_contenido = True
     return render_template('index.html',mostrar_contenido=mostrar_contenido)
 
+
+@main_bp.route('/ciudad/list')
+def list_ciudades():
+    ciudades = Ciudad.query.filter(Ciudad.estado != 0).all()
+    return render_template('ciudad/list_ciudad.html', ciudades=ciudades)
+
+@main_bp.route('/ciudad/add', methods=['GET', 'POST'])
+def crear_ciudad():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        estado = 1
+        ciudad = Ciudad(nombre=nombre, estado=estado)
+        db.session.add(ciudad)
+        db.session.commit()
+        return redirect(url_for('main.list_ciudades'))
+    return render_template('ciudad/add_ciudad.html')
+
+@main_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
+def editar_ciudad(id):
+    ciudad = Ciudad.query.get_or_404(id)
+    if request.method == 'POST':
+        ciudad.nombre = request.form['nombre']
+        ciudad.estado = request.form['estado']
+        db.session.commit()
+        return redirect(url_for('main.list_ciudades'))
+    return render_template('ciudad/edit_ciudad.html', ciudad=ciudad)
+
+@main_bp.route('/eliminar/<int:id>', methods=['POST'])
+def eliminar_ciudad(id):
+    ciudad = Ciudad.query.get_or_404(id)
+    db.session.delete(ciudad)
+    db.session.commit()
+    return redirect(url_for('main.list_ciudades'))
+
+
+
+
+
+
+
+
+
+
+
 #Lista de usuarios
 @main_bp.route('/user/list' , methods=['GET'])
 def list_user():
