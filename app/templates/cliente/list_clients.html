@@ -17,14 +17,14 @@
       <ul class="navbar-nav">
         <li class="nav-item">
           <a
-            class="nav-link"
+            class="nav-link btn btn-success"
             aria-current="page"
             href="{{ url_for('main.add_client') }}"
             >&#129485;Nuevo cliente</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">&#128196;Reporte</a>
+          <a class="nav-link btn btn-dark" href="#">&#128196;Reporte</a>
         </li>
       </ul>
     </div>
@@ -35,24 +35,14 @@
   <table class="table table-striped table-hover">
     <thead class="table-light">
       <tr>
-        <th scope="col">Id</th>
         <th scope="col">Nombre</th>
         <th scope="col">Apellido</th>
-        <th scope="col">Identificacion</th>
+        <th style="with:10%;" scope="col">Identificacion</th>
         <th scope="col">Ciudad</th>
-        <th scope="col">Estado</th>
         <th scope="col">Email</th>
       </tr>
       <!--Filtro para campos-->
       <tr>
-        <th>
-          <input
-            type="text"
-            class="filter-input"
-            id="filterid"
-            placeholder="Filtrar id"
-          />
-        </th>
         <th>
           <input
             type="text"
@@ -69,20 +59,12 @@
             placeholder="Filtrar Apellido"
           />
         </th>
-        <th>
+        <th style="with:10%;">
           <input
             type="text"
             class="filter-input"
             id="filterIdentificacion"
             placeholder="Filtrar Identificacion"
-          />
-        </th>
-        <th>
-          <input
-            type="text"
-            class="filter-input"
-            id="filterEstado"
-            placeholder="Filtrar Estado"
           />
         </th>
         <th></th>
@@ -92,12 +74,10 @@
     <tbody>
       {% for cliente in clientes %}
       <tr>
-        <td>{{ cliente.id_cliente }}</td>
         <td>{{ cliente.nombre_cliente }}</td>
         <td>{{ cliente.apellido_cliente }}</td>
         <td>{{ cliente.cedula }}</td>
         <td>{{ cliente.ciudad_ref.nombre }}</td>
-        <td>{{ cliente.estado_cliente }}</td>
         <td>{{ cliente.email }}</td>
         <td>
           <a

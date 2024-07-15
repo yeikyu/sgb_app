@@ -255,8 +255,9 @@ def add_unidad():
         db.session.commit()
 
         return redirect(url_for('main.list_unidades'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
     mostrar_contenido = False
-    return render_template('unidad/add_unidades.html',mostrar_contenido=mostrar_contenido)
+    return render_template('unidad/add_unidades.html',mostrar_contenido=mostrar_contenido,cooperativas=cooperativas)
 
  
  #Eliminar unidad de la tabla
@@ -329,8 +330,8 @@ def delete_cooperativa(id):
 
 @main_bp.route('/conductores', methods=['GET'])
 def listar_conductores():
-    conductores = conductores.query.all()
-    return render_template('listar_conductores.html', conductores=conductores)
+    conductores = Conductor.query.filter(Conductor.estado_empleo != 0).all()
+    return render_template('conductor/list_conductor.html', conductores=conductores)
 
 
 @main_bp.route('/conductores/nuevo', methods=['GET', 'POST'])
@@ -340,17 +341,19 @@ def nuevo_conductor():
         apellido = request.form.get('apellido')
         id_cooperativa = request.form.get('id_cooperativa')
         licencia = request.form.get('licencia')
+        cedula = request.form.get('cedula')
         fecha_nacimiento = request.form.get('fecha_nacimiento')
         direccion = request.form.get('direccion')
         telefono = request.form.get('telefono')
         email = request.form.get('email')
         fecha_contratacion = request.form.get('fecha_contratacion')
-        estado_empleo = request.form.get('estado_empleo')
+        estado_empleo = 1
 
         nuevo_conductor = Conductor(
             nombre=nombre,
             apellido=apellido,
             id_cooperativa=id_cooperativa,
+            cedula=cedula,
             licencia=licencia,
             fecha_nacimiento=fecha_nacimiento,
             direccion=direccion,
@@ -362,8 +365,9 @@ def nuevo_conductor():
         db.session.add(nuevo_conductor)
         db.session.commit()
         flash('Conductor creado exitosamente.')
-        return redirect(url_for('listar_conductores'))
-    return render_template('nuevo_conductor.html')
+        return redirect(url_for('main.listar_conductores'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('conductor/add_conductor.html',cooperativas=cooperativas)
 
 @main_bp.route('/conductores/editar/<int:id>', methods=['GET', 'POST'])
 def editar_conductor(id):
@@ -382,8 +386,8 @@ def editar_conductor(id):
 
         db.session.commit()
         flash('Conductor actualizado exitosamente.')
-        return redirect(url_for('listar_conductores'))
-    return render_template('editar_conductor.html', conductor=conductor)
+        return redirect(url_for('main.listar_conductores'))
+    return render_template('conductor/edit_conductor.html', conductor=conductor)
 
 
 
@@ -393,7 +397,7 @@ def eliminar_conductor(id):
     db.session.delete(conductor)
     db.session.commit()
     flash('Conductor eliminado exitosamente.')
-    return redirect(url_for('listar_conductores'))
+    return redirect(url_for('main.listar_conductores'))
 
 
 
