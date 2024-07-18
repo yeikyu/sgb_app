@@ -64,9 +64,12 @@
     </thead>
     <tbody>
       {% for unidad in unidades %}
+     
       <tr>
-        <td>{{unidad.id_cooperativa}}</td>
-        <td>{{unidad.id_conductor}}</td>
+        <td>{{unidad.unidad-cooperativa.razonsocial}}</td>
+        {% for conductor in unidad.conductores %}
+        <td>{{ conductor.nombre }} {{ conductor.apellido }}</td>
+        {% endfor  %}
         <td>{{unidad.modelo}}</td>
         <td>{{unidad.ano}}</td>
         <td>{{unidad.placa}}</td>

@@ -1,8 +1,8 @@
-"""ddddd
+"""modelos para pc trabajo
 
-Revision ID: 1bb0850a481b
+Revision ID: 3f0466201421
 Revises: 
-Create Date: 2024-07-14 10:49:07.902455
+Create Date: 2024-07-18 11:02:06.333107
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1bb0850a481b'
+revision = '3f0466201421'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -132,6 +132,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('nombre', sa.String(length=100), nullable=False),
     sa.Column('apellido', sa.String(length=100), nullable=False),
+    sa.Column('cedula', sa.String(length=10), nullable=False),
     sa.Column('id_cooperativa', sa.Integer(), nullable=True),
     sa.Column('id_unidad', sa.Integer(), nullable=True),
     sa.Column('licencia', sa.String(length=20), nullable=False),

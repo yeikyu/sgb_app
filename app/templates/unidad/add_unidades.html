@@ -19,9 +19,9 @@
 
             <div class="form-group">
                 <label for="id_conductor">Conductor:</label>
-                <select id="id_conductor" name="id_conductor" class="form-control" required>
+                <select id="id_conductor" name="nombre_conductor" class="form-control" required>
                     {% for conductor in conductores %}
-                    <option value="{{ conductor.id }}">{{ conductor.nombre }}  {{ conductor.apellido }}</option>
+                    <option value="{{ conductor.nombre }}  {{ conductor.apellido }}"> {{ conductor.nombre }}  {{ conductor.apellido }}</option>
                     {% endfor %}
                 </select>
             </div>

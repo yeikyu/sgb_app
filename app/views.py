@@ -52,24 +52,19 @@ def editar_ciudad(id):
     ciudad = Ciudad.query.get_or_404(id)
     if request.method == 'POST':
         ciudad.nombre = request.form['nombre']
-        ciudad.estado = request.form['estado']
+        ciudad.estado = 1
         db.session.commit()
         return redirect(url_for('main.list_ciudades'))
     return render_template('ciudad/edit_ciudad.html', ciudad=ciudad)
 
 @main_bp.route('/eliminar/<int:id>', methods=['POST'])
 def eliminar_ciudad(id):
-    ciudad = Ciudad.query.get_or_404(id)
-    db.session.delete(ciudad)
+    ciudades = Ciudad.query.get(id)
+    if ciudades:
+        ciudades.estado = 0    
+    
     db.session.commit()
     return redirect(url_for('main.list_ciudades'))
-
-
-
-
-
-
-
 
 
 
@@ -77,7 +72,7 @@ def eliminar_ciudad(id):
 #Lista de usuarios
 @main_bp.route('/user/list' , methods=['GET'])
 def list_user():
-    users = Usuario.query.all()
+    users = Usuario.query.filter(Usuario.estado != 0).all()
     return render_template('user/list_users.html', users=users)
 
 #Nuevo usuarios
@@ -113,10 +108,15 @@ def edit_user(id):
 #Eliminar usuarios
 @main_bp.route('/user/<int:id>/delete', methods=['POST'])
 def delete_user(id):
-    user = Usuario.query.get_or_404(id)
-    db.session.delete(user)
-    db.session.commit()
+    users = Usuario.query.get(id)
+    if users: 
+        users.estado = 0  # Cambiar el estado a '0'
+        db.session.commit()
+        flash('Usuario eliminado exitosamente.')
+
     return redirect(url_for('main.list_user'))
+
+
 
 #-----------------------------------------------------------------------------------------------------------------
 #Eliminar/Inactivar cliente
@@ -196,8 +196,8 @@ def add_client():
 #lista unidades 
 @main_bp.route('/unidad/list' , methods=['GET'])
 def list_unidades():
-    unit = Unidad.query.filter(Unidad.estado != 0).all()
-    return render_template('unidad/list_unidades.html', unit=unit)
+    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    return render_template('unidad/list_unidades.html', unidades=unidades)
 
 
 
@@ -225,7 +225,7 @@ def edit_unidad(id):
 def add_unidad():
     if request.method == 'POST':
           # Extraer los datos del formulario
-        id_conductor = request.form['id_conductor']
+        nombre_conductor = request.form['nombre_conductor']
         id_cooperativa = request.form['id_cooperativa']
         placa = request.form['placa']
         modelo = request.form['modelo']
@@ -238,7 +238,7 @@ def add_unidad():
 
         # Crear una nueva instancia del modelo Unidad
         nueva_unidad = Unidad(
-            id_conductor=id_conductor,
+            nombre_conductor=nombre_conductor,
             id_cooperativa=id_cooperativa,
             placa=placa,
             modelo=modelo,
@@ -256,18 +256,21 @@ def add_unidad():
 
         return redirect(url_for('main.list_unidades'))
     cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    conductores = Conductor.query.filter(Conductor.estado_empleo != 0).all()
     mostrar_contenido = False
-    return render_template('unidad/add_unidades.html',mostrar_contenido=mostrar_contenido,cooperativas=cooperativas)
+    return render_template('unidad/add_unidades.html',mostrar_contenido=mostrar_contenido,cooperativas=cooperativas,conductores=conductores)
 
  
  #Eliminar unidad de la tabla
-@main_bp.route('/unidad/<int:id>/delete', methods=['POST'])
-def delete_unidad(id):
-     unidades = Unidad.query.get_or_404(id) 
-     db.session.delete(unidades)
-     db.session.commit()
-     return redirect(url_for('main.list_unidades'))
 
+@main_bp.route('/unidad/delete/<int:id>', methods=['POST'])
+def delete_unidad(id):
+    unidades = Unidad.query.get(id)
+    if unidades: 
+        unidades.estado = 0  # Cambiar el estado a '0'
+        db.session.commit()
+        flash('unidad eliminada exitosamente.')
+    return redirect(url_for('main.list_unidades'))
 #------
 # lista cooperativas
 @main_bp.route('/cooperativa/list' , methods=['GET'])
@@ -375,32 +378,31 @@ def editar_conductor(id):
     if request.method == 'POST':
         conductor.nombre = request.form.get('nombre')
         conductor.apellido = request.form.get('apellido')
-        conductor.id_cooperativa = request.form.get('id_cooperativa')
+        conductor.id_unidad = request.form.get('id_unidad')
         conductor.licencia = request.form.get('licencia')
         conductor.fecha_nacimiento = request.form.get('fecha_nacimiento')
         conductor.direccion = request.form.get('direccion')
         conductor.telefono = request.form.get('telefono')
         conductor.email = request.form.get('email')
         conductor.fecha_contratacion = request.form.get('fecha_contratacion')
-        conductor.estado_empleo = request.form.get('estado_empleo')
+       
 
         db.session.commit()
         flash('Conductor actualizado exitosamente.')
         return redirect(url_for('main.listar_conductores'))
-    return render_template('conductor/edit_conductor.html', conductor=conductor)
+    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    return render_template('conductor/edit_conductor.html', conductor=conductor,unidades=unidades)
 
 
 
 @main_bp.route('/conductores/eliminar/<int:id>', methods=['POST'])
 def eliminar_conductor(id):
-    conductor = Conductor.query.get_or_404(id)
-    db.session.delete(conductor)
-    db.session.commit()
-    flash('Conductor eliminado exitosamente.')
+    conductores = Conductor.query.get(id)
+    if conductores: 
+        conductores.estado = 0  # Cambiar el estado a '0'
+        db.session.commit()
+        flash('Conductor eliminado exitosamente.')
     return redirect(url_for('main.listar_conductores'))
-
-
-
 
 
 

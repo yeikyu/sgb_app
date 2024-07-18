@@ -115,7 +115,7 @@ class Cooperativa(db.Model):
     fechacreacion = db.Column(db.DateTime, default=datetime.utcnow)
     fechaeliminacion = db.Column(db.DateTime)
     conductores = db.relationship('Conductor', backref='cond_cooperativa', lazy=True)
-    unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
+    unidades = db.relationship('Unidad', backref='unidad-cooperativa', lazy=True)
 
 
 
@@ -134,7 +134,7 @@ class Unidad(db.Model):
     usuarioelimina = db.Column(db.String(100))
     fechacreacion = db.Column(db.DateTime, default=datetime.utcnow)
     fechaeliminacion = db.Column(db.DateTime)
-    conductores = db.relationship('Conductor', backref='unidad_ref', lazy=True)
+    conductores = db.relationship('Conductor', back_populates='unidad')
 
 class Conductor(db.Model):
     __tablename__ = 'conductores'
@@ -151,7 +151,7 @@ class Conductor(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     fecha_contratacion = db.Column(db.Date, nullable=False)
     estado_empleo = db.Column(db.Integer, nullable=False)  # Por ejemplo: 'activo', 'suspendido', 'retirado'
-    
+    unidad = db.relationship('Unidad', back_populates='conductores')
 
 
 
