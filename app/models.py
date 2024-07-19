@@ -98,9 +98,6 @@ from sqlalchemy.sql import func
     #usuario_modificacion = db.Column(db.String(15))
     # Otros campos como precio unitario, descuento, etc.
 
-
-
-
 class Cooperativa(db.Model):
     __tablename__ = 'cooperativas'
     id_cooperativa = db.Column(db.Integer, primary_key=True)
@@ -115,26 +112,8 @@ class Cooperativa(db.Model):
     fechacreacion = db.Column(db.DateTime, default=datetime.utcnow)
     fechaeliminacion = db.Column(db.DateTime)
     conductores = db.relationship('Conductor', backref='cond_cooperativa', lazy=True)
-    unidades = db.relationship('Unidad', backref='unidad-cooperativa', lazy=True)
+    unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
 
-
-
-class Unidad(db.Model):
-    __tablename__ = 'unidades'
-    id_unidad = db.Column(db.Integer, primary_key=True)
-    id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
-    nombre_conductor = db.Column(db.String(255))
-    placa = db.Column(db.String(10))
-    modelo = db.Column(db.String(30))
-    ano = db.Column(db.Integer)
-    nro_disco = db.Column(db.Integer)
-    nrodeasientos = db.Column(db.Integer)
-    estado = db.Column(db.Integer)
-    usuariocreacion = db.Column(db.String(100))
-    usuarioelimina = db.Column(db.String(100))
-    fechacreacion = db.Column(db.DateTime, default=datetime.utcnow)
-    fechaeliminacion = db.Column(db.DateTime)
-    conductores = db.relationship('Conductor', back_populates='unidad')
 
 class Conductor(db.Model):
     __tablename__ = 'conductores'
@@ -143,7 +122,6 @@ class Conductor(db.Model):
     apellido = db.Column(db.String(100), nullable=False)
     cedula = db.Column(db.String(10), nullable=False)
     id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
-    id_unidad = db.Column(db.Integer, db.ForeignKey('unidades.id_unidad'))
     licencia = db.Column(db.String(20), nullable=False)
     fecha_nacimiento = db.Column(db.Date, nullable=False)
     direccion = db.Column(db.String(200), nullable=True)
@@ -151,13 +129,32 @@ class Conductor(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     fecha_contratacion = db.Column(db.Date, nullable=False)
     estado_empleo = db.Column(db.Integer, nullable=False)  # Por ejemplo: 'activo', 'suspendido', 'retirado'
-    unidad = db.relationship('Unidad', back_populates='conductores')
+
+
+
+class Unidad(db.Model):
+    __tablename__ = 'unidades'
+    id_unidad = db.Column(db.Integer, primary_key=True)
+    id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
+    id_conductor = db.Column(db.Integer,  db.ForeignKey('conductores.id'))
+    placa = db.Column(db.String(10))
+    modelo = db.Column(db.String(30))
+    ano = db.Column(db.Integer)
+    nro_disco = db.Column(db.Integer)
+    nrodeasientos = db.Column(db.Integer)
+    estado = db.Column(db.Integer)
+    usuariocreacion = db.Column(db.String(100))
+    usuarioelimina = db.Column(db.String(100))
+    fechacreacion = db.Column(db.DateTime)
+    fechaeliminacion = db.Column(db.DateTime)
+    conductor = db.relationship('Conductor', foreign_keys=[id_conductor], backref='unidades_rel')
 
 
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
+    id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     user = db.Column(db.String(12))
     nombre = db.Column(db.String(100))
     apellido = db.Column(db.String(100))
@@ -167,7 +164,7 @@ class Usuario(db.Model):
     estado = db.Column(db.Integer)
     fechacreacion = db.Column(db.DateTime, default=datetime.utcnow)
     fechaeliminacion = db.Column(db.DateTime)
-
+    
 
 class Ciudad(db.Model):
     __tablename__ = 'ciudades'
@@ -175,8 +172,7 @@ class Ciudad(db.Model):
     nombre = db.Column(db.String(255), nullable=False)
     estado = db.Column(db.Integer)
     clientes = db.relationship('Cliente', backref='ciudad_ref', lazy=True)
-    destinos = db.relationship('Destino', backref='ciudad_ref2', lazy=True)
-
+   
 
 class Cliente(db.Model):
     __tablename__ = 'clientes'
@@ -195,20 +191,8 @@ class Cliente(db.Model):
     fecha_registro = db.Column(db.Date, nullable=False)
     fecha_eliminacion = db.Column(db.Date)
     boletos = db.relationship('Boleto', backref='cliente', lazy=True)
-    comentarios = db.relationship('Comentario', backref='cliente-ref', lazy=True)
-    calificaciones = db.relationship('Calificacion', backref='cliente-ref', lazy=True)
-
-
-class Destino(db.Model):
-    __tablename__ = 'destinos'
-    id_destino = db.Column(db.Integer, primary_key=True)
-    ubicacion = db.Column(db.String(255), nullable=False)
-    ciudad = db.Column(db.Integer, db.ForeignKey('ciudades.id_ciudad'), nullable=False)
-    descripcion = db.Column(db.String(255), nullable=False)
-    estado = db.Column(db.Integer, nullable=False)
-    fecha_creacion = db.Column(db.Date, nullable=False)
-    fecha_modificacion = db.Column(db.Date, nullable=False)
-    fecha_eliminacion = db.Column(db.Date)
+    comentarios = db.relationship('Comentario', backref='cliente_ref', lazy=True)
+    calificaciones = db.relationship('Calificacion', backref='cliente_ref', lazy=True)
 
 
 class Ruta(db.Model):
@@ -221,13 +205,10 @@ class Ruta(db.Model):
     lugar_destino = db.Column(db.String(100), nullable=False)
     fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     fecha_eliminacion = db.Column(db.DateTime)
-    hora_salida = db.Column(db.Time, nullable=False)
-    hora_llegada = db.Column(db.Time, nullable=False)
-    horarios = db.relationship('Horario', backref='ruta-ref', lazy=True)
-    itinerarios = db.relationship('Itinerario', backref='ruta-ref', lazy=True)
-    comentarios = db.relationship('Comentario', backref='ruta-ref', lazy=True)
-    calificaciones = db.relationship('Calificacion', backref='ruta-ref', lazy=True)
-
+    horarios = db.relationship('Horario', backref='ruta_ref', lazy=True)
+    itinerarios = db.relationship('Itinerario', backref='ruta_ref', lazy=True)
+    comentarios = db.relationship('Comentario', backref='ruta_ref', lazy=True)
+    calificaciones = db.relationship('Calificacion', backref='ruta_ref', lazy=True)
 
 class Horario(db.Model):
     __tablename__ = 'horarios'
@@ -237,8 +218,7 @@ class Horario(db.Model):
     hora_salida = db.Column(db.Time)
     hora_llegada = db.Column(db.Time)
     estado = db.Column(db.Integer)
-    boletos = db.relationship('Boleto', backref='horario-ref', lazy=True)
-
+    boletos = db.relationship('Boleto', backref='horario_ref', lazy=True)
 
 class Boleto(db.Model):
     __tablename__ = 'boletos'
@@ -249,8 +229,7 @@ class Boleto(db.Model):
     fecha_compra = db.Column(db.DateTime, default=datetime.utcnow)
     precio = db.Column(db.Numeric(10, 2))
     estado = db.Column(db.Integer)
-    pagos = db.relationship('Pago', backref='boleto-ref', lazy=True)
-
+    pagos = db.relationship('Pago', backref='boleto_ref', lazy=True)
 
 class Pago(db.Model):
     __tablename__ = 'pagos'
@@ -262,7 +241,6 @@ class Pago(db.Model):
     estado_pago = db.Column(db.String(30))
     estado = db.Column(db.Integer)
 
-
 class Auditoria(db.Model):
     __tablename__ = 'auditorias'
     id_auditoria = db.Column(db.Integer, primary_key=True)
@@ -271,7 +249,6 @@ class Auditoria(db.Model):
     detalles_adicional = db.Column(db.String(500))
     estado = db.Column(db.Integer)
 
-
 class Itinerario(db.Model):
     __tablename__ = 'itinerarios'
     id_itinerario = db.Column(db.Integer, primary_key=True)
@@ -279,18 +256,14 @@ class Itinerario(db.Model):
     descripcion = db.Column(db.String(500))
     estado = db.Column(db.Integer)
 
-
 class Comentario(db.Model):
     __tablename__ = 'comentarios'
     id_comentario = db.Column(db.Integer, primary_key=True)
     id_cliente = db.Column(db.Integer, db.ForeignKey('clientes.id_cliente'))
-
-
     id_viaje = db.Column(db.Integer, db.ForeignKey('rutas.id_ruta'))
     fecha_registro = db.Column(db.DateTime, default=datetime.utcnow)
     texto_comentario = db.Column(db.String(500))
     estado = db.Column(db.Integer)
-
 
 class Calificacion(db.Model):
     __tablename__ = 'calificaciones'
@@ -301,13 +274,11 @@ class Calificacion(db.Model):
     comentario_texto = db.Column(db.String(500))
     estado = db.Column(db.Integer)
 
-
 class Categoria(db.Model):
     __tablename__ = 'categorias'
     id_categoria = db.Column(db.Integer, primary_key=True)
     nombre_categoria = db.Column(db.String(100))
     estado = db.Column(db.Integer)
-
 
 class CabFactura(db.Model):
     __tablename__ = 'cab_factura'
@@ -323,8 +294,7 @@ class CabFactura(db.Model):
     direccion = db.Column(db.String(255))
     telefono = db.Column(db.String(10))
     estado = db.Column(db.Integer)
-    detalles = db.relationship('DetalleFactura', backref='cab_factura-ref', lazy=True)
-
+    detalles = db.relationship('DetalleFactura', backref='cab_factura_ref', lazy=True)
 
 class DetalleFactura(db.Model):
     __tablename__ = 'detalle_factura'
@@ -336,3 +306,4 @@ class DetalleFactura(db.Model):
     fecha_fact = db.Column(db.Date)
     cantidad = db.Column(db.Integer)
     estado = db.Column(db.Integer)
+

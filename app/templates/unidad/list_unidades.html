@@ -66,10 +66,8 @@
       {% for unidad in unidades %}
      
       <tr>
-        <td>{{unidad.unidad-cooperativa.razonsocial}}</td>
-        {% for conductor in unidad.conductores %}
-        <td>{{ conductor.nombre }} {{ conductor.apellido }}</td>
-        {% endfor  %}
+        <td>{{unidad.unidad_cooperativa.razonsocial}}</td>
+        <td>{{ unidad.conductor.nombre }} {{ unidad.conductor.apellido }}</td>
         <td>{{unidad.modelo}}</td>
         <td>{{unidad.ano}}</td>
         <td>{{unidad.placa}}</td>

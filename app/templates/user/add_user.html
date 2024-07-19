@@ -2,18 +2,99 @@
 {% extends 'index.html' %}
 
 {% block content %}
-    <h1>Crear Usuario</h1>
-    <form action="{{ url_for('main.add_user') }}" method="post">
-        <label for="user">Username:</label>
-        <input type="text" id="user" name="user" required>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required>
-        <label for="apellido">Apellido:</label>
-        <input type="text" id="apellido" name="apellido" required>
-        <label for="pass">Contraseña:</label>
-        <input type="text" id="pass" name="pass" required>      
-        <button type="submit">Guardar Usuario</button>
+    <h1 class="text-primary fw-light">Crear Usuario</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.add_user') }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Username:</label>
+                <input type="text" class="form-control" id="validationCustom01" name="user" placeholder="Nombre" required>
+                <div class="valid-feedback">
+                    ¡Se ve bien!
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, elija un usuario.
+                </div>
+            </div>
+        </div>
+         <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Nombre:</label>
+                <input type="text" class="form-control" id="validationCustom01" name="nombre" placeholder="Nombre" required>
+                <div class="valid-feedback">
+                    ¡Se ve bien!
+                </div>
+                <div class="invalid-feedback">
+                    Por favor, elija un nombre.
+                </div>
+            </div>
+
+        </div>
+       <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="validationCustom01">Apellido:</label>
+            <input type="text" class="form-control" id="validationCustom01" name="apellido" placeholder="apellido" required>
+            <div class="valid-feedback">
+                ¡Se ve bien!
+            </div>
+            <div class="invalid-feedback">
+                Por favor, elija un apellido.
+            </div>
+        </div>
+       </div> 
+
+
+         <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustomUsername">Cooperativa</label>
+                <select class="form-control" id="validationCustomUsername" name="id_cooperativa">
+                    {% for cooperativa in cooperativas %}
+                        <option value="{{ cooperativa.id_cooperativa }}">{{ cooperativa.razonsocial }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una cooperativa.
+                </div>
+            </div>
+        </div>
+       <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="validationCustom01">Contraseña:</label>
+            <input type="Password" class="form-control" id="validationCustom01" name="pass" placeholder="pass" required>
+            <div class="valid-feedback">
+                ¡Se ve bien!
+            </div>
+            <div class="invalid-feedback">
+                Por favor, escriba una contraseña.
+            </div>
+        </div>
+       </div> 
+         
+        <button class= "mt-3 btn btn-success text-light fw-bold me-3" type="submit">Guardar</button>
+        <a class="btn btn-dark text-light fw-bold mt-3 " href="{{ url_for('main.list_user') }}">Back to User List</a>
     </form>
-    <a href="{{ url_for('main.list_user') }}">Back to User List</a>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+        </script>
+      
+    </div>
+    <script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
 
 {% endblock %}

@@ -7,7 +7,6 @@ from .models import Conductor
 from .models import Usuario
 from .models import Ciudad
 from .models import Cliente
-from .models import Destino
 from .models import Ruta
 from .models import Horario
 from .models import Boleto
@@ -83,14 +82,23 @@ def add_user():
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         contraseña = request.form['pass']
+        id_cooperativa = int(request.form['id_cooperativa'])
         usuariocreacion = "root"
         fechacreacion = datetime.now()
         estado  = 1
-        user = Usuario(user=user, nombre=nombre, apellido=apellido, contraseña=contraseña, usuariocreacion=usuariocreacion, fechacreacion=fechacreacion, estado=estado)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('main.list_user'))
-    return render_template('user/add_user.html')
+        
+        if id_cooperativa is None:
+            user = Usuario(user=user, nombre=nombre,apellido=apellido, contraseña=contraseña, usuariocreacion=usuariocreacion, fechacreacion=fechacreacion, estado=estado)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('main.list_user'))
+        else:
+            user = Usuario(user=user, nombre=nombre, id_cooperativa=id_cooperativa,apellido=apellido, contraseña=contraseña, usuariocreacion=usuariocreacion, fechacreacion=fechacreacion, estado=estado)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('main.list_user'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('user/add_user.html',cooperativas=cooperativas)
 
 #Editar usuarios
 @main_bp.route('/user/<int:id>/edit', methods=['GET', 'POST'])
@@ -101,9 +109,11 @@ def edit_user(id):
         user.nombre = request.form['nombre']
         user.apellido = request.form['apellido']
         user.contraseña = request.form['pass']
+        user.id_cooperativa = request.form['id_cooperativa']
         db.session.commit()
         return redirect(url_for('main.list_user'))
-    return render_template('user/edit_user.html', user=user)
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('user/edit_user.html', user=user,cooperativas=cooperativas)
 
 #Eliminar usuarios
 @main_bp.route('/user/<int:id>/delete', methods=['POST'])
@@ -225,7 +235,7 @@ def edit_unidad(id):
 def add_unidad():
     if request.method == 'POST':
           # Extraer los datos del formulario
-        nombre_conductor = request.form['nombre_conductor']
+        id_conductor = request.form['id_conductor']
         id_cooperativa = request.form['id_cooperativa']
         placa = request.form['placa']
         modelo = request.form['modelo']
@@ -238,7 +248,7 @@ def add_unidad():
 
         # Crear una nueva instancia del modelo Unidad
         nueva_unidad = Unidad(
-            nombre_conductor=nombre_conductor,
+            id_conductor=id_conductor,
             id_cooperativa=id_cooperativa,
             placa=placa,
             modelo=modelo,
