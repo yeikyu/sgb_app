@@ -113,7 +113,7 @@ class Cooperativa(db.Model):
     fechaeliminacion = db.Column(db.DateTime)
     conductores = db.relationship('Conductor', backref='cond_cooperativa', lazy=True)
     unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
-
+    ruta = db.relationship('Ruta', backref='rutacooperativa',lazy=True)
 
 class Conductor(db.Model):
     __tablename__ = 'conductores'
@@ -122,6 +122,7 @@ class Conductor(db.Model):
     apellido = db.Column(db.String(100), nullable=False)
     cedula = db.Column(db.String(10), nullable=False)
     id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
+    disco = db.Column(db.Integer)
     licencia = db.Column(db.String(20), nullable=False)
     fecha_nacimiento = db.Column(db.Date, nullable=False)
     direccion = db.Column(db.String(200), nullable=True)
@@ -148,7 +149,7 @@ class Unidad(db.Model):
     fechacreacion = db.Column(db.DateTime)
     fechaeliminacion = db.Column(db.DateTime)
     conductor = db.relationship('Conductor', foreign_keys=[id_conductor], backref='unidades_rel')
-
+    ruta = db.relationship('Ruta', backref='ruta_unidad',lazy=True)
 
 
 class Usuario(db.Model):

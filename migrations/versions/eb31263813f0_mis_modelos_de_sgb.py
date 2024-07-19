@@ -1,8 +1,8 @@
-"""models
+"""mis modelos de sgb
 
-Revision ID: fcf747a48976
+Revision ID: eb31263813f0
 Revises: 
-Create Date: 2024-07-18 22:35:33.835920
+Create Date: 2024-07-19 12:02:35.260492
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fcf747a48976'
+revision = 'eb31263813f0'
 down_revision = None
 branch_labels = None
 depends_on = None

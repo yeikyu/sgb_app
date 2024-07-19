@@ -352,6 +352,7 @@ def nuevo_conductor():
     if request.method == 'POST':
         nombre = request.form.get('nombre')
         apellido = request.form.get('apellido')
+        disco = request.form.get('disco')
         id_cooperativa = request.form.get('id_cooperativa')
         licencia = request.form.get('licencia')
         cedula = request.form.get('cedula')
@@ -365,7 +366,7 @@ def nuevo_conductor():
         nuevo_conductor = Conductor(
             nombre=nombre,
             apellido=apellido,
-            id_cooperativa=id_cooperativa,
+            id_cooperativa=id_cooperativa,disco=disco,
             cedula=cedula,
             licencia=licencia,
             fecha_nacimiento=fecha_nacimiento,
@@ -388,6 +389,7 @@ def editar_conductor(id):
     if request.method == 'POST':
         conductor.nombre = request.form.get('nombre')
         conductor.apellido = request.form.get('apellido')
+        conductor.disco = request.form.get('disco')
         conductor.id_unidad = request.form.get('id_unidad')
         conductor.licencia = request.form.get('licencia')
         conductor.fecha_nacimiento = request.form.get('fecha_nacimiento')
@@ -414,7 +416,57 @@ def eliminar_conductor(id):
         flash('Conductor eliminado exitosamente.')
     return redirect(url_for('main.listar_conductores'))
 
+# # CRUD para Ruta
 
+@main_bp.route('/rutas', methods=['GET'])
+def ruta_list():
+    rutas = Ruta.query.filter(Ruta.estado != 0).all()
+    return render_template('ruta/ruta_list.html', rutas=rutas)
+
+@main_bp.route('/rutas/add', methods=['GET', 'POST'])
+def ruta_add():
+    if request.method == 'POST':
+        data = request.form.get
+        nueva_ruta = Ruta(
+            id_unidad=data('id_unidad'),
+            id_cooperativa=data('id_cooperativa'),
+            estado=1 ,
+            lugar_origen=data('lugar_origen'),
+            lugar_destino=data('lugar_destino'),
+            fecha_creacion=datetime.now()
+        )
+        db.session.add(nueva_ruta)
+        db.session.commit()
+        return redirect(url_for('main.ruta_list'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    return render_template('ruta/ruta_add.html',cooperativas=cooperativas,unidades=unidades)
+
+@main_bp.route('/rutas/edit/<int:id>', methods=['GET', 'POST'])
+def ruta_edit(id):
+    ruta = Ruta.query.get(id)
+    if request.method == 'POST':
+        data = request.form
+        ruta.id_unidad = data.get('id_unidad', ruta.id_unidad)
+        ruta.id_cooperativa = data.get('id_cooperativa', ruta.id_cooperativa)
+        ruta.lugar_origen = data.get('lugar_origen', ruta.lugar_origen)
+        ruta.lugar_destino = data.get('lugar_destino', ruta.lugar_destino)
+        db.session.commit()
+        return redirect(url_for('main.ruta_list'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    return render_template('ruta/ruta_edit.html', ruta=ruta,cooperativas=cooperativas,unidades=unidades)
+
+@main_bp.route('/rutas/delete/<int:id_ruta>', methods=['POST'])
+def ruta_delete(id):
+    rutas = Ruta.query.get(id)
+    if rutas: 
+        rutas.estado = 0  # Cambiar el estado a '0'
+        rutas.fecha_eliminacion = datetime.now()
+        db.session.commit()
+        flash('ruta eliminada exitosamente.')
+    db.session.commit()
+    return redirect(url_for('main.ruta_list'))
 
 
 # # CRUD para Destino
@@ -467,61 +519,6 @@ def eliminar_conductor(id):
 #     db.session.delete(destino)
 #     db.session.commit()
 #     return redirect(url_for('mostrar_destinos'))
-
-# # CRUD para Ruta
-# @app.route('/rutas', methods=['GET'])
-# def mostrar_rutas():
-#     rutas = Ruta.query.all()
-#     return render_template('rutas.html', rutas=rutas)
-
-# @app.route('/rutas/crear', methods=['GET', 'POST'])
-# def crear_ruta():
-#     if request.method == 'POST':
-#         data = request.form
-#         nueva_ruta = Ruta(
-#             id_unidad=data['id_unidad'],
-#             id_cooperativa=data['id_cooperativa'],
-#             estado=data['estado'],
-#             lugar_origen=data['lugar_origen'],
-#             lugar_destino=data['lugar_destino'],
-#             fecha_creacion=datetime.utcnow(),
-#             hora_salida=data['hora_salida'],
-#             hora_llegada=data['hora_llegada']
-#         )
-#         db.session.add(nueva_ruta)
-#         db.session.commit()
-#         return redirect(url_for('mostrar_rutas'))
-#     return render_template('crear_ruta.html')
-
-# @app.route('/rutas/<int:id_ruta>', methods=['GET'])
-# def obtener_ruta(id_ruta):
-#     ruta = Ruta.query.get_or_404(id_ruta)
-#     return render_template('detalle_ruta.html', ruta=ruta)
-
-# @app.route('/rutas/<int:id_ruta>/editar', methods=['GET', 'POST'])
-# def editar_ruta(id_ruta):
-#     ruta = Ruta.query.get_or_404(id_ruta)
-#     if request.method == 'POST':
-#         data = request.form
-#         ruta.id_unidad = data['id_unidad']
-#         ruta.id_cooperativa = data['id_cooperativa']
-#         ruta.estado = data['estado']
-#         ruta.lugar_origen = data['lugar_origen']
-#         ruta.lugar_destino = data['lugar_destino']
-#         ruta.hora_salida = data['hora_salida']
-#         ruta.hora_llegada = data['hora_llegada']
-#         if 'fecha_eliminacion' in data:
-#             ruta.fecha_eliminacion = datetime.strptime(data['fecha_eliminacion'], '%Y-%m-%d')
-#         db.session.commit()
-#         return redirect(url_for('mostrar_rutas'))
-#     return render_template('editar_ruta.html', ruta=ruta)
-
-# @app.route('/rutas/<int:id_ruta>/eliminar', methods=['POST'])
-# def eliminar_ruta(id_ruta):
-#     ruta = Ruta.query.get_or_404(id_ruta)
-#     db.session.delete(ruta)
-#     db.session.commit()
-#     return redirect(url_for('mostrar_rutas'))
 
 # # CRUD para Horario
 # @app.route('/horarios', methods=['GET'])

@@ -23,9 +23,9 @@
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="validationCustomUsername"># Unidad</label>
-                <select class="form-control" id="validationCustomUsername" name="id_unidad" required>
+                <select class="form-control" id="validationCustomUsername" name="disco" required>
                     {% for unidad in unidades %}
-                        <option value="{{ unidad.id_unidad }}">{{ unidad.nro_disco }}</option>
+                        <option value="{{ unidad.nro_disco }}">{{ unidad.nro_disco }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">
@@ -87,6 +87,7 @@
                     Por favor, proporcione una fecha de contratación válida.
                 </div>
             </div>
+        
         </div>
 
         <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar cambios</button>
