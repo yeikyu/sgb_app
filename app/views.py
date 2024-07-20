@@ -457,7 +457,7 @@ def ruta_edit(id):
     unidades = Unidad.query.filter(Unidad.estado != 0).all()
     return render_template('ruta/ruta_edit.html', ruta=ruta,cooperativas=cooperativas,unidades=unidades)
 
-@main_bp.route('/rutas/delete/<int:id_ruta>', methods=['POST'])
+@main_bp.route('/rutas/delete/<int:id>', methods=['POST'])
 def ruta_delete(id):
     rutas = Ruta.query.get(id)
     if rutas: 

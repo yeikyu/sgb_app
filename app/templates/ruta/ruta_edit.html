@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Editar Ruta</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.ruta_edit', id=ruta.id_ruta) }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Unidad</label>
+                <select class="form-control" id="validationCustom01" name="id_unidad" required>
+                    {% for unidad in unidades %}
+                        <option value="{{ unidad.id_unidad }}" {% if unidad.id_unidad == ruta.id_unidad %}selected{% endif %}>{{ unidad.nro_disco }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una unidad.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom02">Cooperativa</label>
+                <select class="form-control" id="validationCustom02" name="id_cooperativa" required>
+                    {% for cooperativa in cooperativas %}
+                        <option value="{{ cooperativa.id_cooperativa }}" {% if cooperativa.id_cooperativa == ruta.id_cooperativa %}selected{% endif %}>{{ cooperativa.razonsocial }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una cooperativa.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom03">Lugar de Origen</label>
+                <input type="text" class="form-control" id="validationCustom03" name="lugar_origen" value="{{ ruta.lugar_origen }}" placeholder="Lugar de Origen" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un lugar de origen válido.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom04">Lugar de Destino</label>
+                <input type="text" class="form-control" id="validationCustom04" name="lugar_destino" value="{{ ruta.lugar_destino }}" placeholder="Lugar de Destino" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un lugar de destino válido.
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar</button>
+        <a href="{{ url_for('main.ruta_list') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de Rutas</a>
+    </form>
+  
+    <script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+  
+</div>
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+{% endblock %}
