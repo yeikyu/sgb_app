@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Boleto</title>
+</head>
+<body>
+  
+<style>
+.boleto {
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+body {
+
+            margin: 0;
+        }
+        .ticket {
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .ticket h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .ticket p {
+            margin: 5px 0;
+        }
+        .ticket .info {
+            font-weight: bold;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 600px;
+ 
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+
+</style>
+
+<div class="boleto">
+<div class="ticket">
+<button type="button">Generar</button>
+<div style="text-align: center;" class="info">
+    <p >Cooperativa Posorja</p>
+    <p><span>RUC:</span>0987678876001</p>
+    <p><span>Direccion:</span>Av Benjamin Rosales</p>
+    <p><span>Telefono:</span> 0987678876</p>
+    <p style="font-size: 22px;"><span>BUS:</span>0002</p>
+</div>
+<div class="info">
+    <h4 style="margin: 0;"> Informacion de Viaje</h4>
+    <p><span >Cod de Viaje...:</span> 007676333</p>
+    <p><span >Oficina...:</span> GUAYAQUIL</p>
+    <p>Destino...:<span style="font-size: 22px;">PLAYAS</span> </p>
+    <p><span >Salida...:</span> 2024-05-26 08:45:13</p>
+    <p>Asiento...:<span style="font-size: 22px;">14</span> </p>
+    <p><span >Anden...:</span>068</p>
+    <p><span >Empleado...:</span>jponce</p>
+    <p><span >Anden...:</span>068</p>
+    <h4 style="margin: 0;"> Informacion Tributaria</h4>
+    <p><span >CA...:</span>0268763562562300034530004524504302</p>
+    <p><span >Pto Emision...:</span>005-005</p>
+    <p><span >Factura...:</span>00068543534</p>
+    <p><span >RUC...:</span>9999999999</p>
+    <p><span >Nombre Cliente...:</span>CONSUMIDOR FINAL</p>
+    <h4 style="margin: 0;">Detalle Facturación</h4>
+    <table>
+
+        <tr>
+            <th>Cant</th>
+            <th>Descripcion</th>
+            <th>Asientos</th>
+            <th>Total</th>
+
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>GYE A PLAYAS</td>
+            <td>1</td>
+            <td>2.45</td>
+
+        </tr>
+    </table>
+    <h4 style="margin: 0;"> Detalle Tasas FTTG</h4>
+    <p><span >Fecha Impresion...:</span>2024-05-26 08:45:13</p>
+    <p><span >Empleado...:</span>jponce</p>
+    <table>
+
+        <tr>
+            <th>Id</th>
+            <th>Descripcion</th>
+            <th>Precio</th>
+ 
+
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>TASA TORNIQUETE</td>
+            <td>0.13</td>
+
+
+        </tr>
+    </table>
+</div>
+
+
+</div>
+</div>
+
+
+</body>
+</html>

@@ -1,5 +1,6 @@
 # app/views.py
 from flask import Blueprint, flash, render_template, request, redirect, url_for
+import pdfkit 
 from datetime import datetime
 from .models import Cooperativa
 from .models import Unidad
@@ -18,6 +19,10 @@ from .models import Calificacion
 from .models import Categoria
 from .models import CabFactura
 from .models import DetalleFactura
+from .models import metodopago
+from .models import Anden
+from .models import Producto
+
 from . import db
 
 main_bp = Blueprint('main', __name__)
@@ -616,6 +621,51 @@ def ruta_delete(id):
 #     db.session.delete(boleto)
 #     db.session.commit()
 #     return redirect(url_for('mostrar_boletos'))
+
+
+
+
+
+# @main_bp.route('/generate_pdf/<int:id>', methods=['GET'])
+# def generate_pdf(id):
+#     # Consulta a la base de datos para obtener los datos del registro con el ID especificado
+#     datos_registro = db.query(Registro).filter_by(id=id).first()
+
+#     # Renderiza el template HTML con los datos del registro
+#     html = render_template('template.html', registro=datos_registro)
+
+#     # Configura las opciones de pdfkit
+#     options = {
+#         'page-size': 'A4',
+#         'argin-top': '0.5in',
+#         'argin-right': '0.5in',
+#         'argin-bottom': '0.5in',
+#         'argin-left': '0.5in',
+#         'encoding': 'UTF-8'
+#     }
+
+#     # Genera el archivo PDF
+#     pdf = pdfkit.from_string(html, False, options=options)
+
+#     # Devuelve el archivo PDF como respuesta
+#     response = make_response(pdf)
+#     response.headers['Content-Type'] = 'application/pdf'
+#     response.headers['Content-Disposition'] = 'attachment; filename="documento.pdf"'
+#     return response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # # CRUD para Pago
 # @app.route('/pagos', methods=['GET'])

@@ -98,6 +98,29 @@ from sqlalchemy.sql import func
     #usuario_modificacion = db.Column(db.String(15))
     # Otros campos como precio unitario, descuento, etc.
 
+
+
+class metodopago(db.Model):
+    __tablename__ = 'medodosPago'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100))
+    descripcion = db.Column(db.Text)
+    estado = db.Column(db.Integer)
+    fecha_creacion = db.Column(db.DateTime)
+    fecha_eliminacion = db.Column(db.DateTime)
+
+
+
+# Instalar wkhtmltopdf en tu sistema desde el sitio web oficial: https://wkhtmltopdf.org/downloads.html
+
+class Tasas(db.Model):
+    __tablename__ = 'tasas'
+    id = db.Column(db.Integer, primary_key=True)
+    descripcion = db.Column(db.String(255))
+    valor = db.Column(db.Float)
+    estado = db.Column(db.Integer)
+
+
 class Cooperativa(db.Model):
     __tablename__ = 'cooperativas'
     id_cooperativa = db.Column(db.Integer, primary_key=True)
@@ -114,6 +137,16 @@ class Cooperativa(db.Model):
     conductores = db.relationship('Conductor', backref='cond_cooperativa', lazy=True)
     unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
     ruta = db.relationship('Ruta', backref='rutacooperativa',lazy=True)
+
+
+class Anden(db.Model):
+    __tablename__ = 'andenes'
+    id = db.Column(db.Integer,primary_key=True)
+    id_cooperativa =db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
+    estado =db.Column(db.Integer)
+
+
+
 
 class Conductor(db.Model):
     __tablename__ = 'conductores'
@@ -221,29 +254,53 @@ class Horario(db.Model):
     estado = db.Column(db.Integer)
     boletos = db.relationship('Boleto', backref='horario_ref', lazy=True)
 
+
+class Producto(db.Model):
+    __tablename__ = 'productos'
+    id = db.Column(db.Integer, primary_key=True)
+    id_ruta = db.Column(db.Integer, db.ForeignKey('rutas.id_ruta'))
+    precio = db.Column(db.Numeric(10, 2))
+    estado = db.Column(db.Integer)
+    fecha_creacion = db.Column(db.DateTime)
+    fecha_eliminacion = db.Column(db.DateTime)
+    boletos = db.relationship('Boleto', backref='productos_ref', lazy=True)
+
+
+
 class Boleto(db.Model):
     __tablename__ = 'boletos'
     id_boleto = db.Column(db.Integer, primary_key=True)
+    cod_viaje = db.column(db.String(20))
     id_cliente = db.Column(db.Integer, db.ForeignKey('clientes.id_cliente'))
     id_horario = db.Column(db.Integer, db.ForeignKey('horarios.id_horario'))
     id_ruta = db.Column(db.Integer, db.ForeignKey('rutas.id_ruta'))
-    id_detalle = db.Column(db.Integer, db.ForeignKey('detalle_factura.id_detalle'))
+    id_detalle = db.Column(db.Integer, db.ForeignKey('productos.id'))
+    id_tasa = db.Column(db.Integerdb.ForeignKey('tasas.id'))
+    nro_factura = db.Column(db.String(255))
+    descripcion = db.Column(db.String(100))
+    cantidad =db.Column(db.Integer)
+    oficina = db.Column(db.String(100))
     codigo = db.Column(db.String(255))
     asiento = db.Column(db.String(10))
-    fecha_compra = db.Column(db.DateTime, default=datetime.utcnow)
-    precio = db.Column(db.Numeric(10, 2))
+    fecha_compra = db.Column(db.DateTime)
+    fecha_creacion = db.Column(db.DateTime)
+    fecha_eliminacion = db.Column(db.DateTime)
     estado = db.Column(db.Integer)
     pagos = db.relationship('Pago', backref='boleto_ref', lazy=True)
+    productos = db.relationship('Producto', backref='boleto_ref', lazy=True)
+
+
+
 
 class Pago(db.Model):
     __tablename__ = 'pagos'
     id_pago = db.Column(db.Integer, primary_key=True)
+    id_metodo = db.Column(db.Integer,db.ForeignKey('medodosPago.id'))
     id_reserva = db.Column(db.Integer, db.ForeignKey('boletos.id_boleto'))
-    metodo_pago = db.Column(db.String(30))
     monto = db.Column(db.Numeric(10, 2))
     fechahora_pago = db.Column(db.DateTime, default=datetime.utcnow)
     estado_pago = db.Column(db.String(30))
-    estado = db.Column(db.Integer)
+
 
 class Auditoria(db.Model):
     __tablename__ = 'auditorias'
