@@ -293,8 +293,8 @@ def list_andens():
 @main_bp.route('/andenes/add', methods=['GET', 'POST'])
 def add_anden():
     if request.method == 'POST':
-        id_cooperativa = request.form['id_cooperativa']
-        nro_anden = request.form['nro_anden']
+        id_cooperativa = int(request.form['id_cooperativa'])
+        nro_anden = int(request.form['nro_anden'])
         estado = 1
         nuevo_anden = Anden(id_cooperativa=id_cooperativa, nro_anden=nro_anden, estado=estado)
         db.session.add(nuevo_anden)

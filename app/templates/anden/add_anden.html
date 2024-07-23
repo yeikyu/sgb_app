@@ -9,7 +9,7 @@
                 <label for="validationCustom01">Cooperativa</label>
                 <select class="form-control" id="validationCustom01" name="id_cooperativa" required>
                     {% for cooperativa in cooperativas %}
-                        <option value="{{ cooperativa.id }}">{{ cooperativa.nombre }}</option>
+                        <option value="{{ cooperativa.id_cooperativa }}">{{ cooperativa.razonsocial }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">

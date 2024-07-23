@@ -8,7 +8,7 @@
         @media (max-width: 575px) {
             .sidebar-nav {
                 width: 250px;
-                transform: translateX(-250px);
+                transform: translateX(-250px); 
                 transition: transform 0.3s ease;
             }
 
@@ -42,7 +42,9 @@
                 margin-bottom: auto;
                 height: 30px;
             }
-         
+       
+
+     
     </style>
     <div style="border-bottom:5px solid #004383;" class="bg-light p-0 h-25 d-flex flex-row align-content-center">
          <!-- Botón para desplegar el menú en pantallas pequeñas -->
@@ -67,62 +69,69 @@
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="sidebarLabel">Menú</h5>
                 <button type="button" class="btn-close bg-light text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            
             </div>
+           <!-- Empieza el Menú lateral  -->
+
+        <!-- termina el Menú lateral  -->
             <div class="offcanvas-body">
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li>
                         <a href="{{ url_for('main.index') }}" class="nav-link px-0 align-middle">
-                            <i class="bi bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128200; Dashboard</span>
+                            <i class="bi bi-speedometer2"></i> <span class="ms-1  d-sm-inline text-light">&#128200; Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="#" class="nav-link px-0 align-middle">
-                            <i  class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128202; Reportes</span>
+                            <i  class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-sm-inline text-light">&#128202; Reportes</span>
                         </a>
                     </li>
                     <li>
                         <a href="#submenu5" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128223; Comprobantes</span>
+                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1  d-sm-inline text-light">&#128223; Comprobantes</span>
                         </a>
                         <ul class="collapse nav flex-column ms-1" id="submenu5" data-bs-parent="#menu">
                             <li class="w-100">
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Facturas del servicio</span></a>
-                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Boletos para pasajero</span></a>
+                                <a href="#" class="nav-link px-0"> <span class=" d-sm-inline text-light">Facturas del servicio</span></a>
+                                <a href="#" class="nav-link px-0"> <span class=" d-sm-inline text-light">Boletos para pasajero</span></a>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128295; Mantenimiento</span>
+                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1  d-sm-inline text-light">&#128295; Mantenimiento</span>
                         </a>
                         <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                             <li class="w-100">
-                                <a href="{{ url_for('main.list_unidades') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Unidades</span></a>
+                                <a href="{{ url_for('main.list_unidades') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Unidades</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="{{ url_for('main.list_cooperativa') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Cooperativas</span></a>
+                                <a href="{{ url_for('main.list_cooperativa') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Cooperativas</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="{{ url_for('main.listar_conductores') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Conductores</span></a>
+                                <a href="{{ url_for('main.listar_conductores') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Conductores</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="{{ url_for('main.ruta_list') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Rutas</span></a>
+                                <a href="{{ url_for('main.ruta_list') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Rutas</span></a>
+                            </li>
+                            <li class="w-100">
+                                <a href="{{ url_for('main.list_andens') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Andenes</span></a>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128188; Configuraciones</span>
+                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1  d-sm-inline text-light">&#128188; Configuraciones</span>
                         </a>
                         <ul class="collapse nav flex-column ms-1" id="submenu4" data-bs-parent="#menu">
                             <li class="w-100">
-                                <a href="{{ url_for('main.list_clients') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Clientes</span></a>
+                                <a href="{{ url_for('main.list_clients') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Clientes</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="{{ url_for('main.list_user') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Usuarios</span></a>
+                                <a href="{{ url_for('main.list_user') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Usuarios</span></a>
                             </li>
                             <li class="w-100">
-                                <a href="{{ url_for('main.list_ciudades') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Ciudades</span></a>
+                                <a href="{{ url_for('main.list_ciudades') }}" class="nav-link px-0"> <span class=" d-sm-inline text-light">Ciudades</span></a>
                             </li>
                         </ul>
                     </li>
@@ -171,6 +180,9 @@
                                     </li>
                                     <li class="w-100">
                                         <a href="{{ url_for('main.ruta_list') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Rutas</span></a>
+                                    </li>
+                                    <li class="w-100">
+                                        <a href="{{ url_for('main.list_andens') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Andenes</span></a>
                                     </li>
                                 </ul>
                             </li>

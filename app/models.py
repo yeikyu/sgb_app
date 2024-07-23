@@ -137,7 +137,7 @@ class Cooperativa(db.Model):
     conductores = db.relationship('Conductor', backref='cond_cooperativa', lazy=True)
     unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
     ruta = db.relationship('Ruta', backref='rutacooperativa',lazy=True)
-
+    andenes = db.relationship('Anden', backref='andencooperativa',lazy=True)
 
 class Anden(db.Model):
     __tablename__ = 'andenes'

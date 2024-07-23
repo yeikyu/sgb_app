@@ -13,13 +13,13 @@
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a
             class="nav-link btn btn-success me-3 text-light fw-bold"
             aria-current="page"
-            href="{{ url_for('main.nuevo_conductor') }}"
+            href="{{ url_for('main.add_anden') }}"
             >&#129485;Nuevo</a
           >
         </li>
@@ -54,10 +54,16 @@
       </tr>
     </thead>
     <tbody>
+    
       {% for anden in andenes %}
+      {% if len(anden.id_cooperativa)==1:
+        
+        
+        %}
       <tr>
-        <td>{{ anden.id_cooperativa }}</td>
-        <td>{{ anden.nro_anden }}</td>
+        <td>{{ anden.andencooperativa.razonsocial }}</td>
+        <td> Andén Nro: {{ anden.id_cooperativa }}</td>
+        <td>
           <a
             class="btn btn-primary"
             href="{{ url_for('main.edit_anden', id=anden.id) }}">Editar</a>
