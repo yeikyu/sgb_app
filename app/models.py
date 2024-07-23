@@ -101,7 +101,7 @@ from sqlalchemy.sql import func
 
 
 class metodopago(db.Model):
-    __tablename__ = 'medodosPago'
+    __tablename__ = 'medodospago'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(100))
     descripcion = db.Column(db.Text)
@@ -259,6 +259,7 @@ class Producto(db.Model):
     __tablename__ = 'productos'
     id = db.Column(db.Integer, primary_key=True)
     id_ruta = db.Column(db.Integer, db.ForeignKey('rutas.id_ruta'))
+    descripcion = db.Column(db.String(200))
     precio = db.Column(db.Numeric(10, 2))
     estado = db.Column(db.Integer)
     fecha_creacion = db.Column(db.DateTime)
@@ -270,12 +271,12 @@ class Producto(db.Model):
 class Boleto(db.Model):
     __tablename__ = 'boletos'
     id_boleto = db.Column(db.Integer, primary_key=True)
-    cod_viaje = db.column(db.String(20))
+    cod_viaje = db.Column(db.String(20))
     id_cliente = db.Column(db.Integer, db.ForeignKey('clientes.id_cliente'))
     id_horario = db.Column(db.Integer, db.ForeignKey('horarios.id_horario'))
     id_ruta = db.Column(db.Integer, db.ForeignKey('rutas.id_ruta'))
     id_detalle = db.Column(db.Integer, db.ForeignKey('productos.id'))
-    id_tasa = db.Column(db.Integerdb.ForeignKey('tasas.id'))
+    id_tasa = db.Column(db.Integer, db.ForeignKey('tasas.id'))
     nro_factura = db.Column(db.String(255))
     descripcion = db.Column(db.String(100))
     cantidad =db.Column(db.Integer)
@@ -301,14 +302,6 @@ class Pago(db.Model):
     fechahora_pago = db.Column(db.DateTime, default=datetime.utcnow)
     estado_pago = db.Column(db.String(30))
 
-
-class Auditoria(db.Model):
-    __tablename__ = 'auditorias'
-    id_auditoria = db.Column(db.Integer, primary_key=True)
-    tipo = db.Column(db.String(100))
-    modulo_afectado = db.Column(db.String(255))
-    detalles_adicional = db.Column(db.String(500))
-    estado = db.Column(db.Integer)
 
 class Itinerario(db.Model):
     __tablename__ = 'itinerarios'

@@ -4,7 +4,7 @@
 {% block content %}
     <h1>Modificar Unidad </h1>
 
-    <form id="editForm" action="{{ url_for('main.edit_unidad', id=unidad.id_unidad) }}" method="post"> 
+    <form id="editForm" action="{{ url_for('main.edit_unidad', id=unidades.id_unidad) }}" method="post"> 
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <div class="row mb-4">
           <label for="id_conductor">Conductor:</label>
@@ -14,18 +14,26 @@
               {% endfor %}
           </select>
       </div>
+      <div class="row mb-4">
+      <label for="id_cooperativa">Cooperativa:</label>
+      <select id="id_cooperativa" name="id_cooperativa" class="form-control" required>
+          {% for cooperativa in cooperativas %}
+          <option value="{{ cooperativa.id_cooperativa }}">{{ cooperativa.razonsocial }} </option>
+          {% endfor %}
+      </select>
+  </div>
 
         <div class="row mb-4">
           <div class="col">
               <div data-mdb-input-init class="form-outline">
                   <label class="form-label" for="placa">Placa:</label>
-                  <input type="text" class="form-control" id="placa" name="placa" value="{{ unidad.placa }}" required />
+                  <input type="text" class="form-control" id="placa" name="placa" value="{{ unidades.placa }}" required />
               </div>
           </div>
           <div class="col">
               <div data-mdb-input-init class="form-outline">
                   <label class="form-label" for="modelo">Modelo:</label>
-                  <input type="text" class="form-control" id="modelo" name="modelo" value="{{ unidad.modelo }}" required />
+                  <input type="text" class="form-control" id="modelo" name="modelo" value="{{ unidades.modelo }}" required />
               </div>
           </div>
       </div>
@@ -33,13 +41,13 @@
           <div class="col">
               <div data-mdb-input-init class="form-outline">
                   <label class="form-label" for="ano">Año:</label>
-                  <input type="number" class="form-control" id="ano" name="ano" value="{{ unidad.ano }}" required />
+                  <input type="number" class="form-control" id="ano" name="ano" value="{{ unidades.ano }}" required />
               </div>
           </div>
           <div class="col">
               <div data-mdb-input-init class="form-outline">
                   <label class="form-label" for="nro_disco">Número de Disco:</label>
-                  <input type="number" class="form-control" id="nro_disco" name="nro_disco" value="{{ unidad.nro_disco }}" required />
+                  <input type="number" class="form-control" id="nro_disco" name="nro_disco" value="{{ unidades.nro_disco }}" required />
               </div>
           </div>
       </div>
@@ -47,7 +55,7 @@
           <div class="col">
               <div data-mdb-input-init class="form-outline">
                   <label class="form-label" for="nrodeasientos">Número de Asientos:</label>
-                  <input type="number" class="form-control" id="nrodeasientos" name="nrodeasientos" value="{{ unidad.nrodeasientos }}" required />
+                  <input type="number" class="form-control" id="nrodeasientos" name="nrodeasientos" value="{{ unidades.nrodeasientos }}" required />
               </div>
           </div>
       </div>

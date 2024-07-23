@@ -1,6 +1,6 @@
 # app/views.py
 from flask import Blueprint, flash, render_template, request, redirect, url_for
-import pdfkit 
+# import pdfkit 
 from datetime import datetime
 from .models import Cooperativa
 from .models import Unidad
@@ -218,19 +218,22 @@ def list_unidades():
 
 @main_bp.route('/unidad/<int:id>/edit', methods=['GET', 'POST'])
 def edit_unidad(id):
-    unit = Unidad.query.get_or_404(id)
+    unidades = Unidad.query.get_or_404(id)
     if request.method == 'POST':
         # Aquí deberías manejar la actualización de la unidad
-        unit.id_conductor = request.form['id_conductor']
-        unit.placa = request.form['placa']
-        unit.modelo = request.form['modelo']
-        unit.ano = request.form['ano']
-        unit.nro_disco = request.form['nro_disco']
-        unit.nrodeasientos = request.form['nrodeasientos']
+        unidades.id_conductor = request.form['id_conductor']
+        unidades.id_cooperativa = request.form['id_cooperativa']
+        unidades.placa = request.form['placa']
+        unidades.modelo = request.form['modelo']
+        unidades.ano = request.form['ano']
+        unidades.nro_disco = request.form['nro_disco']
+        unidades.nrodeasientos = request.form['nrodeasientos']
         db.session.commit()
         return redirect(url_for('main.list_unidades'))
     mostrar_contenido = False
-    return render_template('unidad/edit_unidades.html', unit=unit,mostrar_contenido=mostrar_contenido)
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    conductores = Conductor.query.filter(Conductor.estado_empleo != 0).all()
+    return render_template('unidad/edit_unidades.html', unidades=unidades,mostrar_contenido=mostrar_contenido,cooperativas=cooperativas,conductores=conductores)
 
 
 

@@ -6,11 +6,13 @@
     {#    <link rel="stylesheet" href="../static/dist/css/bootstrap.min.css">#}
     <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/bootstrap.min.css') }}">
 
-    <title>{% block title %}{% endblock %} :: Proyecto</title>
-    <div class="bg-primary p-3">
+    <title>{% block title %}{% endblock %} : Proyecto</title>
+    <div style="border-bottom:5px solid #004383 ;"  class="bg-light p-0 h-25">
         <p>
-        
-            <h2>SGB</h2>
+         
+            <h2>
+                <img style="padding:0; margin:0;"  width="70px" src="{{ url_for('static', filename='img/logo.png') }} " alt="UserImage" />
+            </h2>
             </a>
         </p>
     </div>
@@ -32,66 +34,66 @@
 <section class="content">
     <header>
         <!-- Nuevo Menu principal -->
-        <div class="container-fluid">
+        <div  class="container-fluid">
             <div class="row flex-nowrap">
-                <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dar">
-                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 border">
+                <div style="background-color:#3F3F3F;"  class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dar ">
+                    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 ">
                         <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                             <li>
                                 <a href="{{ url_for('main.index') }}" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128200; Dashboard</span> 
+                                    <i class="bi bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128200; Dashboard</span> 
                                 </a>
                             </li>
                             <li>
                                 <a href="#" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128202; Reportes</span> 
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128202; Reportes</span> 
                                 </a>
                             </li>
                             <li>
                                 <a href="#submenu5" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128223; Comprobantes</span> 
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128223; Comprobantes</span> 
                                 </a>
                                 <ul class="collapse nav flex-column ms-1" id="submenu5" data-bs-parent="#menu">
                                     <li class="w-100">
-                                       <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Facturas del servicio</span></a> 
-                                       <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Boletos para pasajero</span></a> 
+                                       <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Facturas del servicio</span></a> 
+                                       <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Boletos para pasajero</span></a> 
                                     </li>
                                 </ul>
                             </li>
 
                             <li>
                                 <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128295; Mantenimiento</span> 
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128295; Mantenimiento</span> 
                                 </a>
                                 <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                     <li class="w-100">
-                                        <a href="{{ url_for('main.list_unidades') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Unidades</span></a>
+                                        <a href="{{ url_for('main.list_unidades') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Unidades</span></a>
                                     </li>
                                     <li class="w-100">
-                                       <a href="{{ url_for('main.list_cooperativa') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Cooperativas</span></a> 
+                                       <a href="{{ url_for('main.list_cooperativa') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Cooperativas</span></a> 
                                     </li>
                                     <li class="w-100">
-                                        <a href="{{ url_for('main.listar_conductores') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Conductores</span></a> 
+                                        <a href="{{ url_for('main.listar_conductores') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Conductores</span></a> 
                                      </li>
                                      <li class="w-100">
-                                        <a href="{{ url_for('main.ruta_list') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Rutas</span></a> 
+                                        <a href="{{ url_for('main.ruta_list') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Rutas</span></a> 
                                      </li>
                                 </ul>
                             </li>
 
                             <li>
                                 <a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">&#128188; Configuraciones</span> 
+                                    <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline text-light">&#128188; Configuraciones</span> 
                                 </a>
                                 <ul class="collapse nav flex-column ms-1" id="submenu4" data-bs-parent="#menu">
                                     <li class="w-100">
-                                        <a href="{{ url_for('main.list_clients') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Clientes</span></a>
+                                        <a href="{{ url_for('main.list_clients') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Clientes</span></a>
                                     </li>
                                     <li class="w-100">
-                                        <a href="{{ url_for('main.list_user') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Usuarios</span></a>
+                                        <a href="{{ url_for('main.list_user') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Usuarios</span></a>
                                     </li>
                                     <li class="w-100">
-                                       <a href="{{ url_for('main.list_ciudades') }}" class="nav-link px-0"> <span class="d-none d-sm-inline">Ciudades</span></a> 
+                                       <a href="{{ url_for('main.list_ciudades') }}" class="nav-link px-0"> <span class="d-none d-sm-inline text-light">Ciudades</span></a> 
                                     </li>
                                 </ul>
                             </li>
@@ -101,9 +103,9 @@
                 <div class="col py-3">
                     {% if mostrar_contenido %}
                     <div class="container my-5">
-                        <h1 class="display-1 text-center text-primary fw-bold">SGB</h1>
+                        <h1 class="display-1 text-center text-primary fw-bold"><img style="padding:0; margin:0;"  width="500px" src="{{ url_for('static', filename='img/logo.png') }} " alt="UserImage" /></h1>
                         <p class="lead text-center text-secondary">
-                            Sistema de gestion de Boletos de transporte ...
+                         
                         </p>
                     </div>
                     {% endif %}

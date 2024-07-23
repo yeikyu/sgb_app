@@ -5,40 +5,26 @@ Aplicacion hecha en flask sql alchemy hecha por QUINTEROS / PALMA / VAZQUES / OS
 
 <!-- from ironpdf import *
 
-# Crear un formulario PDF a partir de una cadena HTML
-Form_Data = """ 
-<html> 
-    <body> 
-        <table> 
-            <tr> 
-                <td>Name</td> 
-                <td><input name="name" type="text"/></td></td> 
-            </tr> 
-            <tr> 
-                <td>Age</td> 
-                <td><input name="age" type="text"/></td></td> 
-            </tr> 
-            <tr> 
-                <td>Gender</td> 
-            </tr> 
-            <tr> 
-                <td><input name="Gender" type="radio">Male</input></td> 
-                <td><input name="Gender" type="radio">Female</input></td> 
-            </tr> 
-        </table> 
-    </body> 
-</html>"""
+@app.route('/generate_pdf/<int:user_id>')
+def generate_pdf(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return "User not found", 404
 
-# Crear un objeto renderer
-renderer = ChromePdfRenderer()
-renderer.RenderingOptions.CreatePdfFormsFromHtml = True
+    # Renderizar la plantilla Jinja con los datos del usuario
+    rendered_html = render_template('formulario.html', user=user)
 
-# Generar el archivo PDF
-pdf = renderer.RenderHtmlAsPdf(Form_Data)
+    # Crear un objeto renderer
+    renderer = ChromePdfRenderer()
+    renderer.RenderingOptions.CreatePdfFormsFromHtml = True
 
-# Guardar el archivo PDF
-pdf.SaveAs("formulario.pdf")
+    # Generar el archivo PDF
+    pdf = renderer.RenderHtmlAsPdf(rendered_html)
 
+    # Guardar el archivo PDF
+    pdf.SaveAs(f"user_{user_id}_formulario.pdf")
+
+    return f"PDF generated for user {user_id}"
 
 
  -->
