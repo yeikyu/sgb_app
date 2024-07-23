@@ -143,16 +143,7 @@ def delete_client(id):
     return redirect(url_for('main.list_clients'))  # Redirigir a una página de lista de clientes
 
 
-
-#Eliminar cliente de la tabla
-#@main_bp.route('/client/<int:id>/delete', methods=['POST'])
-#def delete_client(id):
-#    cliente = Cliente.query.get_or_404(id) 
-#    db.session.delete(cliente)
-#    db.session.commit()
-#    return redirect(url_for('main.list_clients'))
-
-#--------------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------
 
 #Editar clientes
 @main_bp.route('/client/<int:id>/edit', methods=['GET', 'POST'])
@@ -289,6 +280,53 @@ def delete_unidad(id):
         flash('unidad eliminada exitosamente.')
     return redirect(url_for('main.list_unidades'))
 #------
+
+#CRUD PARA ANDENES
+@main_bp.route('/listaandenes')
+def list_andens():
+    andenes = Anden.query.filter(Anden.estado != 0).all()
+    return render_template('anden/list_anden.html', andenes=andenes)
+
+
+
+
+@main_bp.route('/andenes/add', methods=['GET', 'POST'])
+def add_anden():
+    if request.method == 'POST':
+        id_cooperativa = request.form['id_cooperativa']
+        nro_anden = request.form['nro_anden']
+        estado = 1
+        nuevo_anden = Anden(id_cooperativa=id_cooperativa, nro_anden=nro_anden, estado=estado)
+        db.session.add(nuevo_anden)
+        db.session.commit()
+        return redirect(url_for('main.list_andens'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('anden/add_anden.html',cooperativas=cooperativas)
+
+@main_bp.route('/andenes/edit/<int:id>', methods=['GET', 'POST'])
+def edit_anden(id):
+    anden = Anden.query.get_or_404(id)
+    if request.method == 'POST':
+        anden.id_cooperativa = request.form['id_cooperativa']
+        anden.nro_anden = request.form['nro_anden']
+        
+        db.session.commit()
+        return redirect(url_for('main.list_andens'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('anden/edit_anden.html', anden=anden,cooperativas=cooperativas)
+
+
+@main_bp.route('/eliminar_anden/<int:id>', methods=['POST'])
+def eliminar_anden(id):
+    anden = Anden.query.get(id)
+    if anden:
+        anden.estado = 0
+        db.session.commit()
+        return redirect('main.list_andens')  # Redirige a una lista de andenes
+    return 'Anden no encontrado', 404
+
+
+
 # lista cooperativas
 @main_bp.route('/cooperativa/list' , methods=['GET'])
 def list_cooperativa():
@@ -474,6 +512,10 @@ def ruta_delete(id):
         flash('ruta eliminada exitosamente.')
     db.session.commit()
     return redirect(url_for('main.ruta_list'))
+
+
+
+
 
 
 # # CRUD para Destino

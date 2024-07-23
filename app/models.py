@@ -142,6 +142,7 @@ class Cooperativa(db.Model):
 class Anden(db.Model):
     __tablename__ = 'andenes'
     id = db.Column(db.Integer,primary_key=True)
+    nro_anden =db.Column(db.Integer)
     id_cooperativa =db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     estado =db.Column(db.Integer)
 

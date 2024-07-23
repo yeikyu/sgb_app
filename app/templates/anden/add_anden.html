@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Agregar Andén</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.add_anden') }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Cooperativa</label>
+                <select class="form-control" id="validationCustom01" name="id_cooperativa" required>
+                    {% for cooperativa in cooperativas %}
+                        <option value="{{ cooperativa.id }}">{{ cooperativa.nombre }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una cooperativa.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom02">Número de Andén</label>
+                <input type="text" class="form-control" id="validationCustom02" name="nro_anden" placeholder="Número de Andén" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un número de andén válido.
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Agregar</button>
+        <a href="{{ url_for('main.list_andens') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de andenes</a>
+    </form>
+  
+    <script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+</div>
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+{% endblock %}
