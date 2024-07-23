@@ -12,7 +12,6 @@ from .models import Ruta
 from .models import Horario
 from .models import Boleto
 from .models import Pago
-from .models import Auditoria
 from .models import Itinerario
 from .models import Comentario
 from .models import Calificacion

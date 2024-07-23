@@ -296,7 +296,7 @@ class Boleto(db.Model):
 class Pago(db.Model):
     __tablename__ = 'pagos'
     id_pago = db.Column(db.Integer, primary_key=True)
-    id_metodo = db.Column(db.Integer,db.ForeignKey('medodosPago.id'))
+    id_metodo = db.Column(db.Integer,db.ForeignKey('medodospago.id'))
     id_reserva = db.Column(db.Integer, db.ForeignKey('boletos.id_boleto'))
     monto = db.Column(db.Numeric(10, 2))
     fechahora_pago = db.Column(db.DateTime, default=datetime.utcnow)
