@@ -596,7 +596,7 @@ def delete_horario(id):
 @main_bp.route('/productos', methods=['GET'])
 def list_productos():
     productos = Producto.query.filter(Producto.estado != 0).all()
-    return render_template('producto/list_productos.html', productos=productos)
+    return render_template('producto/list_producto.html', productos=productos)
 
 # @main_bp.route('/productos/<int:id>', methods=['GET'])
 # def view_producto(id):
@@ -607,6 +607,8 @@ def list_productos():
 def create_producto():
     if request.method == 'POST':
         id_ruta = request.form['id_ruta']
+        Cod_Prod = request.form['Cod_Prod']
+        Cod_Aux = request.form['Cod_Aux']
         descripcion = request.form['descripcion']
         precio = request.form['precio']
         estado = 1
@@ -614,7 +616,8 @@ def create_producto():
         
         
         new_producto = Producto(
-            id_ruta=id_ruta,
+            id_ruta=id_ruta,Cod_Aux=Cod_Aux,
+            Cod_Prod=Cod_Prod,
             descripcion=descripcion,
             precio=precio,
             estado=estado,
@@ -625,8 +628,8 @@ def create_producto():
         db.session.commit()
         flash('Producto creado con éxito.')
         return redirect(url_for('main.list_productos'))
-
-    return render_template('producto/create_producto.html')
+    rutas = Ruta.query.filter(Ruta.estado != 0).all()  # Assuming you have a Ruta model
+    return render_template('producto/add_producto.html',rutas=rutas)
 
 @main_bp.route('/productos/<int:id>/edit', methods=['GET', 'POST'])
 def edit_producto(id):
@@ -636,12 +639,13 @@ def edit_producto(id):
         producto.id_ruta = request.form['id_ruta']
         producto.descripcion = request.form['descripcion']
         producto.precio = request.form['precio']
-      
+        producto.Cod_Aux = request.form['Cod_Aux']
+        producto.Cod_Prod = request.form['Cod_Prod']
         db.session.commit()
         flash('Producto actualizado con éxito.')
         return redirect(url_for('main.list_productos'))
-
-    return render_template('producto/edit_producto.html', producto=producto)
+    rutas = Ruta.query.filter(Ruta.estado != 0).all()
+    return render_template('producto/edit_producto.html', producto=producto,rutas=rutas)
 
 @main_bp.route('/productos/<int:id>/delete', methods=['POST'])
 def delete_producto(id):
@@ -650,7 +654,7 @@ def delete_producto(id):
     producto.fecha_eliminacion = datetime.now()
     db.session.commit()
     flash('Producto marcado como eliminado con éxito.')
-    return redirect(url_for('main_bp.list_productos'))
+    return redirect(url_for('main.list_productos'))
 
 
 # # CRUD para Boleto

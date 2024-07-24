@@ -259,6 +259,8 @@ class Horario(db.Model):
 class Producto(db.Model):
     __tablename__ = 'productos'
     id = db.Column(db.Integer, primary_key=True)
+    Cod_Prod = db.Column(db.String(6))
+    Cod_Aux = db.Column(db.String(10))
     id_ruta = db.Column(db.Integer, db.ForeignKey('rutas.id_ruta'))
     descripcion = db.Column(db.String(200))
     precio = db.Column(db.Numeric(10, 2))

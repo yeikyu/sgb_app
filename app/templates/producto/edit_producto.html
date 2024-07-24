@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Editar Producto</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.edit_producto', id=producto.id) }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom03">Ruta</label>
+                <select class="form-control" id="validationCustom03" name="id_ruta" required>
+                    {% for ruta in rutas %}
+                    <option value="{{ ruta.id_ruta }}" {% if ruta.id_ruta == producto.id_ruta %}selected{% endif %}>{{ ruta.lugar_origen }} A {{ ruta.lugar_destino }}</option>
+                {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, seleccione una ruta válida.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Descripción</label>
+                <input type="text" class="form-control" id="validationCustom01" name="descripcion" placeholder="Descripción del producto" value="{{ producto.descripcion }}" required>
+                <div class="valid-feedback">
+                    ¡Se ve bien!
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom02">Precio</label>
+                <input type="number" step="0.01" class="form-control" id="validationCustom02" name="precio" placeholder="Precio" value="{{ producto.precio }}" required>
+                <div class="valid-feedback">
+                    ¡Se ve bien!
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom03">Cod Prod</label>
+                <input type="text"  class="form-control" id="validationCustom03" name="Cod_Prod" placeholder="Codigo" value="{{ producto.Cod_Prod }}" required>
+                <div class="valid-feedback">
+                    ¡Se ve bien!
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom4">Cod Aux</label>
+                <input type="text"  class="form-control" id="validationCustom04" name="Cod_Aux" placeholder="Codigo auxiliar" value="{{ producto.Cod_Aux }}" required>
+                <div class="valid-feedback">
+                    ¡Se ve bien!
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar</button>
+        <a href="{{ url_for('main.list_productos') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de Productos</a>
+    </form>
+  
+    <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+  
+</div>
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+{% endblock %}
