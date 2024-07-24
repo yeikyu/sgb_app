@@ -56,24 +56,22 @@
     <tbody>
     
       {% for anden in andenes %}
-      {% if len(anden.id_cooperativa)==1:
-        
-        
-        %}
+      {% set id_cooperativa_str = "%03d" % anden.nro_anden %}
       <tr>
-        <td>{{ anden.andencooperativa.razonsocial }}</td>
-        <td> Andén Nro: {{ anden.id_cooperativa }}</td>
-        <td>
+          <td>{{ anden.andencooperativa.razonsocial }}</td>
+          <td>Andén Nro: {{ id_cooperativa_str }}</td>
+          <td></td>
+        <td class="d-flex">
           <a
-            class="btn btn-primary"
+            class="btn btn-primary me-3"
             href="{{ url_for('main.edit_anden', id=anden.id) }}">Editar</a>
-        </td>
-        <td>
-          <form action="{{ url_for('main.eliminar_anden', id=anden.id) }}"
+
+            <form action="{{ url_for('main.eliminar_anden', id=anden.id) }}"
             method="post">
             <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>
         </td>
+
       </tr>
       {% endfor %}
     </tbody>

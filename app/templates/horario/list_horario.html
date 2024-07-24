@@ -1,0 +1,62 @@
+{% extends 'index.html' %} {% block content %}
+<!-- Barra de navegación -->
+    <div class="container mt-5">
+      <h1>Lista de Horarios</h1>
+      <div class="container d-flex mt-3">
+      <a href="{{ url_for('main.create_horario') }}" class="btn btn-success me-3 fw-bold text-light">Nuevo</a>
+        <a class="nav-link btn btn-dark fw-bold text-light" href="#">&#128196;Reporte</a>
+      </div>
+   
+      <table class="table table-bordered mt-3">
+        <thead>
+
+
+          <tr>
+
+            <th class="d-flex">
+              <input
+                type="text"
+                class="filter-input form-control me-3"
+                id="filterNombre"
+                placeholder="Filtrar Nombre"
+              />
+              <a href="#" class="btn btn-success">Buscar</a>
+            </th>
+            <th>
+              <input
+                type="text"
+                class="filter-input form-control"
+                id="filterApellido"
+                placeholder="Filtrar Apellido"
+              />
+            </th>
+
+          </tr>
+          <tr>
+          
+            <th>Ruta</th>
+            <th>Unidad</th>
+            <th>Hora Salida</th>
+            <th>Hora Llegada</th>
+      
+          </tr>
+        </thead>
+        <tbody>
+          {% for horario in horarios %}
+          <tr>
+        
+            <td>{{ horario.id_ruta }}</td>
+            <td>{{ horario.id_autobus }}</td>
+            <td>{{ horario.hora_salida }}</td>
+            <td>{{ horario.hora_llegada }}</td>
+            <td>
+              <a href="{{ url_for('main.edit_horario', id=horario.id_horario) }}" class="btn btn-primary">Editar</a>
+              <a href="{{ url_for('main.delete_horario', id=horario.id_horario) }}" class="btn btn-danger">Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+{% endblock %}

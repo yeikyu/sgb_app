@@ -1,8 +1,8 @@
-"""tablas del proyecto
+"""modelos de mis tablas
 
-Revision ID: 503be8bf4893
+Revision ID: 825eb8d097f7
 Revises: 
-Create Date: 2024-07-23 09:17:14.335492
+Create Date: 2024-07-23 21:04:26.362836
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '503be8bf4893'
+revision = '825eb8d097f7'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -62,6 +62,7 @@ def upgrade():
     )
     op.create_table('andenes',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('nro_anden', sa.Integer(), nullable=True),
     sa.Column('id_cooperativa', sa.Integer(), nullable=True),
     sa.Column('estado', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),

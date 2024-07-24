@@ -2,6 +2,7 @@
 from flask import Blueprint, flash, render_template, request, redirect, url_for
 # import pdfkit 
 from datetime import datetime
+from datetime import time
 from .models import Cooperativa
 from .models import Unidad
 from .models import Conductor
@@ -517,6 +518,79 @@ def ruta_delete(id):
 
 
 
+# Create CRUD para horario
+
+# Read (List)
+@main_bp.route('/horarios', methods=['GET'])
+def get_horarios():
+    horarios = Horario.query.filter(Horario.estado != 0).all()
+    return render_template('horario/list_horario.html', horarios=horarios)
+
+
+
+
+@main_bp.route('/horarios/create', methods=['GET', 'POST'])
+def create_horario():
+    if request.method == 'POST':
+        id_ruta = request.form['id_ruta']
+        id_autobus = request.form['id_autobus']
+        hora_salida = request.form['hora_salida']
+        hora_llegada = request.form['hora_llegada']
+        estado = 1
+
+        new_horario = Horario(
+            id_ruta=id_ruta,
+            id_autobus=id_autobus,
+            hora_salida=time.fromisoformat(hora_salida),
+            hora_llegada=time.fromisoformat(hora_llegada),
+            estado=estado
+        )
+
+        try:
+            db.session.add(new_horario)
+            db.session.commit()
+            return redirect('main.get_horarios')
+        except:
+            return "Hubo un problema al crear el horario."
+
+    cooperativas = db.session.query(Cooperativa).all()  # Assuming you have a Cooperativa model
+    rutas = db.session.query(Ruta).all()  # Assuming you have a Ruta model
+    return render_template('horario/add_horario.html', cooperativas=cooperativas, rutas=rutas)
+
+# Update
+@main_bp.route('/horarios/edit/<int:id>', methods=['GET', 'POST'])
+def edit_horario(id):
+    horario = Horario.query.get_or_404(id)
+    if request.method == 'POST':
+        horario.id_ruta = request.form['id_ruta']
+        horario.id_autobus = request.form['id_autobus']
+        horario.hora_salida = time.fromisoformat(request.form['hora_salida'])
+        horario.hora_llegada = time.fromisoformat(request.form['hora_llegada'])
+        horario.estado = 1
+
+        try:
+            db.session.commit()
+            return redirect('main.get_horarios')
+        except:
+            return "Hubo un problema al actualizar el horario."
+
+    cooperativas = db.session.query(Cooperativa).all()  # Assuming you have a Cooperativa model
+    rutas = db.session.query(Ruta).all()  # Assuming you have a Ruta model
+    return render_template('horario/edit_horario.html', horario=horario, cooperativas=cooperativas, rutas=rutas)
+
+# Change state to 0 instead of delete
+@main_bp.route('/horarios/delete/<int:id>', methods=['GET', 'POST'])
+def delete_horario(id):
+    horario = Horario.query.get_or_404(id)
+    try:
+        horario.estado = 0
+        db.session.commit()
+        return redirect('main.get_horarios')
+    except:
+        return "Hubo un problema al eliminar el horario."
+
+
+
 
 # # CRUD para Destino
 # @main_bp.route('/destinos', methods=['GET'])
@@ -569,53 +643,7 @@ def ruta_delete(id):
 #     db.session.commit()
 #     return redirect(url_for('mostrar_destinos'))
 
-# # CRUD para Horario
-# @app.route('/horarios', methods=['GET'])
-# def mostrar_horarios():
-#     horarios = Horario.query.all()
-#     return render_template('horarios.html', horarios=horarios)
 
-# @app.route('/horarios/crear', methods=['GET', 'POST'])
-# def crear_horario():
-#     if request.method == 'POST':
-#         data = request.form
-#         nuevo_horario = Horario(
-#             id_ruta=data['id_ruta'],
-#             id_autobus=data['id_autobus'],
-#             hora_salida=data['hora_salida'],
-#             hora_llegada=data['hora_llegada'],
-#             estado=data['estado']
-#         )
-#         db.session.add(nuevo_horario)
-#         db.session.commit()
-#         return redirect(url_for('mostrar_horarios'))
-#     return render_template('crear_horario.html')
-
-# @app.route('/horarios/<int:id_horario>', methods=['GET'])
-# def obtener_horario(id_horario):
-#     horario = Horario.query.get_or_404(id_horario)
-#     return render_template('detalle_horario.html', horario=horario)
-
-# @app.route('/horarios/<int:id_horario>/editar', methods=['GET', 'POST'])
-# def editar_horario(id_horario):
-#     horario = Horario.query.get_or_404(id_horario)
-#     if request.method == 'POST':
-#         data = request.form
-#         horario.id_ruta = data['id_ruta']
-#         horario.id_autobus = data['id_autobus']
-#         horario.hora_salida = data['hora_salida']
-#         horario.hora_llegada = data['hora_llegada']
-#         horario.estado = data['estado']
-#         db.session.commit()
-#         return redirect(url_for('mostrar_horarios'))
-#     return render_template('editar_horario.html', horario=horario)
-
-# @app.route('/horarios/<int:id_horario>/eliminar', methods=['POST'])
-# def eliminar_horario(id_horario):
-#     horario = Horario.query.get_or_404(id_horario)
-#     db.session.delete(horario)
-#     db.session.commit()
-#     return redirect(url_for('mostrar_horarios'))
 
 # # CRUD para Boleto
 # @app.route('/boletos', methods=['GET'])

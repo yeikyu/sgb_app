@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Agregar Horario</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.create_horario') }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Ruta</label>
+                <select class="form-control" id="validationCustom01" name="id_ruta" required>
+                    {% for ruta in rutas %}
+                        <option value="{{ ruta.id_ruta }}">{{ ruta.lugar_origen }} A {{ ruta.lugar_destino }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una ruta.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom02">Autobús</label>
+                <select class="form-control" id="validationCustom02" name="id_autobus" required>
+                    {% for unidad in unidades %}
+                        <option value="{{ unidad.id_unidad }}">{{ unidad.nro_disco }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija un autobús.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom03">Hora de Salida</label>
+                <input type="time" class="form-control" id="validationCustom03" name="hora_salida" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione una hora de salida válida.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom04">Hora de Llegada</label>
+                <input type="time" class="form-control" id="validationCustom04" name="hora_llegada" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione una hora de llegada válida.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom05">Estado</label>
+                <input type="number" class="form-control" id="validationCustom05" name="estado" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un estado válido.
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Agregar</button>
+        <a href="{{ url_for('main.get_horarios') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de horarios</a>
+    </form>
+  
+    <script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+</div>
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+{% endblock %}
