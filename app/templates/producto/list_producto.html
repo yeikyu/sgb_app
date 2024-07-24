@@ -1,0 +1,85 @@
+{% extends 'index.html' %} {% block content %}
+
+<!-- Barra de navegación -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+<div>
+  <div class="h1 fw-light text-primary">Nuevo</div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link btn btn-success text-light fw-bold me-3"
+            aria-current="page"
+            href="{{ url_for('main.create_producto') }}"
+            >Nuevo</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-dark fw-bold text-light" href="#">&#128196;Reporte</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--Cabecera de tabla de creacion de ciudades-->
+<div class="container mt-5">
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Ruta</th>
+        <th scope="col">Descripcion</th>
+        <th scope="col">Precio</th>
+      
+      </tr>
+      <!--Filtro para campos-->
+      <tr>
+        <th>
+          <input
+            type="text"
+            class="filter-input tamano-1"
+            id="filterid"
+            placeholder="Filtrar id"
+          />
+        </th>
+        <th>
+          <input
+            type="text"
+            class="filter-input tamano-4"
+            id="filterNombre"
+            placeholder="Filtrar Nombre"
+          />
+        </th>
+
+       
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+      <tr>
+        <td>{{producto.producto_ruta_ref.lugar_origen}} A {{producto.producto_ruta_ref.lugar_destino}}</td>
+        <td>{{ producto.descripcion }}</td>
+        <td> {{ producto.precio }}</td>
+
+        <td>
+          <a class="btn btn-primary" href="{{ url_for('main.edit_producto', id=producto.id) }}">Editar</a>
+
+        </td>
+        <td>
+          <form
+            action="{{ url_for('main.delete_producto', id=producto.id) }}"
+            method="post">
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

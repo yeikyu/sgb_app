@@ -1,8 +1,8 @@
-"""modelos de mis tablas
+"""modelos de tablas actualizado
 
-Revision ID: 825eb8d097f7
+Revision ID: e35d5aad3a81
 Revises: 
-Create Date: 2024-07-23 21:04:26.362836
+Create Date: 2024-07-24 10:27:41.012409
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '825eb8d097f7'
+revision = 'e35d5aad3a81'
 down_revision = None
 branch_labels = None
 depends_on = None

@@ -138,7 +138,7 @@ class Cooperativa(db.Model):
     unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
     ruta = db.relationship('Ruta', backref='rutacooperativa',lazy=True)
     andenes = db.relationship('Anden', backref='andencooperativa',lazy=True)
-
+    
 class Anden(db.Model):
     __tablename__ = 'andenes'
     id = db.Column(db.Integer,primary_key=True)
@@ -184,7 +184,7 @@ class Unidad(db.Model):
     fechaeliminacion = db.Column(db.DateTime)
     conductor = db.relationship('Conductor', foreign_keys=[id_conductor], backref='unidades_rel')
     ruta = db.relationship('Ruta', backref='ruta_unidad',lazy=True)
-
+    horario = db.relationship('Horario', backref='horario_unidad',lazy=True)
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
@@ -244,7 +244,7 @@ class Ruta(db.Model):
     itinerarios = db.relationship('Itinerario', backref='ruta_ref', lazy=True)
     comentarios = db.relationship('Comentario', backref='ruta_ref', lazy=True)
     calificaciones = db.relationship('Calificacion', backref='ruta_ref', lazy=True)
-
+    productos = db.relationship('Producto', backref='producto_ruta_ref', lazy=True)
 class Horario(db.Model):
     __tablename__ = 'horarios'
     id_horario = db.Column(db.Integer, primary_key=True)
@@ -254,7 +254,7 @@ class Horario(db.Model):
     hora_llegada = db.Column(db.Time)
     estado = db.Column(db.Integer)
     boletos = db.relationship('Boleto', backref='horario_ref', lazy=True)
-
+    
 
 class Producto(db.Model):
     __tablename__ = 'productos'

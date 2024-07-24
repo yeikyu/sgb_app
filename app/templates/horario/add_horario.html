@@ -20,7 +20,8 @@
                 <label for="validationCustom02">Autobús</label>
                 <select class="form-control" id="validationCustom02" name="id_autobus" required>
                     {% for unidad in unidades %}
-                        <option value="{{ unidad.id_unidad }}">{{ unidad.nro_disco }}</option>
+                    {% set id_discounidad_str = "%03d" % unidad.nro_disco %}
+                        <option value="{{ unidad.id_unidad }}"> {{ id_discounidad_str }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">
@@ -41,13 +42,7 @@
                     Por favor, proporcione una hora de llegada válida.
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="validationCustom05">Estado</label>
-                <input type="number" class="form-control" id="validationCustom05" name="estado" required>
-                <div class="invalid-feedback">
-                    Por favor, proporcione un estado válido.
-                </div>
-            </div>
+        
         </div>
         <button class="btn btn-success text-light fw-bold me-3" type="submit">Agregar</button>
         <a href="{{ url_for('main.get_horarios') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de horarios</a>

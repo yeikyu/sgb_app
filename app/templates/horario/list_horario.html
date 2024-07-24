@@ -43,10 +43,11 @@
         </thead>
         <tbody>
           {% for horario in horarios %}
+          {% set id_discounidad_str = "%03d" % horario.horario_unidad.nro_disco %}
           <tr>
         
-            <td>{{ horario.id_ruta }}</td>
-            <td>{{ horario.id_autobus }}</td>
+            <td>{{ horario.ruta_ref.lugar_origen }}  A {{ horario.ruta_ref.lugar_destino }}</td>
+            <td>{{id_discounidad_str }}</td>
             <td>{{ horario.hora_salida }}</td>
             <td>{{ horario.hora_llegada }}</td>
             <td>

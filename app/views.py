@@ -549,13 +549,14 @@ def create_horario():
         try:
             db.session.add(new_horario)
             db.session.commit()
-            return redirect('main.get_horarios')
+            return redirect(url_for('main.get_horarios'))
         except:
             return "Hubo un problema al crear el horario."
 
-    cooperativas = db.session.query(Cooperativa).all()  # Assuming you have a Cooperativa model
-    rutas = db.session.query(Ruta).all()  # Assuming you have a Ruta model
-    return render_template('horario/add_horario.html', cooperativas=cooperativas, rutas=rutas)
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()  # Assuming you have a Cooperativa model
+    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    rutas = Ruta.query.filter(Ruta.estado != 0).all()  # Assuming you have a Ruta model
+    return render_template('horario/add_horario.html', cooperativas=cooperativas, rutas=rutas,unidades=unidades)
 
 # Update
 @main_bp.route('/horarios/edit/<int:id>', methods=['GET', 'POST'])
@@ -570,13 +571,14 @@ def edit_horario(id):
 
         try:
             db.session.commit()
-            return redirect('main.get_horarios')
+            return redirect(url_for('main.get_horarios'))
         except:
             return "Hubo un problema al actualizar el horario."
 
-    cooperativas = db.session.query(Cooperativa).all()  # Assuming you have a Cooperativa model
-    rutas = db.session.query(Ruta).all()  # Assuming you have a Ruta model
-    return render_template('horario/edit_horario.html', horario=horario, cooperativas=cooperativas, rutas=rutas)
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()  # Assuming you have a Cooperativa model
+    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    rutas = Ruta.query.filter(Ruta.estado != 0).all()  # Assuming you have a Ruta model
+    return render_template('horario/edit_horario.html', horario=horario, cooperativas=cooperativas, rutas=rutas,unidades=unidades)
 
 # Change state to 0 instead of delete
 @main_bp.route('/horarios/delete/<int:id>', methods=['GET', 'POST'])
@@ -585,64 +587,70 @@ def delete_horario(id):
     try:
         horario.estado = 0
         db.session.commit()
-        return redirect('main.get_horarios')
+        return redirect(url_for('main.get_horarios'))
     except:
         return "Hubo un problema al eliminar el horario."
 
 
 
+@main_bp.route('/productos', methods=['GET'])
+def list_productos():
+    productos = Producto.query.filter(Producto.estado != 0).all()
+    return render_template('producto/list_productos.html', productos=productos)
 
-# # CRUD para Destino
-# @main_bp.route('/destinos', methods=['GET'])
-# def mostrar_destinos():
-#     destinos = Destino.query.all()
-#     return render_template('destinos.html', destinos=destinos)
+# @main_bp.route('/productos/<int:id>', methods=['GET'])
+# def view_producto(id):
+#     producto = Producto.query.get_or_404(id)
+#     return render_template('producto/view_producto.html', producto=producto)
 
-# @app.route('/destinos/crear', methods=['GET', 'POST'])
-# def crear_destino():
-#     if request.method == 'POST':
-#         data = request.form
-#         nuevo_destino = Destino(
-#             ubicacion=data['ubicacion'],
-#             ciudad=data['ciudad'],
-#             descripcion=data['descripcion'],
-#             estado=data['estado'],
-#             fecha_creacion=datetime.strptime(data['fecha_creacion'], '%Y-%m-%d'),
-#             fecha_modificacion=datetime.strptime(data['fecha_modificacion'], '%Y-%m-%d')
-#         )
-#         db.session.add(nuevo_destino)
-#         db.session.commit()
-#         return redirect(url_for('mostrar_destinos'))
-#     return render_template('crear_destino.html')
+@main_bp.route('/productos/new', methods=['GET', 'POST'])
+def create_producto():
+    if request.method == 'POST':
+        id_ruta = request.form['id_ruta']
+        descripcion = request.form['descripcion']
+        precio = request.form['precio']
+        estado = 1
+        fecha_creacion = datetime.now()
+        
+        
+        new_producto = Producto(
+            id_ruta=id_ruta,
+            descripcion=descripcion,
+            precio=precio,
+            estado=estado,
+            fecha_creacion=fecha_creacion,
+            
+        )
+        db.session.add(new_producto)
+        db.session.commit()
+        flash('Producto creado con éxito.')
+        return redirect(url_for('main.list_productos'))
 
-# @app.route('/destinos/<int:id_destino>', methods=['GET'])
-# def obtener_destino(id_destino):
-#     destino = Destino.query.get_or_404(id_destino)
-#     return render_template('detalle_destino.html', destino=destino)
+    return render_template('producto/create_producto.html')
 
-# @app.route('/destinos/<int:id_destino>/editar', methods=['GET', 'POST'])
-# def editar_destino(id_destino):
-#     destino = Destino.query.get_or_404(id_destino)
-#     if request.method == 'POST':
-#         data = request.form
-#         destino.ubicacion = data['ubicacion']
-#         destino.ciudad = data['ciudad']
-#         destino.descripcion = data['descripcion']
-#         destino.estado = data['estado']
-#         destino.fecha_modificacion = datetime.utcnow()
-#         if 'fecha_eliminacion' in data:
-#             destino.fecha_eliminacion = datetime.strptime(data['fecha_eliminacion'], '%Y-%m-%d')
-#         db.session.commit()
-#         return redirect(url_for('mostrar_destinos'))
-#     return render_template('editar_destino.html', destino=destino)
+@main_bp.route('/productos/<int:id>/edit', methods=['GET', 'POST'])
+def edit_producto(id):
+    producto = Producto.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        producto.id_ruta = request.form['id_ruta']
+        producto.descripcion = request.form['descripcion']
+        producto.precio = request.form['precio']
+      
+        db.session.commit()
+        flash('Producto actualizado con éxito.')
+        return redirect(url_for('main.list_productos'))
 
-# @app.route('/destinos/<int:id_destino>/eliminar', methods=['POST'])
-# def eliminar_destino(id_destino):
-#     destino = Destino.query.get_or_404(id_destino)
-#     db.session.delete(destino)
-#     db.session.commit()
-#     return redirect(url_for('mostrar_destinos'))
+    return render_template('producto/edit_producto.html', producto=producto)
 
+@main_bp.route('/productos/<int:id>/delete', methods=['POST'])
+def delete_producto(id):
+    producto = Producto.query.get_or_404(id)
+    producto.estado = 0  # Cambiar el estado a 0 en lugar de eliminar
+    producto.fecha_eliminacion = datetime.now()
+    db.session.commit()
+    flash('Producto marcado como eliminado con éxito.')
+    return redirect(url_for('main_bp.list_productos'))
 
 
 # # CRUD para Boleto

@@ -3,13 +3,13 @@
 {% block content %}
 <div class="container mt-5">
     <h1>Editar Horario</h1>
-    <form class="needs-validation" novalidate action="{{ url_for('edit_horario', id=horario.id_horario) }}" method="post">
+    <form class="needs-validation" novalidate action="{{ url_for('main.edit_horario', id=horario.id_horario) }}" method="post">
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="validationCustom01">Ruta</label>
                 <select class="form-control" id="validationCustom01" name="id_ruta" required>
                     {% for ruta in rutas %}
-                        <option value="{{ ruta.id_ruta }}" {% if ruta.id_ruta == horario.id_ruta %}selected{% endif %}>{{ ruta.nombre }}</option>
+                        <option value="{{ ruta.id_ruta }}" {% if ruta.id_ruta == horario.id_ruta %}selected{% endif %}>{{ ruta.lugar_origen }} A {{ ruta.lugar_destino }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">
@@ -19,8 +19,9 @@
             <div class="col-md-6 mb-3">
                 <label for="validationCustom02">Autobús</label>
                 <select class="form-control" id="validationCustom02" name="id_autobus" required>
-                    {% for autobus in autobuses %}
-                        <option value="{{ autobus.id_unidad }}" {% if autobus.id_unidad == horario.id_autobus %}selected{% endif %}>{{ autobus.placa }}</option>
+                    {% for unidad in unidades %}
+                   
+                        <option value="{{ unidad.id_unidad }}" {% if unidad.id_unidad == horario.id_autobus %}selected{% endif %}>  {% set id_discounidad_str = "%03d" % unidad.nro_disco %}   {{ id_discounidad_str }}</option>
                     {% endfor %}
                 </select>
                 <div class="invalid-feedback">
@@ -41,16 +42,10 @@
                     Por favor, proporcione una hora de llegada válida.
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <label for="validationCustom05">Estado</label>
-                <input type="number" class="form-control" id="validationCustom05" name="estado" value="{{ horario.estado }}" required>
-                <div class="invalid-feedback">
-                    Por favor, proporcione un estado válido.
-                </div>
-            </div>
+           
         </div>
         <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar</button>
-        <a href="{{ url_for('get_horarios') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de horarios</a>
+        <a href="{{ url_for('main.get_horarios') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de horarios</a>
     </form>
   
     <script>
