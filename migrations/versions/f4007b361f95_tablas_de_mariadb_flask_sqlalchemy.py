@@ -1,8 +1,8 @@
-"""modelos de tablas actualizado
+"""tablas de mariadb flask sqlalchemy
 
-Revision ID: e35d5aad3a81
+Revision ID: f4007b361f95
 Revises: 
-Create Date: 2024-07-24 10:27:41.012409
+Create Date: 2024-07-24 19:27:19.825351
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e35d5aad3a81'
+revision = 'f4007b361f95'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -221,6 +221,8 @@ def upgrade():
     )
     op.create_table('productos',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('Cod_Prod', sa.String(length=6), nullable=True),
+    sa.Column('Cod_Aux', sa.String(length=10), nullable=True),
     sa.Column('id_ruta', sa.Integer(), nullable=True),
     sa.Column('descripcion', sa.String(length=200), nullable=True),
     sa.Column('precio', sa.Numeric(precision=10, scale=2), nullable=True),
