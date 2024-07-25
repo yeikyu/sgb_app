@@ -1,6 +1,22 @@
 # app/views.py
-from flask import Blueprint, flash, render_template, request, redirect, url_for
+from fastapi.responses import FileResponse
+from flask import Blueprint, Response, flash, make_response, render_template, request, redirect, url_for
 # import pdfkit 
+from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import mm, inch
+from reportlab.pdfgen import canvas
+from reportlab.platypus import Image, Paragraph, Table, TableStyle, PageBreak
+from reportlab.lib import colors
+from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, PageBreak, Spacer
+from reportlab.platypus import Table
+from reportlab.platypus import Image
+from reportlab.platypus import TableStyle
+from reportlab.lib import colors
+from reportlab.lib.units import inch
 from datetime import datetime
 from datetime import time
 from .models import Cooperativa
@@ -333,8 +349,64 @@ def eliminar_anden(id):
 def list_cooperativa():
      cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
      return render_template('cooperativa/list_cooperativa.html', cooperativas=cooperativas)
+ 
+ 
+@main_bp.route('/report_cooperativa',methods=['POST'])
+def report_cooperativa():
 
+    outputIoStream = BytesIO()
 
+    pdf = SimpleDocTemplate(
+        outputIoStream,
+        page_size=A4,
+        rightMargin=12,
+        leftMargin=12,
+        topMargin=12,
+        bottomMargin=18,
+        showBoundary=True,
+        )
+    
+    # define table style
+    table_style = TableStyle(
+            [
+                ("GRID", (0, 0), (-1, -1), 0, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0, colors.black),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("ALIGN", (0, 0), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("FONTSIZE", (0, 0), (-1, -1), 11),
+                ("LINEBELOW", (0, -1), (-1, -1), 1, colors.gray),
+            ]
+        )
+    cooperativas = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("     Reporte de Cooperativas", styles['Heading1'])
+    cooperativas.append(header)
+    
+    
+    cooperativaslist = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    
+    
+    
+    headings = ('Nombre', 'Ruc', 'Teléfono', 'Direccion', 'Email')
+    allcooperativas = [(c.razonsocial, c.Ruc, c.telefono, c.direccion, c.email) for c in cooperativaslist]
+
+   
+    picTable = Table([headings] + allcooperativas)
+    picTable.setStyle(table_style)
+    
+    cooperativas.append(picTable)
+    pdf.build(cooperativas)
+    response = make_response(outputIoStream.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = \
+        'inline; filename=%s.pdf' % 'yourfilename'
+    return response
+    
+    
+    
 # agregar cooperativa 
 
 @main_bp.route('/cooperativa/add', methods=['GET', 'POST'])
