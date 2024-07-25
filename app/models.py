@@ -331,25 +331,50 @@ class Calificacion(db.Model):
     comentario_texto = db.Column(db.String(500))
     estado = db.Column(db.Integer)
 
-class Categoria(db.Model):
+class Categoria_cliente(db.Model):
     __tablename__ = 'categorias'
     id_categoria = db.Column(db.Integer, primary_key=True)
     nombre_categoria = db.Column(db.String(100))
     estado = db.Column(db.Integer)
 
+
+
+class PuntoDeEmision(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    direccion = db.Column(db.String(255), nullable=False)
+    codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # formato 002
+    tipo = db.Column(db.String(50), nullable=False)
+    equipos = db.Column(db.Text, nullable=True)  # Información sobre equipos en formato JSON o texto
+    
+    def __repr__(self):
+        return f'<PuntoDeEmision {self.nombre}>'
+
+
+class Establecimiento(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False) 
+    tipo = db.Column(db.String(50), nullable=False)
+    direccion = db.Column(db.String(255), nullable=False)
+    codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # es 001 formato
+    infraestructura = db.Column(db.Text, nullable=True)  # Información sobre infraestructura en formato JSON o texto
+    horarios = db.Column(db.String(100), nullable=True)  # Horarios de apertura y cierre
+
+    def __repr__(self):
+        return f'<Establecimiento {self.nombre}>'
+
+
+
+
+
 class CabFactura(db.Model):
     __tablename__ = 'cab_factura'
     id_factura = db.Column(db.Integer, primary_key=True)
+    id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     id_cliente = db.Column(db.Integer, db.ForeignKey('clientes.id_cliente'))
-    id_vendedor = db.Column(db.Integer)
+    id_responsable = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
     fecha_vta = db.Column(db.Date)
     numero_factura = db.Column(db.String(20))
-    cedula_o_ruc = db.Column(db.String(13))
-    nombre = db.Column(db.String(100))
-    apellido = db.Column(db.String(100))
-    razon_social = db.Column(db.String(255))
-    direccion = db.Column(db.String(255))
-    telefono = db.Column(db.String(10))
     estado = db.Column(db.Integer)
     detalles = db.relationship('DetalleFactura', backref='cab_factura_ref', lazy=True)
 
@@ -357,10 +382,8 @@ class DetalleFactura(db.Model):
     __tablename__ = 'detalle_factura'
     id_detalle = db.Column(db.Integer, primary_key=True)
     id_factura = db.Column(db.Integer, db.ForeignKey('cab_factura.id_factura'))
-    cod_producto = db.Column(db.String(20))
-    nombre_producto = db.Column(db.String(350))
-    numero_factura = db.Column(db.String(50))
-    fecha_fact = db.Column(db.Date)
+    id_producto = db.Column(db.Integer, db.ForeignKey('productos.id'))
     cantidad = db.Column(db.Integer)
     estado = db.Column(db.Integer)
+
 

@@ -2,6 +2,8 @@
 from fastapi.responses import FileResponse
 from flask import Blueprint, Response, flash, make_response, render_template, request, redirect, url_for
 # import pdfkit 
+import random
+import string
 from io import BytesIO
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
@@ -32,12 +34,14 @@ from .models import Pago
 from .models import Itinerario
 from .models import Comentario
 from .models import Calificacion
-from .models import Categoria
+from .models import Categoria_cliente
 from .models import CabFactura
 from .models import DetalleFactura
 from .models import metodopago
 from .models import Anden
 from .models import Producto
+from .models import Establecimiento
+from .models import PuntoDeEmision
 
 from . import db
 
@@ -670,17 +674,20 @@ def list_productos():
     productos = Producto.query.filter(Producto.estado != 0).all()
     return render_template('producto/list_producto.html', productos=productos)
 
-# @main_bp.route('/productos/<int:id>', methods=['GET'])
-# def view_producto(id):
-#     producto = Producto.query.get_or_404(id)
-#     return render_template('producto/view_producto.html', producto=producto)
+def generar_codigo_aleatorio(length=6):
+    caracteres = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(caracteres) for _ in range(length))
+
+def generar_codigo_auxiliar(length=10):
+    caracteres = string.ascii_uppercase + string.digits
+    return ''.join(random.choice(caracteres) for _ in range(length))
 
 @main_bp.route('/productos/new', methods=['GET', 'POST'])
 def create_producto():
     if request.method == 'POST':
         id_ruta = request.form['id_ruta']
-        Cod_Prod = request.form['Cod_Prod']
-        Cod_Aux = request.form['Cod_Aux']
+        Cod_Prod = generar_codigo_aleatorio()
+        Cod_Aux = generar_codigo_auxiliar()
         descripcion = request.form['descripcion']
         precio = request.form['precio']
         estado = 1
@@ -727,6 +734,99 @@ def delete_producto(id):
     db.session.commit()
     flash('Producto marcado como eliminado con éxito.')
     return redirect(url_for('main.list_productos'))
+
+
+@main_bp.route('/puntos_de_emision')
+def puntos_de_emision_list():
+    puntos = PuntoDeEmision.query.all()
+    return render_template('punto_de_emision_list.html', puntos=puntos)
+
+@main_bp.route('/puntos_de_emision/new', methods=['GET', 'POST'])
+def punto_de_emision_new():
+    if request.method == 'POST':
+        nuevo_punto = PuntoDeEmision(
+            nombre=request.form['nombre'],
+            ubicacion_fisica=request.form['ubicacion_fisica'],
+            codigo_identificacion=request.form['codigo_identificacion'],
+            tipo=request.form['tipo'],
+            equipos=request.form['equipos']
+        )
+        db.session.add(nuevo_punto)
+        db.session.commit()
+        return redirect(url_for('puntos_de_emision_list'))
+    return render_template('punto_de_emision_form.html')
+
+@main_bp.route('/puntos_de_emision/edit/<int:id>', methods=['GET', 'POST'])
+def punto_de_emision_edit(id):
+    punto = PuntoDeEmision.query.get_or_404(id)
+    if request.method == 'POST':
+        punto.nombre = request.form['nombre']
+        punto.ubicacion_fisica = request.form['ubicacion_fisica']
+        punto.codigo_identificacion = request.form['codigo_identificacion']
+        punto.tipo = request.form['tipo']
+        punto.equipos = request.form['equipos']
+        db.session.commit()
+        return redirect(url_for('puntos_de_emision_list'))
+    return render_template('punto_de_emision_form.html', punto=punto)
+
+@main_bp.route('/puntos_de_emision/delete/<int:id>')
+def punto_de_emision_delete(id):
+    punto = PuntoDeEmision.query.get_or_404(id)
+    db.session.delete(punto)
+    db.session.commit()
+    return redirect(url_for('puntos_de_emision_list'))
+
+
+# CRUD ESTABLECIMIENTO
+
+@main_bp.route('/establecimientos')
+def establecimientos_list():
+    establecimientos = Establecimiento.query.all()
+    return render_template('establecimiento_list.html', establecimientos=establecimientos)
+
+@main_bp.route('/establecimientos/new', methods=['GET', 'POST'])
+def establecimiento_new():
+    if request.method == 'POST':
+        nuevo_establecimiento = Establecimiento(
+            nombre=request.form['nombre'],
+            tipo=request.form['tipo'],
+            ubicacion_fisica=request.form['ubicacion_fisica'],
+            codigo_identificacion=request.form['codigo_identificacion'],
+            infraestructura=request.form['infraestructura'],
+            horarios=request.form['horarios']
+        )
+        db.session.add(nuevo_establecimiento)
+        db.session.commit()
+        return redirect(url_for('establecimientos_list'))
+    return render_template('establecimiento_form.html')
+
+@main_bp.route('/establecimientos/edit/<int:id>', methods=['GET', 'POST'])
+def establecimiento_edit(id):
+    establecimiento = Establecimiento.query.get_or_404(id)
+    if request.method == 'POST':
+        establecimiento.nombre = request.form['nombre']
+        establecimiento.tipo = request.form['tipo']
+        establecimiento.ubicacion_fisica = request.form['ubicacion_fisica']
+        establecimiento.codigo_identificacion = request.form['codigo_identificacion']
+        establecimiento.infraestructura = request.form['infraestructura']
+        establecimiento.horarios = request.form['horarios']
+        db.session.commit()
+        return redirect(url_for('establecimientos_list'))
+    return render_template('establecimiento_form.html', establecimiento=establecimiento)
+
+@main_bp.route('/establecimientos/delete/<int:id>')
+def establecimiento_delete(id):
+    establecimiento = Establecimiento.query.get_or_404(id)
+    db.session.delete(establecimiento)
+    db.session.commit()
+    return redirect(url_for('establecimientos_list'))
+
+
+
+
+
+
+
 
 
 # # CRUD para Boleto
