@@ -29,3 +29,4 @@ def generate_pdf(user_id):
 
  -->
 
+Instala todas las librerias del proyecto con pip install -r requirements.txt
