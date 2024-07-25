@@ -29,7 +29,3 @@ def generate_pdf(user_id):
 
  -->
 
-
-En este ejemplo, estamos creando un formulario PDF a partir de una cadena HTML utilizando ironpdf. Luego, estamos generando el archivo PDF utilizando el objeto renderer y guardándolo en un archivo llamado formulario.pdf.
-
-Ten en cuenta que para utilizar ironpdf, debes instalar el paquete ironpdf en tu entorno de desarrollo. Puedes hacerlo utilizando el comando pip install ironpdf.
