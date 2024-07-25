@@ -1,5 +1,6 @@
 # app/views.py
-from flask import Blueprint, flash, render_template, request, redirect, url_for
+from fastapi.responses import FileResponse
+from flask import Blueprint, Response, flash, make_response, render_template, request, redirect, url_for
 # import pdfkit 
 from io import BytesIO
 from reportlab.lib.pagesizes import A4
@@ -385,10 +386,24 @@ def report_cooperativa():
     cooperativas.append(header)
     
     
+    cooperativaslist = Cooperativa.query.filter(Cooperativa.estado != 0).all()
     
     
     
+    headings = ('Nombre', 'Ruc', 'Teléfono', 'Direccion', 'Email')
+    allcooperativas = [(c.razonsocial, c.Ruc, c.telefono, c.direccion, c.email) for c in cooperativaslist]
+
+   
+    picTable = Table([headings] + allcooperativas)
+    picTable.setStyle(table_style)
     
+    cooperativas.append(picTable)
+    pdf.build(cooperativas)
+    response = make_response(outputIoStream.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = \
+        'inline; filename=%s.pdf' % 'yourfilename'
+    return response
     
     
     
