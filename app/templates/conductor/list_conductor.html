@@ -24,7 +24,14 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link btn btn-dark text-light fw-bold" href="#">&#128196;Reporte</a>
+          <form action="{{ url_for('main.report_conductor') }}" method="post">
+            <button
+              type="submit"
+              class="nav-link btn btn-dark fw-bold text-light"
+            >
+              &#128196;Reporte
+            </button>
+          </form>
         </li>
       </ul>
     </div>

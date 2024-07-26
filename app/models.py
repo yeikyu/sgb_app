@@ -84,14 +84,14 @@ from sqlalchemy.sql import func
 
 
 #class VentaDetalle(db.Model):
- #   id = db.Column(db.Integer, primary_key=True)
-  #  venta_id = db.Column(db.Integer, db.ForeignKey('venta.id'), nullable=False)
-   # venta = db.relationship('Venta', backref=db.backref('items', lazy=True))
-   # producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
-   # producto = db.relationship('Producto', backref=db.backref('venta_items', lazy=True))
-   # cantidad = db.Column(db.Integer, nullable=False)
-   # estado = db.Column(db.Integer)
-   # fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    #   id = db.Column(db.Integer, primary_key=True)
+    #  venta_id = db.Column(db.Integer, db.ForeignKey('venta.id'), nullable=False)
+    # venta = db.relationship('Venta', backref=db.backref('items', lazy=True))
+    # producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
+    # producto = db.relationship('Producto', backref=db.backref('venta_items', lazy=True))
+    # cantidad = db.Column(db.Integer, nullable=False)
+    # estado = db.Column(db.Integer)
+    # fecha_creacion = db.Column(db.DateTime(timezone=True), server_default=func.now())
     # fecha_creacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     #fecha_modificacion = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     #usuario_creacion = db.Column(db.String(15))
@@ -146,9 +146,6 @@ class Anden(db.Model):
     id_cooperativa =db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     estado =db.Column(db.Integer)
 
-
-
-
 class Conductor(db.Model):
     __tablename__ = 'conductores'
     id = db.Column(db.Integer, primary_key=True)
@@ -165,8 +162,6 @@ class Conductor(db.Model):
     fecha_contratacion = db.Column(db.Date, nullable=False)
     estado_empleo = db.Column(db.Integer, nullable=False)  # Por ejemplo: 'activo', 'suspendido', 'retirado'
 
-
-
 class Unidad(db.Model):
     __tablename__ = 'unidades'
     id_unidad = db.Column(db.Integer, primary_key=True)
@@ -182,6 +177,7 @@ class Unidad(db.Model):
     usuarioelimina = db.Column(db.String(100))
     fechacreacion = db.Column(db.DateTime)
     fechaeliminacion = db.Column(db.DateTime)
+    cooperativa = db.relationship('Cooperativa', foreign_keys=[id_cooperativa], backref='unidades_rel')
     conductor = db.relationship('Conductor', foreign_keys=[id_conductor], backref='unidades_rel')
     ruta = db.relationship('Ruta', backref='ruta_unidad',lazy=True)
     horario = db.relationship('Horario', backref='horario_unidad',lazy=True)
