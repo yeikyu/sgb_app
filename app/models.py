@@ -1,7 +1,7 @@
 # app/models.py
 from . import db
 from datetime import datetime
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func # type: ignore
 
 
 
@@ -45,6 +45,8 @@ class Cooperativa(db.Model):
     unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
     ruta = db.relationship('Ruta', backref='rutacooperativa',lazy=True)
     andenes = db.relationship('Anden', backref='andencooperativa',lazy=True)
+    punto_de_emision = db.relationship('PuntoDeEmision', backref='re', lazy=True)
+    
     
 class Anden(db.Model):
     __tablename__ = 'andenes'
@@ -243,7 +245,9 @@ class Categoria_cliente(db.Model):
 
 
 class PuntoDeEmision(db.Model):
+    __tablename__ = 'puntosdeemision'
     id = db.Column(db.Integer, primary_key=True)
+    id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     nombre = db.Column(db.String(100), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
     codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # formato 002
@@ -255,7 +259,9 @@ class PuntoDeEmision(db.Model):
 
 
 class Establecimiento(db.Model):
+    __tablename__ = 'establecimiento'
     id = db.Column(db.Integer, primary_key=True)
+    id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     nombre = db.Column(db.String(100), nullable=False) 
     tipo = db.Column(db.String(50), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)

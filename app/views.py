@@ -799,7 +799,7 @@ def delete_producto(id):
 @main_bp.route('/puntos_de_emision')
 def puntos_de_emision_list():
     puntos = PuntoDeEmision.query.all()
-    return render_template('punto_de_emision_list.html', puntos=puntos)
+    return render_template('puntoemision/punto_de_emision_list.html', puntos=puntos)
 
 @main_bp.route('/puntos_de_emision/new', methods=['GET', 'POST'])
 def punto_de_emision_new():
@@ -814,7 +814,7 @@ def punto_de_emision_new():
         db.session.add(nuevo_punto)
         db.session.commit()
         return redirect(url_for('puntos_de_emision_list'))
-    return render_template('punto_de_emision_form.html')
+    return render_template('puntoemision/punto_de_emision_new.html')
 
 @main_bp.route('/puntos_de_emision/edit/<int:id>', methods=['GET', 'POST'])
 def punto_de_emision_edit(id):
@@ -827,7 +827,7 @@ def punto_de_emision_edit(id):
         punto.equipos = request.form['equipos']
         db.session.commit()
         return redirect(url_for('puntos_de_emision_list'))
-    return render_template('punto_de_emision_form.html', punto=punto)
+    return render_template('puntoemision/punto_de_emision_edit.html', punto=punto)
 
 @main_bp.route('/puntos_de_emision/delete/<int:id>')
 def punto_de_emision_delete(id):
