@@ -42,6 +42,7 @@ from .models import Anden
 from .models import Producto
 from .models import Establecimiento
 from .models import PuntoDeEmision
+from sqlalchemy.orm import joinedload
 
 from . import db
 
@@ -90,8 +91,7 @@ def eliminar_ciudad(id):
     db.session.commit()
     return redirect(url_for('main.list_ciudades'))
 
-
-
+#-----------------------------------------------------------------------------------------------------------------
 
 #Lista de usuarios
 @main_bp.route('/user/list' , methods=['GET'])
@@ -151,9 +151,8 @@ def delete_user(id):
 
     return redirect(url_for('main.list_user'))
 
-
-
 #-----------------------------------------------------------------------------------------------------------------
+
 #Eliminar/Inactivar cliente
 @main_bp.route('/client/<int:id>', methods=['POST'])
 def delete_client(id):
@@ -162,9 +161,6 @@ def delete_client(id):
         cliente.estado_cliente = 0  # Cambiar el estado a '0'
         db.session.commit()
     return redirect(url_for('main.list_clients'))  # Redirigir a una página de lista de clientes
-
-
-#----------------------------------------------------------------------------------------------------------------
 
 #Editar clientes
 @main_bp.route('/client/<int:id>/edit', methods=['GET', 'POST'])
@@ -183,16 +179,11 @@ def edit_client(id):
         return redirect(url_for('main.list_clients'))
     return render_template('cliente/edit_client.html', clientes=clientes)
 
-
 #Lista clientes
 @main_bp.route('/client/list' , methods=['GET'])
 def list_clients():
     clientes =  Cliente.query.filter(Cliente.estado_cliente != 0).all()
-
     return render_template('cliente/list_clients.html', clientes=clientes)
-
-
-
 
 #Nuevo clientes
 @main_bp.route('/client/add', methods=['GET', 'POST'])
@@ -219,13 +210,64 @@ def add_client():
     return render_template('cliente/add_client.html',ciudades=ciudades)
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#lista unidades 
+
+# Lista unidades
 @main_bp.route('/unidad/list' , methods=['GET'])
 def list_unidades():
     unidades = Unidad.query.filter(Unidad.estado != 0).all()
     return render_template('unidad/list_unidades.html', unidades=unidades)
 
+# Reporte de unidades / buses
+@main_bp.route('/report_unidades',methods=['POST'])
+def report_unidad():
 
+    outputIoStream = BytesIO()
+
+    pdf = SimpleDocTemplate(
+        outputIoStream,
+        page_size=A4,
+        rightMargin=12,
+        leftMargin=12,
+        topMargin=12,
+        bottomMargin=18,
+        showBoundary=True,
+        )
+# define estilo de tablas
+    table_style = TableStyle(
+            [
+                ("GRID", (0, 0), (-1, -1), 0, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0, colors.black),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("ALIGN", (0, 0), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("FONTSIZE", (0, 0), (-1, -1), 11),
+                ("LINEBELOW", (0, -1), (-1, -1), 1, colors.gray),
+            ]
+        )
+    unidades = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("Lista de unidades / buses", styles['Heading1'])
+    unidades.append(header)
+    unidadlist = Unidad.query.filter(Unidad.estado != 0).options(
+        joinedload(Unidad.cooperativa),
+        joinedload(Unidad.conductor)
+    ).all()
+
+    headings = ('Cooperativa', 'Conductor', 'Placa', 'Modelo', 'Año', 'N° disco', 'N° Asistentos', 'Estado')
+    allunidades = [(c.cooperativa.razonsocial, c.conductor.nombre, c.placa, c.modelo, c.ano, c.nro_disco, c.nrodeasientos, 'Activo' if c.estado == 1 else 'Inactivo') for c in unidadlist]
+
+    picTable = Table([headings] + allunidades)
+    picTable.setStyle(table_style)
+    
+    unidades.append(picTable)
+    pdf.build(unidades)
+    response = make_response(outputIoStream.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = \
+        'inline; filename=%s.pdf' % 'yourfilename'
+    return response
 
 @main_bp.route('/unidad/<int:id>/edit', methods=['GET', 'POST'])
 def edit_unidad(id):
@@ -246,14 +288,11 @@ def edit_unidad(id):
     conductores = Conductor.query.filter(Conductor.estado_empleo != 0).all()
     return render_template('unidad/edit_unidades.html', unidades=unidades,mostrar_contenido=mostrar_contenido,cooperativas=cooperativas,conductores=conductores)
 
-
-
-
 # Ruta para agregar una unidad
 @main_bp.route('/unidad/add', methods=['GET', 'POST'])
 def add_unidad():
     if request.method == 'POST':
-          # Extraer los datos del formulario
+    # Extraer los datos del formulario
         id_conductor = request.form['id_conductor']
         id_cooperativa = request.form['id_cooperativa']
         placa = request.form['placa']
@@ -289,9 +328,7 @@ def add_unidad():
     mostrar_contenido = False
     return render_template('unidad/add_unidades.html',mostrar_contenido=mostrar_contenido,cooperativas=cooperativas,conductores=conductores)
 
- 
- #Eliminar unidad de la tabla
-
+# Eliminar unidad de la tabla
 @main_bp.route('/unidad/delete/<int:id>', methods=['POST'])
 def delete_unidad(id):
     unidades = Unidad.query.get(id)
@@ -300,16 +337,14 @@ def delete_unidad(id):
         db.session.commit()
         flash('unidad eliminada exitosamente.')
     return redirect(url_for('main.list_unidades'))
-#------
+
+#-----------------------------------------------------------------------------------------------------------------
 
 #CRUD PARA ANDENES
 @main_bp.route('/listaandenes')
 def list_andens():
     andenes = Anden.query.filter(Anden.estado != 0).all()
     return render_template('anden/list_anden.html', andenes=andenes)
-
-
-
 
 @main_bp.route('/andenes/add', methods=['GET', 'POST'])
 def add_anden():
@@ -336,7 +371,6 @@ def edit_anden(id):
     cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
     return render_template('anden/edit_anden.html', anden=anden,cooperativas=cooperativas)
 
-
 @main_bp.route('/eliminar_anden/<int:id>', methods=['POST'])
 def eliminar_anden(id):
     anden = Anden.query.get(id)
@@ -346,15 +380,15 @@ def eliminar_anden(id):
         return redirect('main.list_andens')  # Redirige a una lista de andenes
     return 'Anden no encontrado', 404
 
-
+#-----------------------------------------------------------------------------------------------------------------
 
 # lista cooperativas
 @main_bp.route('/cooperativa/list' , methods=['GET'])
 def list_cooperativa():
      cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
      return render_template('cooperativa/list_cooperativa.html', cooperativas=cooperativas)
- 
- 
+
+# Crea reporte en pdf 
 @main_bp.route('/report_cooperativa',methods=['POST'])
 def report_cooperativa():
 
@@ -369,7 +403,6 @@ def report_cooperativa():
         bottomMargin=18,
         showBoundary=True,
         )
-    
     # define table style
     table_style = TableStyle(
             [
@@ -386,18 +419,13 @@ def report_cooperativa():
         )
     cooperativas = []
     styles = getSampleStyleSheet()
-    header = Paragraph("     Reporte de Cooperativas", styles['Heading1'])
+    header = Paragraph("Cooperativas", styles['Heading1'])
     cooperativas.append(header)
-    
-    
     cooperativaslist = Cooperativa.query.filter(Cooperativa.estado != 0).all()
-    
-    
-    
+
     headings = ('Nombre', 'Ruc', 'Teléfono', 'Direccion', 'Email')
     allcooperativas = [(c.razonsocial, c.Ruc, c.telefono, c.direccion, c.email) for c in cooperativaslist]
 
-   
     picTable = Table([headings] + allcooperativas)
     picTable.setStyle(table_style)
     
@@ -408,11 +436,8 @@ def report_cooperativa():
     response.headers['Content-Disposition'] = \
         'inline; filename=%s.pdf' % 'yourfilename'
     return response
-    
-    
-    
-# agregar cooperativa 
 
+# agregar cooperativa 
 @main_bp.route('/cooperativa/add', methods=['GET', 'POST'])
 def add_cooperativa():
      if request.method == 'POST':
@@ -431,8 +456,7 @@ def add_cooperativa():
 
      return render_template('cooperativa/add_cooperativa.html')
 
-#editar cooperativa
-
+# Editar cooperativa
 @main_bp.route('/cooperativa/<int:id>/edit', methods=['GET', 'POST'])
 def edit_cooperativa(id):
     cooperativa = Cooperativa.query.get_or_404(id)
@@ -448,11 +472,7 @@ def edit_cooperativa(id):
     mostrar_contenido = False
     return render_template('cooperativa/edit_cooperativa.html', cooperativa=cooperativa,mostrar_contenido=mostrar_contenido)
 
-
-
-#borrar cooperativa
-
-
+# Borrar cooperativa
 @main_bp.route('/cooperativa/<int:id>', methods=['POST'])
 def delete_cooperativa(id):
     cooperativas = Cooperativa.query.get(id)
@@ -461,13 +481,62 @@ def delete_cooperativa(id):
         db.session.commit()
     return redirect(url_for('main.list_cooperativa'))
 
+#-----------------------------------------------------------------------------------------------------------------
 
-
+# Lista de conductores
 @main_bp.route('/conductores', methods=['GET'])
 def listar_conductores():
     conductores = Conductor.query.filter(Conductor.estado_empleo != 0).all()
     return render_template('conductor/list_conductor.html', conductores=conductores)
 
+# Reporte de conductores
+@main_bp.route('/report_conductor',methods=['POST'])
+def report_conductor():
+
+    outputIoStream = BytesIO()
+
+    pdf = SimpleDocTemplate(
+        outputIoStream,
+        page_size=A4,
+        rightMargin=12,
+        leftMargin=12,
+        topMargin=12,
+        bottomMargin=18,
+        showBoundary=True,
+        )
+# define estilo de tablas
+    table_style = TableStyle(
+            [
+                ("GRID", (0, 0), (-1, -1), 0, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0, colors.black),
+                ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                ("ALIGN", (0, 0), (-1, -1), "RIGHT"),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("FONTSIZE", (0, 0), (-1, -1), 11),
+                ("LINEBELOW", (0, -1), (-1, -1), 1, colors.gray),
+            ]
+        )
+    conductores = []
+    styles = getSampleStyleSheet()
+    header = Paragraph("Lista de conductores", styles['Heading1'])
+    conductores.append(header)
+    conductoreslist = Conductor.query.filter(Conductor.estado_empleo != 0).all()
+
+    headings = ('Nombre', 'Apellido', 'Cedula', 'Direccion', 'Email')
+    allconductores = [(c.nombre, c.apellido, c.cedula, c.direccion, c.email) for c in conductoreslist]
+
+    picTable = Table([headings] + allconductores)
+    picTable.setStyle(table_style)
+    
+    conductores.append(picTable)
+    pdf.build(conductores)
+    response = make_response(outputIoStream.getvalue())
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = \
+        'inline; filename=%s.pdf' % 'yourfilename'
+    return response
 
 @main_bp.route('/conductores/nuevo', methods=['GET', 'POST'])
 def nuevo_conductor():
@@ -519,15 +588,11 @@ def editar_conductor(id):
         conductor.telefono = request.form.get('telefono')
         conductor.email = request.form.get('email')
         conductor.fecha_contratacion = request.form.get('fecha_contratacion')
-       
-
         db.session.commit()
         flash('Conductor actualizado exitosamente.')
         return redirect(url_for('main.listar_conductores'))
     unidades = Unidad.query.filter(Unidad.estado != 0).all()
     return render_template('conductor/edit_conductor.html', conductor=conductor,unidades=unidades)
-
-
 
 @main_bp.route('/conductores/eliminar/<int:id>', methods=['POST'])
 def eliminar_conductor(id):
@@ -538,8 +603,9 @@ def eliminar_conductor(id):
         flash('Conductor eliminado exitosamente.')
     return redirect(url_for('main.listar_conductores'))
 
-# # CRUD para Ruta
+#-----------------------------------------------------------------------------------------------------------------
 
+# CRUD para Ruta
 @main_bp.route('/rutas', methods=['GET'])
 def ruta_list():
     rutas = Ruta.query.filter(Ruta.estado != 0).all()
@@ -590,20 +656,14 @@ def ruta_delete(id):
     db.session.commit()
     return redirect(url_for('main.ruta_list'))
 
-
-
-
+#-----------------------------------------------------------------------------------------------------------------
 
 # Create CRUD para horario
-
 # Read (List)
 @main_bp.route('/horarios', methods=['GET'])
 def get_horarios():
     horarios = Horario.query.filter(Horario.estado != 0).all()
     return render_template('horario/list_horario.html', horarios=horarios)
-
-
-
 
 @main_bp.route('/horarios/create', methods=['GET', 'POST'])
 def create_horario():
@@ -667,7 +727,7 @@ def delete_horario(id):
     except:
         return "Hubo un problema al eliminar el horario."
 
-
+#-----------------------------------------------------------------------------------------------------------------
 
 @main_bp.route('/productos', methods=['GET'])
 def list_productos():

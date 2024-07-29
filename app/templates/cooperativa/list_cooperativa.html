@@ -1,9 +1,13 @@
 {% extends 'index.html' %} {% block content %}
 <!-- Barra de navegación -->
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{{ url_for('static', filename='styles.css') }}"
+/>
 
 <div>
-  <div class="h1 fw-light text-primary">Nueva Empresa</div>
+  <div class="h1 fw-light text-primary">Nueva cooperativa</div>
 </div>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
@@ -19,7 +23,7 @@
         </li>
         <li class="nav-item">
           <form action="{{ url_for('main.report_cooperativa') }}" method="post">
-          <button  type="submit" class="nav-link btn btn-dark fw-bold text-light">&#128196;Reporte</button>
+            <button type="submit" class="nav-link btn btn-dark fw-bold text-light">&#128196;Reporte</button>
           </form>
         </li>
       </ul>
@@ -34,8 +38,6 @@
         <th scope="col">Nombre Empresa</th>
         <th scope="col">RUC</th>
         <th scope="col">Correo</th>
-
-
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -71,7 +73,7 @@
             placeholder="Añade una Correo"
           />
         </th>
-       
+
         <th></th>
         <th></th>
       </tr>
@@ -85,13 +87,17 @@
         <td>{{cooperativa.telefono}}</td>
         <td>{{cooperativa.direccion}}</td>
         <td>
-          <a class="btn btn-primary" href="{{ url_for('main.edit_cooperativa', id=cooperativa.id_cooperativa) }}">Editar</a>
-
+          <a
+            class="btn btn-primary"
+            href="{{ url_for('main.edit_cooperativa', id=cooperativa.id_cooperativa) }}"
+            >Editar</a
+          >
         </td>
         <td>
           <form
             action="{{ url_for('main.delete_cooperativa',  id=cooperativa.id_cooperativa) }}"
-            method="post">
+            method="post"
+          >
             <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>
         </td>

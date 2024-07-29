@@ -1,6 +1,6 @@
 # run.py
 from app import create_app, db
-from app.models import User
+#from app.models import User
 
 app = create_app()
 
@@ -10,5 +10,9 @@ def init_db():
     print('Database initialized.')
 
 if __name__ == "__main__":
+<<<<<<< HEAD
+    app.run(debug=True)
+=======
     app.run(debug=True)
     .
+>>>>>>> c7ad1f39ed03a94cf86e48dd1f93301a38c096a8
