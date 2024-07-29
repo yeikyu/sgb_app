@@ -1,0 +1,88 @@
+{% extends 'index.html' %} {% block content %}
+<!-- Barra de navegación -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
+<div>
+  <div class="h1 fw-light text-primary">Lista de Buses</div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link btn btn-success text-light fw-bold me-3"
+            aria-current="page"
+            href="{{ url_for('main.add_unidad') }}"
+            >&#129485;Nueva Unidad</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-dark fw-bold text-light" href="#">&#128196;Reporte</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--Cabecera de tabla de creacion de productos-->
+<div class="container mt-5">
+  <table class="table table-striped table-hover">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Nombre cooperativa</th>
+        <th scope="col">Nombre conductor</th>
+        <th scope="col">modelo</th>
+        <th scope="col">año</th>
+        <th scope="col">placa</th>
+        <th scope="col"># disco</th>
+        <th scope="col"># asientos</th>
+      </tr>
+      <!--Filtro para campos-->
+      <tr>
+ 
+        <th>
+          <input
+            type="text"
+            class="filter-input tamano-4"
+            id="filterNombre"
+            placeholder="Filtrar Nombre conductor"
+          />
+        </th>
+       
+       
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for puntoemision in puntosemisiones %}
+      nombre = db.Column(db.String(100), nullable=False)
+      direccion = db.Column(db.String(255), nullable=False)
+      codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # formato 002
+      tipo = db.Column(db.String(50), nullable=False)
+      equipos = db.Column(db.Text, nullable=True)  # Información sobre equipos en formato JSON o texto
+      <tr>
+        <td>{{puntoemision.nombre}}</td>
+        <td>{{ puntoemision.conductor.nombre }} {{ unidad.conductor.apellido }}</td>
+        <td>{{puntoemision.modelo}}</td>
+        <td>{{puntoemision.ano}}</td>
+        <td>{{puntoemision.placa}}</td>
+        <td>{{unidad.nro_disco}}</td>
+        <td>{{unidad.nrodeasientos}}</td>
+        <td>
+          <a class="btn btn-primary" href="{{ url_for('main.punto_de_emision_edit', id=unidad.id_unidad) }}">Editar</a>
+
+        </td>
+        <td>
+          <form
+            action="{{ url_for('main.delete_unidad', id=unidad.id_unidad) }}"
+            method="post">
+            <button class="btn btn-danger" type="submit">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
