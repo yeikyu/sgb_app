@@ -1,0 +1,88 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Registrar un nuevo punto de emisión</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.punto_de_emision_new') }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom01">Cooperativa</label>
+                <select class="form-control" id="validationCustom01" name="id_cooperativa" required>
+                    {% for cooperativa in cooperativas %}
+                        <option value="{{ cooperativa.id_cooperativa }}">{{ cooperativa.razonsocial }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una cooperativa.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom02">Nombre</label>
+                <input type="text" class="form-control" id="validationCustom02" name="nombre" placeholder="Nombre del Punto de Emisión" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un nombre válido.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom03">Ubicación Física</label>
+                <input type="text" class="form-control" id="validationCustom03" name="ubicacion_fisica" placeholder="Ubicación Física" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione una ubicación física válida.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom04">Código de Identificación</label>
+                <input type="number" class="form-control" id="validationCustom04" name="codigo_identificacion" placeholder="Código de Identificación" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un código de identificación válido.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom05">Tipo</label>
+                <input type="text" class="form-control" id="validationCustom05" name="tipo" placeholder="Tipo" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un tipo válido.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationCustom06">Equipos</label>
+                <input type="text" class="form-control" id="validationCustom06" name="equipos" placeholder="Equipos" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione una lista de equipos válida.
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar</button>
+        <a href="{{ url_for('main.puntos_de_emision_list') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de Puntos de Emisión</a>
+    </form>
+  
+    <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+  
+</div>
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+
+{% endblock %}

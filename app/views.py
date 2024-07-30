@@ -824,7 +824,7 @@ def punto_de_emision_new():
         nuevo_punto = PuntoDeEmision(
             id_cooperativa = request.form['id_cooperativa'],
             nombre=request.form['nombre'],
-            ubicacion_fisica=request.form['ubicacion_fisica'],
+            direccion=request.form['ubicacion_fisica'],
             codigo_identificacion=request.form['codigo_identificacion'],
             tipo=request.form['tipo'],
             equipos=request.form['equipos'],
@@ -842,7 +842,7 @@ def punto_de_emision_edit(id):
     if request.method == 'POST':
         punto.id_cooperativa = request.form['id_cooperativa']
         punto.nombre = request.form['nombre']
-        punto.ubicacion_fisica = request.form['ubicacion_fisica']
+        punto.direccion = request.form['ubicacion_fisica']
         punto.codigo_identificacion = request.form['codigo_identificacion']
         punto.tipo = request.form['tipo']
         punto.equipos = request.form['equipos']
@@ -851,7 +851,7 @@ def punto_de_emision_edit(id):
     cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
     return render_template('puntoemision/punto_de_emision_edit.html', punto=punto,cooperativas=cooperativas)
 
-@main_bp.route('/puntos_de_emision/delete/<int:id>')
+@main_bp.route('/puntos_de_emision/delete/<int:id>', methods=['POST'])
 def punto_de_emision_delete(id):
     punto = PuntoDeEmision.query.get_or_404(id)
     punto.estado = 0  # Cambiar el estado a 0 en lugar de eliminar

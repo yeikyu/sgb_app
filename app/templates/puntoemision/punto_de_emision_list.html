@@ -13,7 +13,7 @@
           <a
             class="nav-link btn btn-success text-light fw-bold me-3"
             aria-current="page"
-            href="{{ url_for('main.add_unidad') }}"
+            href="{{ url_for('main.punto_de_emision_new') }}"
             >&#129485;Nuevo</a
           >
         </li>
@@ -26,16 +26,16 @@
 </nav>
 <!--Cabecera de tabla de creacion de productos-->
 <div class="container mt-5">
-  <table class="table table-striped table-hover">
+  <table class="table table-bordered table-hover">
     <thead class="table-light">
       <tr>
         <th scope="col">Nombre cooperativa</th>
-        <th scope="col">Nombre conductor</th>
-        <th scope="col">modelo</th>
-        <th scope="col">año</th>
-        <th scope="col">placa</th>
-        <th scope="col"># disco</th>
-        <th scope="col"># asientos</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">direccion</th>
+        <th scope="col">codigo</th>
+        <th scope="col">tipo</th>
+        <th scope="col">equipos</th>
+       
       </tr>
       <!--Filtro para campos-->
       <tr>
@@ -45,7 +45,7 @@
             type="text"
             class="filter-input tamano-4"
             id="filterNombre"
-            placeholder="Filtrar Nombre conductor"
+            placeholder="Filtrar Nombre"
           />
         </th>
        
@@ -55,27 +55,24 @@
       </tr>
     </thead>
     <tbody>
-      {% for puntoemision in puntosemisiones %}
-      nombre = db.Column(db.String(100), nullable=False)
-      direccion = db.Column(db.String(255), nullable=False)
-      codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # formato 002
-      tipo = db.Column(db.String(50), nullable=False)
-      equipos = db.Column(db.Text, nullable=True)  # Información sobre equipos en formato JSON o texto
+      {% for punto in puntos %}
+      {% set id_punto_str = "%03d" % punto.codigo_identificacion %}
+  
       <tr>
-        <td>{{puntoemision.nombre}}</td>
-        <td>{{ puntoemision.conductor.nombre }} {{ unidad.conductor.apellido }}</td>
-        <td>{{puntoemision.modelo}}</td>
-        <td>{{puntoemision.ano}}</td>
-        <td>{{puntoemision.placa}}</td>
-        <td>{{unidad.nro_disco}}</td>
-        <td>{{unidad.nrodeasientos}}</td>
+        <td>{{punto.puntoecoperativa.razonsocial}}</td>
+        <td>{{punto.nombre}}</td>
+        <td>{{ punto.direccion }} </td>
+        <td>{{id_punto_str}}</td>
+        <td>{{punto.tipo}}</td>
+        <td>{{punto.equipos}}</td>
+ 
         <td>
-          <a class="btn btn-primary" href="{{ url_for('main.punto_de_emision_edit', id=unidad.id_unidad) }}">Editar</a>
+          <a class="btn btn-primary" href="{{ url_for('main.punto_de_emision_edit', id=punto.id) }}">Editar</a>
 
         </td>
         <td>
           <form
-            action="{{ url_for('main.delete_unidad', id=unidad.id_unidad) }}"
+            action="{{ url_for('main.punto_de_emision_delete', id=punto.id) }}"
             method="post">
             <button class="btn btn-danger" type="submit">Eliminar</button>
           </form>
