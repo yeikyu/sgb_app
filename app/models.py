@@ -268,7 +268,7 @@ class Establecimiento(db.Model):
     codigo_identificacion = db.Column(db.Integer, unique=True, nullable=False) # es 001 formato
     infraestructura = db.Column(db.Text, nullable=True)  # Información sobre infraestructura en formato JSON o texto
     horarios = db.Column(db.String(100), nullable=True)  # Horarios de apertura y cierre
-
+    estado = db.Column(db.Integer, nullable=True) # puede ser 1 o 0 activo o inactivo
     def __repr__(self):
         return f'<Establecimiento {self.nombre}>'
 
