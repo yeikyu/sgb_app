@@ -822,36 +822,41 @@ def puntos_de_emision_list():
 def punto_de_emision_new():
     if request.method == 'POST':
         nuevo_punto = PuntoDeEmision(
+            id_cooperativa = request.form['id_cooperativa'],
             nombre=request.form['nombre'],
             ubicacion_fisica=request.form['ubicacion_fisica'],
             codigo_identificacion=request.form['codigo_identificacion'],
             tipo=request.form['tipo'],
-            equipos=request.form['equipos']
+            equipos=request.form['equipos'],
+            estado = 1
         )
         db.session.add(nuevo_punto)
         db.session.commit()
-        return redirect(url_for('puntos_de_emision_list'))
-    return render_template('puntoemision/punto_de_emision_new.html')
+        return redirect(url_for('main.puntos_de_emision_list'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('puntoemision/punto_de_emision_new.html',cooperativas=cooperativas)
 
 @main_bp.route('/puntos_de_emision/edit/<int:id>', methods=['GET', 'POST'])
 def punto_de_emision_edit(id):
     punto = PuntoDeEmision.query.get_or_404(id)
     if request.method == 'POST':
+        punto.id_cooperativa = request.form['id_cooperativa']
         punto.nombre = request.form['nombre']
         punto.ubicacion_fisica = request.form['ubicacion_fisica']
         punto.codigo_identificacion = request.form['codigo_identificacion']
         punto.tipo = request.form['tipo']
         punto.equipos = request.form['equipos']
         db.session.commit()
-        return redirect(url_for('puntos_de_emision_list'))
-    return render_template('puntoemision/punto_de_emision_edit.html', punto=punto)
+        return redirect(url_for('main.puntos_de_emision_list'))
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('puntoemision/punto_de_emision_edit.html', punto=punto,cooperativas=cooperativas)
 
 @main_bp.route('/puntos_de_emision/delete/<int:id>')
 def punto_de_emision_delete(id):
     punto = PuntoDeEmision.query.get_or_404(id)
-    db.session.delete(punto)
+    punto.estado = 0  # Cambiar el estado a 0 en lugar de eliminar
     db.session.commit()
-    return redirect(url_for('puntos_de_emision_list'))
+    return redirect(url_for('main.puntos_de_emision_list'))
 
 
 # CRUD ESTABLECIMIENTO
