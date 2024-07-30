@@ -815,7 +815,7 @@ def delete_producto(id):
 
 @main_bp.route('/puntos_de_emision')
 def puntos_de_emision_list():
-    puntos = PuntoDeEmision.query.all()
+    puntos = PuntoDeEmision.query.filter(PuntoDeEmision.estado != 0).all()
     return render_template('puntoemision/punto_de_emision_list.html', puntos=puntos)
 
 @main_bp.route('/puntos_de_emision/new', methods=['GET', 'POST'])

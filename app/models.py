@@ -45,8 +45,8 @@ class Cooperativa(db.Model):
     unidades = db.relationship('Unidad', backref='unidad_cooperativa', lazy=True)
     ruta = db.relationship('Ruta', backref='rutacooperativa',lazy=True)
     andenes = db.relationship('Anden', backref='andencooperativa',lazy=True)
-    punto_de_emision = db.relationship('PuntoDeEmision', backref='re', lazy=True)
-    
+    punto_de_emision = db.relationship('PuntoDeEmision', backref='puntoecoperativa', lazy=True)
+    establecimiento = db.relationship('Establecimiento', backref='ecoperativa', lazy=True)
     
 class Anden(db.Model):
     __tablename__ = 'andenes'
@@ -250,10 +250,10 @@ class PuntoDeEmision(db.Model):
     id_cooperativa = db.Column(db.Integer, db.ForeignKey('cooperativas.id_cooperativa'))
     nombre = db.Column(db.String(100), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
-    codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # formato 002
+    codigo_identificacion = db.Column(db.Integer, unique=True, nullable=False) # formato 002
     tipo = db.Column(db.String(50), nullable=False)
     equipos = db.Column(db.Text, nullable=True)  # Información sobre equipos en formato JSON o texto
-    
+    estado = db.Column(db.Integer, nullable=True) # puede ser 1 o 0 activo o inactivo
     def __repr__(self):
         return f'<PuntoDeEmision {self.nombre}>'
 
@@ -265,7 +265,7 @@ class Establecimiento(db.Model):
     nombre = db.Column(db.String(100), nullable=False) 
     tipo = db.Column(db.String(50), nullable=False)
     direccion = db.Column(db.String(255), nullable=False)
-    codigo_identificacion = db.Column(db.String(50), unique=True, nullable=False) # es 001 formato
+    codigo_identificacion = db.Column(db.Integer, unique=True, nullable=False) # es 001 formato
     infraestructura = db.Column(db.Text, nullable=True)  # Información sobre infraestructura en formato JSON o texto
     horarios = db.Column(db.String(100), nullable=True)  # Horarios de apertura y cierre
 

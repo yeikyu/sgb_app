@@ -1,8 +1,8 @@
-"""tablas de sgbapp
+"""tablas del proyecto
 
-Revision ID: eebedd759739
+Revision ID: 3cb4fc1332cf
 Revises: 
-Create Date: 2024-07-25 09:58:13.628408
+Create Date: 2024-07-29 23:35:19.429794
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'eebedd759739'
+revision = '3cb4fc1332cf'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -104,6 +104,31 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
+    op.create_table('establecimiento',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('id_cooperativa', sa.Integer(), nullable=True),
+    sa.Column('nombre', sa.String(length=100), nullable=False),
+    sa.Column('tipo', sa.String(length=50), nullable=False),
+    sa.Column('direccion', sa.String(length=255), nullable=False),
+    sa.Column('codigo_identificacion', sa.Integer(), nullable=False),
+    sa.Column('infraestructura', sa.Text(), nullable=True),
+    sa.Column('horarios', sa.String(length=100), nullable=True),
+    sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('codigo_identificacion')
+    )
+    op.create_table('puntosdeemision',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('id_cooperativa', sa.Integer(), nullable=True),
+    sa.Column('nombre', sa.String(length=100), nullable=False),
+    sa.Column('direccion', sa.String(length=255), nullable=False),
+    sa.Column('codigo_identificacion', sa.Integer(), nullable=False),
+    sa.Column('tipo', sa.String(length=50), nullable=False),
+    sa.Column('equipos', sa.Text(), nullable=True),
+    sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('codigo_identificacion')
+    )
     op.create_table('usuarios',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('id_cooperativa', sa.Integer(), nullable=True),
@@ -121,18 +146,15 @@ def upgrade():
     )
     op.create_table('cab_factura',
     sa.Column('id_factura', sa.Integer(), nullable=False),
+    sa.Column('id_cooperativa', sa.Integer(), nullable=True),
     sa.Column('id_cliente', sa.Integer(), nullable=True),
-    sa.Column('id_vendedor', sa.Integer(), nullable=True),
+    sa.Column('id_responsable', sa.Integer(), nullable=True),
     sa.Column('fecha_vta', sa.Date(), nullable=True),
     sa.Column('numero_factura', sa.String(length=20), nullable=True),
-    sa.Column('cedula_o_ruc', sa.String(length=13), nullable=True),
-    sa.Column('nombre', sa.String(length=100), nullable=True),
-    sa.Column('apellido', sa.String(length=100), nullable=True),
-    sa.Column('razon_social', sa.String(length=255), nullable=True),
-    sa.Column('direccion', sa.String(length=255), nullable=True),
-    sa.Column('telefono', sa.String(length=10), nullable=True),
     sa.Column('estado', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['id_cliente'], ['clientes.id_cliente'], ),
+    sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
+    sa.ForeignKeyConstraint(['id_responsable'], ['usuarios.id'], ),
     sa.PrimaryKeyConstraint('id_factura')
     )
     op.create_table('unidades',
@@ -152,18 +174,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['id_conductor'], ['conductores.id'], ),
     sa.ForeignKeyConstraint(['id_cooperativa'], ['cooperativas.id_cooperativa'], ),
     sa.PrimaryKeyConstraint('id_unidad')
-    )
-    op.create_table('detalle_factura',
-    sa.Column('id_detalle', sa.Integer(), nullable=False),
-    sa.Column('id_factura', sa.Integer(), nullable=True),
-    sa.Column('cod_producto', sa.String(length=20), nullable=True),
-    sa.Column('nombre_producto', sa.String(length=350), nullable=True),
-    sa.Column('numero_factura', sa.String(length=50), nullable=True),
-    sa.Column('fecha_fact', sa.Date(), nullable=True),
-    sa.Column('cantidad', sa.Integer(), nullable=True),
-    sa.Column('estado', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['id_factura'], ['cab_factura.id_factura'], ),
-    sa.PrimaryKeyConstraint('id_detalle')
     )
     op.create_table('rutas',
     sa.Column('id_ruta', sa.Integer(), nullable=False),
@@ -257,6 +267,16 @@ def upgrade():
     sa.ForeignKeyConstraint(['id_tasa'], ['tasas.id'], ),
     sa.PrimaryKeyConstraint('id_boleto')
     )
+    op.create_table('detalle_factura',
+    sa.Column('id_detalle', sa.Integer(), nullable=False),
+    sa.Column('id_factura', sa.Integer(), nullable=True),
+    sa.Column('id_producto', sa.Integer(), nullable=True),
+    sa.Column('cantidad', sa.Integer(), nullable=True),
+    sa.Column('estado', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['id_factura'], ['cab_factura.id_factura'], ),
+    sa.ForeignKeyConstraint(['id_producto'], ['productos.id'], ),
+    sa.PrimaryKeyConstraint('id_detalle')
+    )
     op.create_table('pagos',
     sa.Column('id_pago', sa.Integer(), nullable=False),
     sa.Column('id_metodo', sa.Integer(), nullable=True),
@@ -274,6 +294,7 @@ def upgrade():
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_table('pagos')
+    op.drop_table('detalle_factura')
     op.drop_table('boletos')
     op.drop_table('productos')
     op.drop_table('itinerarios')
@@ -281,10 +302,11 @@ def downgrade():
     op.drop_table('comentarios')
     op.drop_table('calificaciones')
     op.drop_table('rutas')
-    op.drop_table('detalle_factura')
     op.drop_table('unidades')
     op.drop_table('cab_factura')
     op.drop_table('usuarios')
+    op.drop_table('puntosdeemision')
+    op.drop_table('establecimiento')
     op.drop_table('conductores')
     op.drop_table('clientes')
     op.drop_table('andenes')
