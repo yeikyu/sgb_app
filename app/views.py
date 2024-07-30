@@ -215,16 +215,14 @@ def add_client():
 @main_bp.route('/unidad/list' , methods=['GET', 'POST'])
 def list_unidades():
     if request.method == 'POST':
-        conductor = request.form.get('conductor.nombre')
+        modelo = request.form.get('modelo')
         query = Unidad.query
-
-        if conductor:
-            query = query.filter(Unidad.conductor.like(f"%{conductor}%"))
+        if modelo:
+            query = query.filter(Unidad.modelo.like(f"%{modelo}%"))
 
         unidades = query.all()
     else:
         unidades = Unidad.query.filter_by(estado=1)
-
     #unidades = Unidad.query.filter(Unidad.estado != 0).all()
     return render_template('unidad/list_unidades.html', unidades=unidades)
 
@@ -261,10 +259,18 @@ def report_unidad():
     styles = getSampleStyleSheet()
     header = Paragraph("Lista de unidades / buses", styles['Heading1'])
     unidades.append(header)
+    
+    modelo = request.form.get('modelo')
+    query = Unidad.query
+    
+
     unidadlist = Unidad.query.filter(Unidad.estado != 0).options(
         joinedload(Unidad.cooperativa),
         joinedload(Unidad.conductor)
     ).all()
+    if modelo:
+            query = query.filter(Unidad.modelo.like(f"%{modelo}%"))
+            unidadlist = query.all()
 
     headings = ('Cooperativa', 'Conductor', 'Placa', 'Modelo', 'Año', 'N° disco', 'N° Asistentos', 'Estado')
     allunidades = [(c.cooperativa.razonsocial, c.conductor.nombre, c.placa, c.modelo, c.ano, c.nro_disco, c.nrodeasientos, 'Activo' if c.estado == 1 else 'Inactivo') for c in unidadlist]
