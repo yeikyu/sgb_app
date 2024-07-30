@@ -212,9 +212,20 @@ def add_client():
 #----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Lista unidades
-@main_bp.route('/unidad/list' , methods=['GET'])
+@main_bp.route('/unidad/list' , methods=['GET', 'POST'])
 def list_unidades():
-    unidades = Unidad.query.filter(Unidad.estado != 0).all()
+    if request.method == 'POST':
+        conductor = request.form.get('conductor.nombre')
+        query = Unidad.query
+
+        if conductor:
+            query = query.filter(Unidad.conductor.like(f"%{conductor}%"))
+
+        unidades = query.all()
+    else:
+        unidades = Unidad.query.filter_by(estado=1)
+
+    #unidades = Unidad.query.filter(Unidad.estado != 0).all()
     return render_template('unidad/list_unidades.html', unidades=unidades)
 
 # Reporte de unidades / buses

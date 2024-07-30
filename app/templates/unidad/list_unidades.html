@@ -21,6 +21,14 @@
     </div>
   </div>
 </nav>
+<form action="{{ url_for('main.list_unidades') }}" method="post">
+  <label for="nombre">Nombre conductor:</label>
+  <input type="text" id="conductor" name="conductor" required>
+  <input type="hidden" id="buscar" name="buscar" value="buscar">
+  <button type="submit" id="buscar" name="buscar" value="buscar">Buscar
+  </button>
+</form>
+
 <!--Cabecera de tabla de creacion de buses-->
 <div class="container mt-5">
   <table class="table table-dark table-striped">
