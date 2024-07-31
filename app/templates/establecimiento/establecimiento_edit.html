@@ -1,0 +1,87 @@
+<!-- establecimiento_edit.html -->
+
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Editar Establecimiento</h1>
+    <form class="needs-validation" novalidate action="{{ url_for('main.establecimiento_edit', id=establecimiento.id) }}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="id_cooperativa">ID de Cooperativa</label>
+                <select class="form-control" id="id_cooperativa" name="id_cooperativa" required>
+                    {% for cooperativa in cooperativas %}
+                        <option value="{{ cooperativa.id_cooperativa }}" {% if cooperativa.id_cooperativa == establecimiento.id_cooperativa %}selected{% endif %}>{{ cooperativa.razonsocial }}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Por favor, elija una cooperativa.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ establecimiento.nombre }}" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un nombre válido.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="tipo">Tipo</label>
+                <input type="text" class="form-control" id="tipo" name="tipo" value="{{ establecimiento.tipo }}" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un tipo válido.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="direccion">Dirección</label>
+                <input type="text" class="form-control" id="direccion" name="direccion" value="{{ establecimiento.direccion }}" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione una dirección válida.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="codigo_identificacion">Código de Identificación</label>
+                <input type="text" class="form-control" id="codigo_identificacion" name="codigo_identificacion" value="{{ establecimiento.codigo_identificacion }}" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione un código de identificación válido.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="infraestructura">Infraestructura</label>
+                <textarea class="form-control" id="infraestructura" name="infraestructura" required>{{ establecimiento.infraestructura }}</textarea>
+                <div class="invalid-feedback">
+                    Por favor, proporcione información sobre la infraestructura.
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="horarios">Horarios</label>
+                <input type="text" class="form-control" id="horarios" name="horarios" value="{{ establecimiento.horarios }}" required>
+                <div class="invalid-feedback">
+                    Por favor, proporcione los horarios.
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar Cambios</button>
+        <a href="{{ url_for('main.establecimientos_list') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de Establecimientos</a>
+    </form>
+
+    <script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+    </script>
+</div>
+<script src="{{ url_for('static', filename='dist/js/bootstrap.min.js') }}"></script>
+{% endblock %}

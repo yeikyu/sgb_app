@@ -1,0 +1,41 @@
+<!-- establecimiento_list.html -->
+
+{% extends 'index.html' %}
+{% block content %}
+<div class="container">
+    <h1>Lista de Establecimientos</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+  
+                <th>Cooperativa</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Dirección</th>
+                <th>Código de Identificación</th>
+                <th>Infraestructura</th>
+                <th>Horarios</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for establecimiento in establecimientos %}
+            {% set id_codigo_str = "%03d" % establecimiento.codigo_identificacion %}
+            <tr>
+                <td>{{ establecimiento.ecoperativa.razonsocial }}</td>
+                <td>{{ establecimiento.nombre }}</td>
+                <td>{{ establecimiento.tipo }}</td>
+                <td>{{ establecimiento.direccion }}</td>
+                <td>{{ id_codigo_str }}</td>
+                <td>{{ establecimiento.infraestructura }}</td>
+                <td>{{ establecimiento.horarios }}</td>
+                <td>
+                    <a href="{{ url_for('main.establecimiento_edit', id=establecimiento.id) }}" class="btn btn-primary btn-sm">Editar</a>
+                    <a href="{{ url_for('main.establecimiento_delete', id=establecimiento.id) }}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ url_for('main.establecimiento_new') }}" class="btn btn-success">Agregar Establecimiento</a>
+</div>
+{% endblock %}

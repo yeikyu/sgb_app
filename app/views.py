@@ -863,13 +863,14 @@ def punto_de_emision_delete(id):
 
 @main_bp.route('/establecimientos')
 def establecimientos_list():
-    establecimientos = Establecimiento.query.all()
-    return render_template('establecimiento_list.html', establecimientos=establecimientos)
+    establecimientos = Establecimiento.query.filter(Establecimiento.estado != 0).all()
+    return render_template('establecimiento/establecimiento_list.html', establecimientos=establecimientos)
 
 @main_bp.route('/establecimientos/new', methods=['GET', 'POST'])
 def establecimiento_new():
     if request.method == 'POST':
         nuevo_establecimiento = Establecimiento(
+            id_cooperativa = request.form['id_cooperativa'],
             nombre=request.form['nombre'],
             tipo=request.form['tipo'],
             ubicacion_fisica=request.form['ubicacion_fisica'],
@@ -879,13 +880,14 @@ def establecimiento_new():
         )
         db.session.add(nuevo_establecimiento)
         db.session.commit()
-        return redirect(url_for('establecimientos_list'))
-    return render_template('establecimiento_form.html')
+        return redirect(url_for('main.establecimientos_list'))
+    return render_template('establecimiento/establecimiento_add.html')
 
 @main_bp.route('/establecimientos/edit/<int:id>', methods=['GET', 'POST'])
 def establecimiento_edit(id):
     establecimiento = Establecimiento.query.get_or_404(id)
     if request.method == 'POST':
+        establecimiento.id_cooperativa = request.form['id_cooperativa']
         establecimiento.nombre = request.form['nombre']
         establecimiento.tipo = request.form['tipo']
         establecimiento.ubicacion_fisica = request.form['ubicacion_fisica']
@@ -893,15 +895,15 @@ def establecimiento_edit(id):
         establecimiento.infraestructura = request.form['infraestructura']
         establecimiento.horarios = request.form['horarios']
         db.session.commit()
-        return redirect(url_for('establecimientos_list'))
-    return render_template('establecimiento_form.html', establecimiento=establecimiento)
+        return redirect(url_for('main.establecimientos_list'))
+    return render_template('establecimiento/establecimiento_edit.html', establecimiento=establecimiento)
 
 @main_bp.route('/establecimientos/delete/<int:id>')
 def establecimiento_delete(id):
     establecimiento = Establecimiento.query.get_or_404(id)
     db.session.delete(establecimiento)
     db.session.commit()
-    return redirect(url_for('establecimientos_list'))
+    return redirect(url_for('main.establecimientos_list'))
 
 
 

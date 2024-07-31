@@ -273,9 +273,6 @@ class Establecimiento(db.Model):
         return f'<Establecimiento {self.nombre}>'
 
 
-
-
-
 class CabFactura(db.Model):
     __tablename__ = 'cab_factura'
     id_factura = db.Column(db.Integer, primary_key=True)
