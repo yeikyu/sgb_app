@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Factura</title>
+    <style>
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        .form-row div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Crear Nueva Factura</h1>
+    <form action="/factura" method="post">
+        <label for="id_cooperativa">ID Cooperativa:</label>
+        <input type="number" id="id_cooperativa" name="id_cooperativa" required><br>
+        
+        <label for="id_cliente">ID Cliente:</label>
+        <input type="number" id="id_cliente" name="id_cliente" required><br>
+        
+        <label for="id_responsable">ID Responsable:</label>
+        <input type="number" id="id_responsable" name="id_responsable" required><br>
+        
+        <label for="fecha_vta">Fecha Venta:</label>
+        <input type="date" id="fecha_vta" name="fecha_vta" required><br>
+        
+        <label for="numero_factura">Número Factura:</label>
+        <input type="text" id="numero_factura" name="numero_factura" required><br>
+        
+        <label for="estado">Estado:</label>
+        <input type="number" id="estado" name="estado" required><br>
+        
+        <fieldset>
+            <legend>Punto de Emisión y Establecimiento</legend>
+            <div class="form-row">
+                <div>
+                    <label for="punto_emision">Punto de Emisión:</label>
+                    <input type="text" id="punto_emision" name="punto_emision" value="001" maxlength="5"><br>
+                </div>
+                <div>
+                    <label for="establecimiento">Establecimiento:</label>
+                    <input type="text" id="establecimiento" name="establecimiento" value="001" maxlength="5"><br>
+                </div>
+            </div>
+        </fieldset>
+        
+        <button type="submit">Crear Factura</button>
+    </form>
+</body>
+</html>
