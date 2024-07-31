@@ -41,7 +41,7 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label for="codigo_identificacion">Código de Identificación</label>
-                <input type="text" class="form-control" id="codigo_identificacion" name="codigo_identificacion" value="{{ establecimiento.codigo_identificacion }}" required>
+                <input type="number" class="form-control" id="codigo_identificacion" name="codigo_identificacion" value="{{ establecimiento.codigo_identificacion }}" required>
                 <div class="invalid-feedback">
                     Por favor, proporcione un código de identificación válido.
                 </div>
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar Cambios</button>
+        <button class="btn btn-success text-light fw-bold me-3" type="submit">Guardar</button>
         <a href="{{ url_for('main.establecimientos_list') }}" class="btn btn-dark text-light fw-bold">Volver a la Lista de Establecimientos</a>
     </form>
 

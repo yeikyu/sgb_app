@@ -873,15 +873,17 @@ def establecimiento_new():
             id_cooperativa = request.form['id_cooperativa'],
             nombre=request.form['nombre'],
             tipo=request.form['tipo'],
-            ubicacion_fisica=request.form['ubicacion_fisica'],
+            direccion=request.form['direccion'],
             codigo_identificacion=request.form['codigo_identificacion'],
             infraestructura=request.form['infraestructura'],
-            horarios=request.form['horarios']
+            horarios=request.form['horarios'],
+            estado=1
         )
         db.session.add(nuevo_establecimiento)
         db.session.commit()
         return redirect(url_for('main.establecimientos_list'))
-    return render_template('establecimiento/establecimiento_add.html')
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('establecimiento/establecimiento_add.html',cooperativas=cooperativas)
 
 @main_bp.route('/establecimientos/edit/<int:id>', methods=['GET', 'POST'])
 def establecimiento_edit(id):
@@ -890,13 +892,14 @@ def establecimiento_edit(id):
         establecimiento.id_cooperativa = request.form['id_cooperativa']
         establecimiento.nombre = request.form['nombre']
         establecimiento.tipo = request.form['tipo']
-        establecimiento.ubicacion_fisica = request.form['ubicacion_fisica']
+        establecimiento.ubicacion_fisica = request.form['direccion']
         establecimiento.codigo_identificacion = request.form['codigo_identificacion']
         establecimiento.infraestructura = request.form['infraestructura']
         establecimiento.horarios = request.form['horarios']
         db.session.commit()
         return redirect(url_for('main.establecimientos_list'))
-    return render_template('establecimiento/establecimiento_edit.html', establecimiento=establecimiento)
+    cooperativas = Cooperativa.query.filter(Cooperativa.estado != 0).all()
+    return render_template('establecimiento/establecimiento_edit.html', establecimiento=establecimiento,cooperativas=cooperativas)
 
 @main_bp.route('/establecimientos/delete/<int:id>')
 def establecimiento_delete(id):
